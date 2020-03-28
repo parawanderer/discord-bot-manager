@@ -2,7 +2,7 @@ const generateToken = require('../services/randomTokenGenerator');
 const { generateDiscordOAuthURL, fetchUserToken, fetchUserData } = require('../services/discordOAUTH2');
 const { AdminEndpoint } = require('../services/bot_api');
 const limitLogins = require('../middlewares/limitLogins');
-const { addError } = require('../services/sessionError');
+const { addError, clearError } = require('../services/sessionError');
 
 module.exports = (app) => {
     
@@ -42,22 +42,27 @@ module.exports = (app) => {
 
     app.get('/api/self', (req, res) => {
 
+        // if we access this, it will be safe to remove the error after this response
+        const error = req.session.error ? req.session.error : false;
+        clearError(req);
+
         if (!req.session.adminUID) {
             res.send({
                 loggedIn: false,
-                error: req.session.error ? req.session.error : false,
+                error,
                 user: null,
             });
             return;
         }
         res.send({
             loggedIn: true,
-            error: req.session.error ? req.session.error : false,
+            error: error,
             user: {
                 adminUID: req.session.adminUID,
                 isSuperAdmin: req.session.isSuperAdmin
             }
         });
+        // once we access this, it's safe to remove the error from the session.
     });
 
     
@@ -112,7 +117,7 @@ module.exports = (app) => {
         }
         if (admin === false) {
             // this user is not an admin
-            addError('You are not a Bot Admin!')
+            addError(req, 'You are not a Bot Admin!')
             // for now just redirect to main page.
             res.redirect("/");
             return;
@@ -124,7 +129,11 @@ module.exports = (app) => {
         req.session.isSuperAdmin = admin.isSuperAdmin();
         delete req.session.authState; // now also wipe their authState session member variable
 
+        // we can clear any eventual errors...
+        clearError(req);
+
         // we can now just redirect them back to the index page. They are logged in.
+
         res.redirect("/");
 
         // res.send({

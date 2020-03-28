@@ -35,6 +35,7 @@ class AdminEndpoint {
             return new Admin(response.data);
 
         } catch (e) { 
+            if (e.response.status === 404) return false; // server responded with 404, admin does not exist
             return null;
         }
     }

@@ -31,12 +31,14 @@ app.use(cookieSession(
 
 // setup routes
 app.get('/', async (req, res) => {
-    res.send(
-        {   
-            hello: "world",
-            session: req.session
-        }
-    );
+    res.redirect("http://localhost:3000/")
+
+    // res.send(
+    //     {   
+    //         hello: "world",
+    //         session: req.session
+    //     }
+    // );
 });
 
 

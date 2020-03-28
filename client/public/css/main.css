@@ -1,0 +1,178 @@
+body {
+    margin: 0;
+    font-family: 'Baloo Da 2', cursive;
+    color: #46484a;
+}
+
+.login-outer-container {
+    width: 100vw;
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: linear-gradient(to bottom right, rgba(95, 151, 235, 0.7019607843137254), rgba(0, 214, 233, 0.62));
+}
+
+.outer-login-block {
+    padding-top: 17.5vh;
+}
+
+.login-block {
+    background: white;
+    position: relative;
+    width: 20vw;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0px 10px 10px #0000004a;
+    border-radius: 6px;
+}
+
+
+.button {
+    font-family: 'Baloo Da 2', cursive;
+    font-size: 13pt;
+    padding: 5px 10px;
+    border: 0;
+    background: #00d6e9;
+    color: white;
+    font-weight: 400;
+    border-radius: 50px;
+    min-width: 100px;
+    transition: 0.1s ease;
+    cursor: pointer;
+    border-bottom: 2px solid #15a0d6;
+}
+
+.button:hover {
+    background: #3caeea;
+}
+
+
+/* .button.button-discord {
+    background: #7289DA;
+    border-color: #5457c5;
+}
+
+.button.button-discord:hover {
+    background: #6b6ee0;
+} */
+
+.button.button-discord i {
+    padding-right: 10px;
+    font-size: 16pt;
+    vertical-align: middle;
+    padding-left: 5px;
+}
+
+.button.button-discord {
+    padding-right: 15px;
+}
+
+
+.login-header .logo {
+    float: left;
+    height: 70px;
+    margin-right: 20px;
+    width: 72px;
+    margin-top:7px;
+}
+
+.login-header {
+    border-bottom: 2px solid #eef0f3;
+    margin: 10px;
+}
+
+.login-header {
+    padding: 10px;
+}
+
+.login-header h3 {
+    font-size: 19pt;
+    font-weight: 500;
+    display: block;
+    margin: 0;
+    margin-top: 10px;
+    line-height: 19pt;
+    color: #767b7d;
+}
+
+.login-header h2 {
+    font-size: 24pt;
+    font-weight: 600;
+    display: block;
+    margin: 0;
+    line-height: 24pt;
+    padding: 10px;
+    padding-top:5px;
+    color: #5c6279;
+}
+
+.login-body {
+    text-align: center;
+    padding: 10px;
+    padding-bottom: 40px;
+    padding-top: 30px;
+}
+
+.error-block {
+}
+
+.outer-login-block .error-block {
+    margin: 0 30vw;
+    margin-top: 50px;
+}
+
+
+.error {
+    background: #ce4b4b;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 2px;
+    border-bottom: 2px solid #7d2c2c;
+    vertical-align: middle;
+    position: relative; 
+    top: 0px;
+    opacity: 0;
+    animation-name: error-animate;
+    animation-duration: 3s;
+}
+
+.error i {
+    padding-right: 10px;
+    font-size: 16pt;
+    vertical-align: middle;
+}
+
+.error span {
+
+    display: inline-block;
+    vertical-align: middle;
+
+}
+
+@keyframes error-animate {
+    0% {
+        opacity: 0;
+        top: 10px;
+    }
+    5% {
+        opacity: 0;
+        top: 10px;
+    }
+    10% {
+        opacity: 1;
+        top: 0px;
+    }
+    80% {
+        opacity: 1;
+        top: 0px;
+    }
+    99% {
+        opacity: 0;
+        top: 30px;
+    }
+    100% {
+        opacity: 0;
+        top: -10px;
+    }
+}
