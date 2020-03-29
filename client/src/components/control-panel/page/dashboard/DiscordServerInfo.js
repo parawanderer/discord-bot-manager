@@ -17,7 +17,7 @@ const DiscordServerInfo = (props) => {
     const renderBannerUrl = () => {
         if (props.guild.banner) {
             return (
-                <a href={props.guild.banner} target="_blank">
+                <a href={props.guild.banner} target="_blank" rel="noopener noreferrer">
                     Link
                 </a>
             );
@@ -54,7 +54,7 @@ const DiscordServerInfo = (props) => {
                                             Icon URL :
                                         </div>
                                         <div className="list-answer">
-                                            <a href={props.guild.server_icon} target="_blank">
+                                            <a href={props.guild.server_icon} target="_blank" rel="noopener noreferrer">
                                                 Link
                                             </a>
                                         </div>

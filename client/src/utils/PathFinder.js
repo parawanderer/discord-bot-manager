@@ -6,6 +6,7 @@ const PATH_ASSOCIATIONS = {
     "config" : "Configuration",
     "immortal" : "Immortal",
     "punishments" : "Punishments",
+    "reports" : "Reports System",
     "rules" : "Rules",
     "severities" : "Punishment System",
     "taggable" : "Taggable System"
@@ -17,6 +18,7 @@ const ICON_ASSOCIATIONS = {
     configuration: <i className="fad fa-sliders-v-square"></i>,
     immortal: <i className="fad fa-stars"></i>,
     punishments: <i className="fad fa-user-slash"></i>,
+    "reports system": <i className="fad fa-flag-alt"></i>,
     rules: <i className="fad fa-file-alt"></i>,
     "punishment system": <i className="fad fa-gavel"></i>,
     "taggable system": <i className="fad fa-sensor-alert"></i>

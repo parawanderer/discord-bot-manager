@@ -6,7 +6,6 @@ class SessionExpirer {
     expiredSessions = {};
 
     constructor() {
-
         setInterval(this._cleanupExpiredSessions, CLEANUP_MS); // setup cleanup loop
     }
 

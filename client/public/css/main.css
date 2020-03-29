@@ -521,17 +521,17 @@ vertical-align: top;
 }
 
 .list-type {
-    display: inline-block;
     font-size: 16pt;
     padding-right: 10px;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .list-answer {
-    display: inline;
     font-size: 14pt;
     color: #b0b4c1;
     font-weight: 500;
+    width: 100%;
 }
 
 .list-type i {
@@ -1091,8 +1091,9 @@ input, textarea {
     font-weight: 500;
     padding: 4px 10px;
     background-color: #edeff1;
-    transition: 0.1s ease;
     outline:0;
+    box-sizing: border-box;
+    transition: 0.1s ease;
 }
 
 input:focus, input:active, textarea:focus, textarea:active {
@@ -1112,4 +1113,190 @@ input::placeholder, textarea::placeholder {
     color: #ff4343;
     font-weight: 500;
     height: 30px;
+}
+
+
+.config-container {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 60px 80px;
+    width: 55%;
+}
+
+#config ul {
+    padding: 0;
+    list-style-type: none;
+    margin: 0;
+}
+
+.config-body {
+    padding: 20px;
+}
+
+.config-body .loading {
+    padding: 0;
+}
+
+.command-state {
+    background: #e2e6ea;
+    font-weight: 600;
+    color: #9e9db1;
+    padding: 0 10px;
+    border-radius: 100px;
+    top: 2px;
+    position: relative;
+    display: inline-block;
+    top: -3px;
+}
+
+.command-state i {
+    padding-right: 10px;
+}
+
+#config li {
+    padding: 10px 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.config-container li {
+    height: 43px;
+}
+
+
+.command-state.active-state {
+    background: #1edc1e;
+    color: white;
+}
+
+.sub-heading {
+    margin: 0;
+    font-size: 17pt;
+    font-weight: 600;
+    color: #9a9ead;
+    padding: 10px 0;
+    border-bottom: 2px solid #eef0f3;
+    margin-bottom: 10px;
+    margin-top: 30px;
+}
+
+.edit-button {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    font-size: 18pt;
+    color: #b9baca;
+    cursor: pointer;
+    border-radius: 100%;
+    padding: 5px;
+    margin-left: 15px;
+    transition: 0.1s ease;
+    outline: 0;
+}
+
+.edit-button:hover {
+    background: #e5eaec;
+}
+
+.toggle-button {
+    background: #b9baca;
+    border: 0;
+    font-size: 18pt;
+    color: white;
+    width: 50px;
+    border-radius: 100px;
+    padding: 15px;
+    position: relative;
+    line-height: 18pt;
+    cursor: pointer;
+    top: -5px;
+    outline: 0;
+}
+
+.toggle-button i {
+    text-shadow: 2px 2px #00000038;
+    padding: 0;
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    transform: translate(0px, 0px);
+    transition: 0.2s ease;
+}
+
+.toggle-button.toggled i {
+    transform: translate(79%, 0px);
+    text-shadow: -2px 2px #00000038;
+}
+
+.toggle-button.toggled {
+    background: #41c541;
+}
+
+.config-body li .edit-button {
+    opacity: 0;
+    transition: 0.2s ease;
+}
+
+.config-body li:hover .edit-button {
+    opacity: 1;
+}
+
+span.editable-field-current {
+    display: block;
+    top: -4px;
+    position: relative;
+}
+
+.editable-field .text-field {
+    display: inline-block;
+    margin-right: 10px;
+    position: relative;
+    width: 60%;
+}
+
+
+.editable-field .button {
+    margin-left: 10px;
+}
+
+
+
+.editable-field .text-field input {
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.editable-field {
+    display: block;
+}
+
+.editable-field .text-field-error {
+    position: absolute;
+}
+
+#config .editable-field .text-field {
+    width: 55%;
+}
+
+.list-answer > span {
+    display: inline-block;
+}
+
+button.toggle-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.comment {
+    font-size: 14pt;
+    color: #cfd1d6;
+    font-weight: 500;
+}
+
+.comment > div {
+    margin: 0 10px;
 }

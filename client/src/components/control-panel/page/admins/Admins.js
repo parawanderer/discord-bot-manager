@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { fetchAdmins, fetchMember, deleteAdmin, addNewAdmin } from '../../../../action';
+import { fetchAdminsDetailed, deleteAdmin, addNewAdmin, fetchMember } from '../../../../action';
 
 import Loading from '../../generic/Loading';
 import Button from '../../generic/Button';
@@ -22,15 +22,16 @@ class Admins extends React.Component {
     };
 
     async componentDidMount() {
-        await this.props.fetchAdmins();
+        console.log("fetchAdminsDetailed")
+        await this.props.fetchAdminsDetailed();
 
         // foreach admin fetch admin details...
-        if (this.props.admins) {
-            for (let i =0; i < this.props.admins.length; i++) {
-                let admin = this.props.admins[i];
-                this.props.fetchMember(admin.userId);
-            }
-        }
+        // if (this.props.admins) {
+        //     for (let i =0; i < this.props.admins.length; i++) {
+        //         let admin = this.props.admins[i];
+        //         this.props.fetchMember(admin.userId);
+        //     }
+        // }
     }
 
     mouseEnterAdmin = (admin) => {
@@ -70,7 +71,7 @@ class Admins extends React.Component {
         const ownName = this.props.auth.user.username;
 
         await this.props.addNewAdmin(newAdminID, ownID, ownName);
-        this.props.fetchMember(newAdminID);
+        this.props.fetchMember(newAdminID); // addNewAdmin does not return member details. We will make this call to get the member details
     };
 
     showAddNewAdmin = () => {
@@ -164,4 +165,4 @@ const mapStateToProps = (state, ownProps) => {
     };
 }
 
-export default connect(mapStateToProps, { fetchAdmins, fetchMember, deleteAdmin, addNewAdmin })(Admins);
+export default connect(mapStateToProps, { fetchAdminsDetailed, deleteAdmin, addNewAdmin, fetchMember })(Admins);

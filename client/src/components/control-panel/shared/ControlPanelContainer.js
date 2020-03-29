@@ -7,12 +7,13 @@ import PageTop from './PageTop';
 
 import Home from '../page/Home';
 import Admins from '../page/admins/Admins';
-import Configuration from '../page/Configuration';
+import Configuration from '../page/config/Configuration';
 import Immortal from '../page/Immortal';
 import Punishments from '../page/Punishments';
 import PunishmentSystem from '../page/PunishmentSystem';
 import Rules from '../page/Rules';
 import TaggableSystem from '../page/TaggableSystem';
+import Reports from '../page/Reports';
 
 
 class ControlPanelContainer extends React.Component {
@@ -28,14 +29,15 @@ class ControlPanelContainer extends React.Component {
                 <div className="main-container">
                     <PageTop />
                     <div className="page-content">
-                            <Route exact path="/" component={Home} />
-                            <Route exact path="/admins" component={Admins} />
-                            <Route exact path="/config" component={Configuration} />
-                            <Route exact path="/immortal" component={Immortal} />
-                            <Route exact path="/punishments" component={Punishments} />
-                            <Route exact path="/Rules" component={Rules} />
-                            <Route exact path="/severities" component={PunishmentSystem} />
-                            <Route exact path="/taggable" component={TaggableSystem} />
+                        <Route exact path="/" component={Home} />
+                        <Route exact path="/admins" component={Admins} />
+                        <Route exact path="/config" component={Configuration} />
+                        <Route exact path="/reports" component={Reports} />
+                        <Route exact path="/immortal" component={Immortal} />
+                        <Route exact path="/punishments" component={Punishments} />
+                        <Route exact path="/Rules" component={Rules} />
+                        <Route exact path="/severities" component={PunishmentSystem} />
+                        <Route exact path="/taggable" component={TaggableSystem} />
                     </div>
                 </div>
                 </BrowserRouter>

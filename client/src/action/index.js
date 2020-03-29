@@ -1,5 +1,15 @@
 import axios from 'axios';
-import { FETCH_ADMIN, FETCH_GUILD_INFO, FETCH_RECENT_PUNISHMENTS, FETCH_ADMINS, FETCH_MEMBER, DELETE_ADMIN, ADD_NEW_ADMIN } from './types';
+import { 
+    FETCH_ADMIN, 
+    FETCH_GUILD_INFO, 
+    FETCH_RECENT_PUNISHMENTS, 
+    FETCH_ADMINS, 
+    FETCH_MEMBER, 
+    DELETE_ADMIN, 
+    ADD_NEW_ADMIN, 
+    FETCH_CONFIG_MAIN, 
+    UPDATE_CONFIG_MAIN 
+} from './types';
 
 
 export const fetchLoginStatus = () => 
@@ -38,6 +48,27 @@ export const fetchAdmins = () =>
         });
     }
 
+// fetch admins and member details for each admin if possible
+export const fetchAdminsDetailed = () => 
+    async (dispatch, getState) => {
+        const response = await axios.get('api/admin');
+
+        if (response.data) {
+            for (let i =0; i < response.data.length; i++) {
+                const admin = response.data[i];
+                const responseMember = await axios.get(`api/members/${admin.userId}`);
+                if (responseMember && responseMember.data && responseMember.data.id) {
+                    admin.member = responseMember.data;
+                }
+            }
+        }
+
+        dispatch({
+            type: FETCH_ADMINS,
+            payload: response.data
+        });
+    }
+
 export const fetchMember = (id) => 
     async (dispatch, getState) => {
         const response = await axios.get(`api/members/${id}`);
@@ -66,6 +97,24 @@ export const addNewAdmin = (newAdminId, addedById, addedByName) =>
         const response = await axios.post('api/admin', data);
         dispatch({
             type: ADD_NEW_ADMIN,
+            payload: response.data
+        });
+    };
+
+export const fetchBaseConfig = () =>
+    async (dispatch, getState) => {
+        const response = await axios.get('api/config/main');
+        dispatch({
+            type: FETCH_CONFIG_MAIN,
+            payload: response.data
+        });
+    };
+
+export const updateBaseConfig = (newConfig) => 
+    async(dispatch, getState) => {
+        const response = await axios.put('api/config/main', newConfig);
+        dispatch({
+            type: UPDATE_CONFIG_MAIN,
             payload: response.data
         });
     };

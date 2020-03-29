@@ -14,6 +14,7 @@ const POLLING_RATE_MS = 1000 * 30; // 30 seconds
 
 class App extends React.Component {
 
+    
     state = { loggedIn : null };
 
 
@@ -25,17 +26,20 @@ class App extends React.Component {
         // or making the control pannel appear if we logged in on a 
         // different tab or we logged in as a different user in a different tab
 
-        if (this.state.loggedIn != this.props.auth.loggedIn)
+        if (this.state.loggedIn !== this.props.auth.loggedIn)
             this.setState({loggedIn : this.props.auth.loggedIn}); // this is set to essentially force a redraw of the entire app
     };
 
-    componentDidMount() {
-        this.props.fetchLoginStatus();  
+    componentDidMount = async () => {
+        await this.props.fetchLoginStatus();  
+
+        if (this.state.loggedIn !== this.props.auth.loggedIn)
+            this.setState({loggedIn : this.props.auth.loggedIn}); // this is set to essentially force a redraw of the entire app
 
         // setup polling to ping API endpoint to ensure we are still logged in (session not expired)
         // once it is expired, we will throw ourselves back to the login screen.
         setInterval(this.props.fetchLoginStatus, POLLING_RATE_MS);
-    }    
+    };
 
     drawPage() {
         if (!this.props.auth) {
@@ -49,11 +53,9 @@ class App extends React.Component {
         // if not logged in, show login screen, else show dashboard.
 
         if (this.props.auth.loggedIn) {
-            this.state.loggedIn = true; // preset this each time we render so we can compare against it properly in pollLoginStatus
             return <ControlPanelContainer/>;
         }
         // show login screen
-        this.state.loggedIn = false; // preset this each time we render so we can compare against it properly in pollLoginStatus
         return (
             <LoginScreen />
         );

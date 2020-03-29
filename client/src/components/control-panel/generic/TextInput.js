@@ -3,12 +3,16 @@ import React from 'react';
 
 class TextInput extends React.Component {
 
-    state = { value : '', error: null };
+    constructor(props) {
+        super(props);
+
+        this.state = { value : props.value ? props.value : '' };
+    } 
 
     updateValue = (event) => {
         this.setState({value : event.target.value});
         const newValue = event.target.value;
-
+        
         this.props.valueUpdateCallback(newValue); // pass on the new value to the callback.
     };
 

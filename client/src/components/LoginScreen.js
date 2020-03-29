@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import ErrorPopup from './control-panel/generic/ErrorPopup';
 
-const BACKGROUND_COUNT = 16;
+const BACKGROUND_COUNT = 15;
 
 class LoginScreen extends React.Component {
 
