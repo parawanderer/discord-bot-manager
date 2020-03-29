@@ -15,7 +15,7 @@ class LoginLimitor {
     // main point of interaction...
     canLogin(ip) {
 
-        console.log("LoginLimitor", this.history);
+        console.log(">> LoginLimitor", this.history);
 
         let ipHistory = this._findLoginHistoryForIP(ip);
     
@@ -94,7 +94,7 @@ class LoginLimitor {
 
 
     _cleanupAllExpiredLogins = () => {
-        console.log("LoginLimitor: running cleanup....", this.history)
+        console.log(">> LoginLimitor: running cleanup....", this.history)
         // going in revere ensures we will be able to 
         // drop items as we go
 

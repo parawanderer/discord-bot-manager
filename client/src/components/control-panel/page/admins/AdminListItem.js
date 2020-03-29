@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 
 const AdminListItem = (props) => {
 
@@ -64,5 +66,6 @@ const AdminListItem = (props) => {
         </div>
     );
 };
+
 
 export default AdminListItem;

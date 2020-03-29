@@ -26,7 +26,7 @@ class App extends React.Component {
         // different tab or we logged in as a different user in a different tab
 
         if (this.state.loggedIn != this.props.auth.loggedIn)
-            this.setState({loggedIn : this.props.auth.loggedIn});
+            this.setState({loggedIn : this.props.auth.loggedIn}); // this is set to essentially force a redraw of the entire app
     };
 
     componentDidMount() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { fetchAdmins, fetchMember, deleteAdmin } from '../../../../action';
+import { fetchAdmins, fetchMember, deleteAdmin, addNewAdmin } from '../../../../action';
 
 import Loading from '../../generic/Loading';
 import Button from '../../generic/Button';
@@ -26,9 +26,10 @@ class Admins extends React.Component {
 
         // foreach admin fetch admin details...
         if (this.props.admins) {
-            this.props.admins.forEach(admin => {
+            for (let i =0; i < this.props.admins.length; i++) {
+                let admin = this.props.admins[i];
                 this.props.fetchMember(admin.userId);
-            });
+            }
         }
     }
 
@@ -62,6 +63,15 @@ class Admins extends React.Component {
         this.setState({showDelete: false})
     };
 
+
+    successfulSubmitCallback = async (data) => {
+        const newAdminID = data.newAdminID;
+        const ownID = this.props.auth.user.adminUID;
+        const ownName = this.props.auth.user.username;
+
+        await this.props.addNewAdmin(newAdminID, ownID, ownName);
+        this.props.fetchMember(newAdminID);
+    };
 
     showAddNewAdmin = () => {
         this.setState({showAdd: true});
@@ -114,10 +124,10 @@ class Admins extends React.Component {
                         />
                 </div>
 
-
                 <AdminAddNew 
                     show={this.state.showAdd} 
                     onCancel={this.closeAddNewAdmin}
+                    successfulSubmitCallback={this.successfulSubmitCallback}
                 />
 
                 <AdminDelete 
@@ -154,4 +164,4 @@ const mapStateToProps = (state, ownProps) => {
     };
 }
 
-export default connect(mapStateToProps, { fetchAdmins, fetchMember, deleteAdmin })(Admins);
+export default connect(mapStateToProps, { fetchAdmins, fetchMember, deleteAdmin, addNewAdmin })(Admins);

@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const generateToken = require('./services/randomTokenGenerator');
 const keys = require('./config/keys');
 
+const SESSION_MAX_AGE = require('./services/SESSION_MAX_AGE');
+const SessionExpirer = require('./middlewares/SessionExpirer');
 
 const app = express();
 
@@ -18,10 +20,12 @@ app.use(bodyParser.json()); // body to json parser
 app.use(cookieSession(
     {
         name: '_sess',
-        maxAge: 24* 60 * 60 * 1000, // 1 day
+        maxAge: SESSION_MAX_AGE, // 1 day
         keys: [keys.cookieKey]
     }
 ));
+
+app.use('/api', SessionExpirer.requestHandler);
 
 // app.use((req, res, next) => {
 //     req.session.views = (req.session.views || 0) + 1;

@@ -1,4 +1,4 @@
-import {FETCH_ADMINS, FETCH_MEMBER, DELETE_ADMIN} from '../action/types';
+import {FETCH_ADMINS, FETCH_MEMBER, DELETE_ADMIN, ADD_NEW_ADMIN} from '../action/types';
 
 const adminsReducer = (state = null, action) => {
     switch(action.type) {
@@ -29,6 +29,14 @@ const adminsReducer = (state = null, action) => {
                 }
             }
             return state;
+        
+        case ADD_NEW_ADMIN:
+            
+            if (state === null) return state;
+            const copy = [...state];
+            copy.push(action.payload);
+            return copy;
+
         default:
         return state;
     }

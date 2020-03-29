@@ -9,6 +9,8 @@ const { AdminEndpoint,
     PunishmentsEndpoint,
     RulesEndpoint } = require('../services/bot_api');
 
+const SessionExpirer = require('../middlewares/SessionExpirer');
+
 module.exports = (app) => {
 
 
@@ -273,7 +275,15 @@ module.exports = (app) => {
     app.delete('/api/admin/:id', 
     requireLogin,
     async (req, res) => {
-        res.send(await AdminEndpoint.remove(req.params.id));
+        const response = await AdminEndpoint.remove(req.params.id);
+        
+        // Additional Handling!! If we remove an admin we need to make sure their session gets expired 
+        // (so that they can't log in or carry out actions anymore if they still have their session set up). 
+        if (response.userId) {
+            SessionExpirer.markForExpiry(response.userId);
+        }
+
+        res.send(response);
     });
 
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_ADMIN, FETCH_GUILD_INFO, FETCH_RECENT_PUNISHMENTS, FETCH_ADMINS, FETCH_MEMBER, DELETE_ADMIN } from './types';
+import { FETCH_ADMIN, FETCH_GUILD_INFO, FETCH_RECENT_PUNISHMENTS, FETCH_ADMINS, FETCH_MEMBER, DELETE_ADMIN, ADD_NEW_ADMIN } from './types';
 
 
 export const fetchLoginStatus = () => 
@@ -52,6 +52,20 @@ export const deleteAdmin = (id) =>
         const response = await axios.delete(`api/admin/${id}`);
         dispatch({
             type: DELETE_ADMIN,
+            payload: response.data
+        });
+    };
+
+export const addNewAdmin = (newAdminId, addedById, addedByName) => 
+    async (dispatch, getState) => {
+        const data = {
+            userID: newAdminId,
+            addedByID: addedById,
+            addedByName: addedByName
+        };
+        const response = await axios.post('api/admin', data);
+        dispatch({
+            type: ADD_NEW_ADMIN,
             payload: response.data
         });
     };

@@ -893,9 +893,10 @@ span.admin-count {
 
 
 .selected-admin-avatar {
-    display: inline-block;
     overflow: hidden;
     border-radius: 100%;
+    float: left;
+    margin-right: 20px;
 }
 
 .selected-admin-avatar img {
@@ -905,16 +906,18 @@ span.admin-count {
 }
 
 .selected-admin-username {
-    display: inline-block;
     margin-left: 15px;
     vertical-align: top;
-    margin-top: 10px;
-    max-width: 55%;
+    line-height: 1;
+    display: block;
+    min-height: 128px;
 }
 
 .selected-admin-username-text {
     font-weight: 500;
     font-size: 17pt;
+    margin-bottom: 10px;
+    padding-top: 10px;
 }
 
 span.selected-admin-discr-t {
@@ -924,18 +927,18 @@ span.selected-admin-discr-t {
 span.selected-admin-discr {
     color: #989daf;
     font-size: 14pt;
+    margin-right: 10px;
 }
 
 .selected-admin-nick {
-    display: inline;
-    padding-left: 10px;
+    display: inline-block;
     font-size: 12pt;
     color: #cdcdd8;
 }
 
 .selected-admin-id {
     background: #dfe4ea;
-    padding: 0 5px;
+    padding: 5px;
     border-radius: 100px;
     font-weight: 600;
     color: #b5bdc7;
@@ -1102,6 +1105,11 @@ input::placeholder, textarea::placeholder {
 
 #new_admin_id {
     width: 70%;
-    margin: 20px 0px;
     margin-top: 15px;
+}
+
+.text-field-error {
+    color: #ff4343;
+    font-weight: 500;
+    height: 30px;
 }
