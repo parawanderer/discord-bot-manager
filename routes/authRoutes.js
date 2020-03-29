@@ -47,21 +47,27 @@ module.exports = (app) => {
         clearError(req);
 
         if (!req.session.adminUID) {
-            res.send({
+            const data = {
                 loggedIn: false,
-                error,
                 user: null,
-            });
+            };
+            if (error) data["error"] = error;
+
+            res.send(data);
             return;
         }
-        res.send({
+        const data = {
             loggedIn: true,
-            error: error,
             user: {
                 adminUID: req.session.adminUID,
-                isSuperAdmin: req.session.isSuperAdmin
+                username: req.session.username,
+                isSuperAdmin: req.session.isSuperAdmin,
+                avatar: req.session.avatar
             }
-        });
+        };
+        if (error) data["error"] = error;
+
+        res.send(data);
         // once we access this, it's safe to remove the error from the session.
     });
 
@@ -126,7 +132,10 @@ module.exports = (app) => {
         // else the user is an admin. Let's set this in their session...
 
         req.session.adminUID = admin.userId;
+        req.session.username = userInfo.username;
         req.session.isSuperAdmin = admin.isSuperAdmin();
+        req.session.avatar = userInfo.avatar;
+
         delete req.session.authState; // now also wipe their authState session member variable
 
         // we can clear any eventual errors...

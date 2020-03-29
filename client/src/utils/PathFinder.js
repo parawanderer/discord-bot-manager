@@ -1,0 +1,43 @@
+import React from 'react';
+
+const PATH_ASSOCIATIONS = {
+    "": "Dashboard",
+    "admins" : "Admins",
+    "config" : "Configuration",
+    "immortal" : "Immortal",
+    "punishments" : "Punishments",
+    "rules" : "Rules",
+    "severities" : "Punishment System",
+    "taggable" : "Taggable System"
+};
+
+const ICON_ASSOCIATIONS = {
+    dashboard: <i className="fad fa-tachometer-slowest"></i>,
+    admins: <i className="fad fa-users-crown"></i>,
+    configuration: <i className="fad fa-sliders-v-square"></i>,
+    immortal: <i className="fad fa-stars"></i>,
+    punishments: <i className="fad fa-user-slash"></i>,
+    rules: <i className="fad fa-file-alt"></i>,
+    "punishment system": <i className="fad fa-gavel"></i>,
+    "taggable system": <i className="fad fa-sensor-alert"></i>
+};
+
+class IconFinder {
+
+    static paths = PATH_ASSOCIATIONS;
+    static icons = ICON_ASSOCIATIONS;
+
+    static getIcon = (name) => {
+        const icon = ICON_ASSOCIATIONS[name.toLocaleLowerCase()];
+        if (icon) return icon;
+        return null;
+    };
+
+    static getName = (path) =>  {
+        const name = PATH_ASSOCIATIONS[path];
+        if (name) return name;
+        return null;
+    };
+}
+
+export default IconFinder;

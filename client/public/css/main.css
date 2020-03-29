@@ -2,6 +2,21 @@ body {
     margin: 0;
     font-family: 'Baloo Da 2', cursive;
     color: #46484a;
+    background-color: #eef0f3;
+}
+
+a {
+    color: #40aceb;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #418fef;
+}
+
+.app-load {
+    margin-top:15vh;
 }
 
 .login-outer-container {
@@ -27,7 +42,6 @@ body {
     border-radius: 6px;
 }
 
-
 .button {
     font-family: 'Baloo Da 2', cursive;
     font-size: 13pt;
@@ -35,18 +49,18 @@ body {
     border: 0;
     background: #00d6e9;
     color: white;
-    font-weight: 400;
+    font-weight: 500;
     border-radius: 50px;
     min-width: 100px;
     transition: 0.1s ease;
     cursor: pointer;
     border-bottom: 2px solid #15a0d6;
+    outline: 0;
 }
 
 .button:hover {
     background: #3caeea;
 }
-
 
 /* .button.button-discord {
     background: #7289DA;
@@ -68,13 +82,12 @@ body {
     padding-right: 15px;
 }
 
-
 .login-header .logo {
     float: left;
     height: 70px;
     margin-right: 20px;
     width: 72px;
-    margin-top:7px;
+    margin-top: 7px;
 }
 
 .login-header {
@@ -103,7 +116,7 @@ body {
     margin: 0;
     line-height: 24pt;
     padding: 10px;
-    padding-top:5px;
+    padding-top: 5px;
     color: #5c6279;
 }
 
@@ -114,14 +127,12 @@ body {
     padding-top: 30px;
 }
 
-.error-block {
-}
+.error-block {}
 
 .outer-login-block .error-block {
     margin: 0 30vw;
     margin-top: 50px;
 }
-
 
 .error {
     background: #ce4b4b;
@@ -130,7 +141,7 @@ body {
     border-radius: 2px;
     border-bottom: 2px solid #7d2c2c;
     vertical-align: middle;
-    position: relative; 
+    position: relative;
     top: 0px;
     opacity: 0;
     animation-name: error-animate;
@@ -144,10 +155,8 @@ body {
 }
 
 .error span {
-
     display: inline-block;
     vertical-align: middle;
-
 }
 
 @keyframes error-animate {
@@ -175,4 +184,924 @@ body {
         opacity: 0;
         top: -10px;
     }
+}
+
+.sidebar {
+    background: #323544;
+    height: 100vh;
+    color: #94979e;
+    float: left;
+}
+
+.main-container {
+    display: block;
+    vertical-align: top;
+    max-height: 100vh;
+    overflow-y: scroll;
+}
+
+.sidebar-top {
+    background-image: linear-gradient(to bottom right, #5f97eb, #00d6e9);
+    padding: 10px 20px;
+    border-bottom: 2px solid #599beb;
+    padding-top: 20px;
+}
+
+.sidebar-top .main-title {
+    font-size: 16pt;
+    line-height: 14pt;
+    color: white;
+    font-weight: 500;
+    margin: 0;
+}
+
+.sidebar-top .sub-title {
+    color: white;
+    font-weight: 100;
+    font-size: 13pt;
+    margin: 0;
+}
+
+.logo-container {
+    float: left;
+    width: 50px;
+    padding: 0 7px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.logo-container .logo {
+    max-width: 100%;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+}
+
+.logo-container i.logo {
+    font-size: 46px;
+    vertical-align: middle;
+    display: inline-block;
+    color: white;
+}
+
+.main-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.main-nav li a {
+    display: block;
+    padding: 7px 35px;
+    color: #94979e;
+    text-decoration: none;
+    font-size: 13pt;
+    padding-right: 50px;
+    transition: 0.05s ease;
+}
+
+.main-nav li i {
+    padding-right: 14px;
+}
+
+.main-nav {
+    margin-top: 30px;
+}
+
+.main-nav li a:hover {
+    background: #1e202c;
+    color: white;
+}
+
+.main-nav li a:hover i {
+    color: #05d2e9;
+}
+
+.titles {
+    margin: 6px 0;
+}
+
+
+.top {
+    background: white;
+    display: block;
+    margin: 0;
+    line-height: 24pt;
+    color: #5c6279;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+}
+
+.page-title h2 {
+    font-size: 24pt;
+    font-weight: 600;
+    padding: 0 20px;
+    display: inline-block;
+    margin: 0;
+}
+
+.page-title {
+    display: inline-block;
+    padding: 25px;
+}
+
+.user {
+    float: right;
+    padding-right: 30px;
+    padding-top: 12px;
+}
+
+.page-title h2 i {
+    padding-right: 20px;
+}
+
+.main-nav .navigation.selected {
+    color: white;
+    background: #272a38;
+}
+
+.main-nav .navigation.selected i {
+    color: #05d2e9;
+}
+
+.user .avatar {
+    display: inline-block;
+    border-radius: 100%;
+    max-height: 57px;
+    vertical-align: middle;
+}
+
+.user .username {
+    display: inline-block;
+    font-size: 16pt;
+    padding: 0 15px;
+    vertical-align: sub;
+}
+
+.sign-out {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 21pt;
+    color: #5c6279;
+}
+
+.sign-out:hover i {
+    background: #e5eaec;
+}
+
+.sign-out i {
+    padding: 6px;
+    border-radius: 100%;
+}
+
+
+.loading {
+    text-align: center;
+    padding: 60px 0;
+}
+
+.loading span {
+    font-size: 20pt;
+    display: block;
+    color: #adb3bf;
+}
+
+.loading span i {
+    font-size: 30pt;
+}
+
+.loading i {
+    font-size: 42px;
+    color: #737b8c;
+    animation: loading 3s infinite;
+    display: inline-block;
+    position: relative;
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    33% {
+        transform: rotate(360deg);
+    }
+    66% {
+        transform: rotate(0deg);
+    }
+    66% {
+        transform: rotate(-360deg);
+    }
+}
+
+div#home {
+    margin: 30px 7.5%;
+}
+
+.section-left {
+    width: 60%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.section-right {
+    width: 40%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.guild-info {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 30px 10px;
+}
+
+.guild-main {
+    background: #2f3136;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 30px 10px;
+    position: relative;
+}
+
+.recent-punishments {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 30px 10px;
+}
+
+.block-title {
+    font-weight: 600;
+    font-size: 21pt;
+    margin: 0;
+    border-bottom: 2px solid #eef0f3;
+    margin-bottom: 10px;
+    padding: 0 10px;
+}
+
+.guild-logo {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.guild-logo img {
+    border-radius: 100%;
+}
+
+.guild-name {
+    display: inline-block;
+    padding-left: 20px;
+    font-weight: 500;
+    vertical-align: middle;
+}
+.guild-name .title {
+    font-size: 22pt;
+    color: white;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.09);
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.guild-level {
+    color: rgba(255, 255, 255, 0.34);
+    font-size: 14pt;
+    font-weight: 400;
+}
+
+.guild-descr {
+    color: rgba(228, 228, 228, 0.67);
+    font-weight: 400;
+}
+
+.guild-banner-overlay {
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-size: 100%;
+}
+
+.guild-logo {
+    z-index: 10;
+    position: relative;
+}
+
+.guild-name {
+    z-index: 10;
+    position: relative;
+}
+
+span.guild-banner-overlay:after {content: "";position: absolute;left: 0;top: 0;width: 100%;height: 100%;background-image: linear-gradient(#2f3136,#2f3136,#2f3136, transparent);}
+
+.guild-logo img {
+    border: 4px solid #474a50;
+}
+
+
+.left-block {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.right-block {
+    
+width: 50%;
+    
+display: inline-block;
+    
+vertical-align: top;
+}
+
+.guild-info ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+.list-type {
+    display: inline-block;
+    font-size: 16pt;
+    padding-right: 10px;
+    font-weight: 600;
+}
+
+.list-answer {
+    display: inline;
+    font-size: 14pt;
+    color: #b0b4c1;
+    font-weight: 500;
+}
+
+.list-type i {
+    padding-right: 5px;
+}
+
+.guild-info .inner {
+    padding: 10px;
+}
+
+.punishment-list ul {
+    padding: 0;
+    list-style-type: none;
+    margin: 0;
+}
+
+
+.punishment {
+    border-bottom: 2px solid #eef0f3;
+    padding: 10px;
+}
+
+
+.punishment div {
+    display: inline-block;
+}
+
+.punishment-type {
+    font-size: 17pt;
+    padding-right: 10px;
+    vertical-align: sub;
+}
+
+.punishment-severity {
+    font-size: 11pt;
+    font-weight: 600;
+    background: #c53030;
+    color: white;
+    padding: 0px 12px;
+    border-radius: 100px;
+    margin-right: 10px;
+}
+
+.punishment-username {
+    font-size: 14pt;
+    font-weight: 600;
+}
+
+.punishment-by {
+    display: block !important;
+}
+
+.punishment-by-prefix {
+    font-weight: 600;
+    padding: 0 10px;
+    border-radius: 200px;
+    margin-right: 10px;
+    color: #9e9db1;
+}
+
+.punishment-reason {
+    font-weight: 600;
+    color: #b9baca;
+    display: inline !important;
+}
+
+.punishment-for-prefix {
+    font-weight: 600;
+    padding: 0 10px;
+    border-radius: 200px;
+    margin-right: 10px;
+    color: #9e9db1;
+}
+
+.punishment-for {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.punishment-active-state {
+    background: #e2e6ea;
+    font-weight: 600;
+    color: #9e9db1;
+    padding: 0 10px;
+    border-radius: 100px;
+    float: right;
+    top: 2px;
+    position: relative;
+}
+
+.punishment-active-state i {
+    padding-right: 10px;
+}
+
+.punishment-active-state.punishment-active {
+    background: #1edc1e;
+    color: white;
+}
+
+
+.punishment-severity.perm {
+    background: #b3252c;
+}
+
+.punishment-severity.sev1 {
+    background: #60e250;
+}
+
+.punishment-severity.sev2 {
+    background: #ead90f;
+}
+
+.punishment-severity.sev3 {
+    background: #e68a00;
+}
+
+.punishment-severity.sev4 {
+    background: #de2900;
+}
+
+span.discriminator-split {color: #7b778a;padding-left: 3px;}
+
+span.discriminator {
+    color: #a09dad;
+    font-size: 13pt;
+}
+
+.punishment-for {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.punishment-time {
+
+    margin-top: 4px;
+    margin-bottom: 4px;
+    display: block !important;
+}
+
+.punishment-time-prefix {
+    font-weight: 600;
+    padding: 0 10px;
+    border-radius: 200px;
+    margin-right: 10px;
+    color: #9e9db1;
+}
+
+.view-more {
+    float: right;
+    color: #d5d5e0;
+}
+
+.view-more i {
+    padding-left: 10px;
+}
+
+.punishment-type i {
+    font-size: 20pt;
+}
+
+.punishment-id {
+    background: #dee1e4;
+    color: #9e9db1;
+    padding: 0 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.punishment.hidden {
+    opacity: 0.5;
+}
+
+.punishment-id:hover {
+    background: #c7cbd0;
+    color: #87869c;
+}
+
+#admins .left {
+    width: 65%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+div#admins {
+    margin: 30px 50px;
+}
+
+#admins .right {
+    width: 35%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.admin-list {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 30px 10px;
+}
+
+
+.admin-avatar img {
+    display: block;
+}
+
+.admin-avatar {
+    display: inline-block;
+    height: 60px;
+    border-radius: 100%;
+    overflow: hidden;
+    width: 60px;
+    background: #b9c2cc;
+}
+
+.admin-name-info {
+    display: inline-block;
+}
+
+.admin-you {
+    display: inline-block;
+    background: #00d6e9;
+    color: white;
+    font-weight: 600;
+    padding: 0 8px;
+    border-radius: 100px;
+    margin: 0 10px;
+    margin-right: -5px;
+}
+
+.admin-name {
+    display: inline-block;
+}
+
+.admin-id {
+    display: inline-block;
+}
+
+.admin-avatar img {
+    display: block;
+    height: 100%;
+}
+
+.admin-text {
+    display: inline-block;
+}
+
+.admin-name {
+    font-size: 16pt;
+    font-weight: 500;
+    padding-left: 10px;
+}
+
+span.admin-discrim-div {
+    color: #989daf;
+}
+
+span.admin-discrim {
+    color: #989daf;
+    font-size: 13pt;
+}
+
+.admin-id {
+    background: #dfe4ea;
+    padding: 0 5px;
+    border-radius: 100px;
+    font-weight: 600;
+    color: #b5bdc7;
+    margin-left: 15px;
+}
+
+.admin-type-info {
+    margin-left: 12px;
+    color: grey;
+    font-weight: 600;
+    color: #b9baca;
+}
+
+.admin-delete {
+    float: right;
+    background: transparent;
+    border: 0;
+    font-size: 18pt;
+    color: #b9baca;
+    margin-top: 20px;
+    border-radius: 100%;
+    padding: 4px 8px;
+    cursor: pointer;
+    margin-right: 20px;
+    outline: 0;
+}
+
+.admin-delete:hover {
+    background: #e5eaec;
+}
+
+.admin-info {
+    border-bottom: 2px solid #eef0f3;
+    padding: 10px 5px;
+}
+
+
+.admin-nick {
+    display: inline-block;
+    padding-left: 10px;
+    color: #b9baca;
+    font-size: 13pt;
+    font-weight: 600;
+}
+
+button.admin-delete:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+button.admin-delete:disabled:hover {
+    background: transparent;
+}
+
+
+.selected-admin {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 30px;
+}
+
+.button.add-admin {
+    float: right;
+}
+
+.button.add-admin i {
+    padding-right: 10px;
+    padding-left: 5px;
+    vertical-align: middle;
+}
+
+.admin-info:hover {
+    background: #eef0f3;
+}
+
+#admins .block-title {
+    margin-bottom: 0;
+}
+
+span.admin-count {
+    background: #00d6e9;
+    display: inline-block;
+    color: white;
+    padding: 2px 14px;
+    line-height: 20pt;
+    border-radius: 100px;
+    font-size: 17pt;
+    vertical-align: middle;
+    margin-left: 10px;
+    top: -2px;
+    position: relative;
+}
+
+
+.selected-admin-avatar {
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 100%;
+}
+
+.selected-admin-avatar img {
+    display: block;
+    width: 128px;
+    height: 128px;
+}
+
+.selected-admin-username {
+    display: inline-block;
+    margin-left: 15px;
+    vertical-align: top;
+    margin-top: 10px;
+    max-width: 55%;
+}
+
+.selected-admin-username-text {
+    font-weight: 500;
+    font-size: 17pt;
+}
+
+span.selected-admin-discr-t {
+    color: #989daf;
+}
+
+span.selected-admin-discr {
+    color: #989daf;
+    font-size: 14pt;
+}
+
+.selected-admin-nick {
+    display: inline;
+    padding-left: 10px;
+    font-size: 12pt;
+    color: #cdcdd8;
+}
+
+.selected-admin-id {
+    background: #dfe4ea;
+    padding: 0 5px;
+    border-radius: 100px;
+    font-weight: 600;
+    color: #b5bdc7;
+    display: inline-block;
+}
+
+.selected-admin-type {
+    font-size: 16pt;
+    margin-top: 10px;
+    padding-top: 10px;
+    line-height: 16pt;
+    color: #c5c8ce;
+}
+
+.admin-regular-block {
+    border-top: 2px solid #eef0f3;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+span.admin-added-title {
+    font-weight: 600;
+    padding: 0 10px;
+    border-radius: 200px;
+    margin-right: 10px;
+    color: #9e9db1;
+}
+
+span.admin-added-text {
+    font-weight: 600;
+    color: #b9baca;
+    display: inline !important;
+}
+
+
+.selected-admin-name {
+    display: inline-block;
+}
+.selected-admin-discr-t {
+display: inline-block;
+}
+.selected-admin-discr {
+display: inline-block;
+}
+
+.admin-regular-block > div {
+    padding: 5px 0;
+}
+
+.admin-added-at {
+    margin-bottom: 20px;
+}
+
+.button.delete-admin i {
+    padding-left: 5px;
+    padding-right: 10px;
+}
+
+.main-container {
+    height: 100vh;
+}
+
+.popup {
+    position: absolute;left: 0;right: 0;margin: auto;width: 30vw;background: white;padding: 20px;box-shadow: 0px 5px 17px 7px rgba(0, 0, 0, 0.22);
+    top: 30vh;
+    opacity: 1;
+    transform: translate(0, 0px);
+    animation-name: animate-popup;
+    animation-duration: 0.4s;
+}
+
+@keyframes animate-popup {
+    0% {
+        transform: translate(0, 40px);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(0, 0px);
+        opacity: 1;
+    }
+}
+
+
+.delete-admin-body {
+    padding: 10px;
+    font-size: 14pt;
+    color: #b0b4c1;
+}
+
+.delete-admin-buttons {
+    float: right;
+}
+
+.delete-admin-buttons .button.cancel {margin-right: 20px;}
+
+.cancel {
+    background: #c9cfd6;
+    color: #848fa2;
+    border-color: #9da8b5;
+}
+
+.admin-added-id {
+    display: inline-block;
+    background: #dfe4ea;
+    padding: 0 5px;
+    border-radius: 100px;
+    font-weight: 600;
+    color: #b5bdc7;
+    margin-left: 10px;
+}
+
+.cancel:hover {
+    background: #a8b0b9;
+}
+
+span.delete-admin-name {
+    font-weight: 500;
+    color: #5c6279;
+}
+
+span.delete-admin-nick {
+    font-weight: 600;
+    padding-left: 10px;
+    color: #cdced4;
+}
+
+.popup-close {
+    float: right;
+    background: transparent;
+    border: 0;
+    font-size: 20pt;
+    color: #9e9db1;
+    border-radius: 100%;
+    display: inline-block;
+    padding: 3px 10px;
+    cursor: pointer;
+    outline:0;
+}
+
+.popup-close:hover {
+    background: #e5eaec;
+}
+
+input, textarea {
+    font-family: 'Baloo Da 2', cursive;
+    font-size: 13pt;
+    border: 0;
+    border-bottom: 3px solid #00d6e9;
+    color: #565861;
+    font-weight: 500;
+    padding: 4px 10px;
+    background-color: #edeff1;
+    transition: 0.1s ease;
+    outline:0;
+}
+
+input:focus, input:active, textarea:focus, textarea:active {
+    border-color: #15a0d6;
+}
+
+input::placeholder, textarea::placeholder {
+    color:#d0d7dc;
+}
+
+#new_admin_id {
+    width: 70%;
+    margin: 20px 0px;
+    margin-top: 15px;
 }

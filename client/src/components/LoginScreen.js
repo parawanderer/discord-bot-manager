@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import ErrorPopup from './ErrorPopup';
+import ErrorPopup from './control-panel/generic/ErrorPopup';
 
 const BACKGROUND_COUNT = 16;
 
