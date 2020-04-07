@@ -86,7 +86,8 @@ class LoginLimitor {
         let h = this._findLoginHistoryForIP(ip);
         if (h === null) return; // no history for this item exists...
 
-        for(let i = h.item.logins.length - 1; i > 0; i--) {
+        for(let i = h.item.logins.length - 1; i >= 0; i--) {
+            
             if ((h.item.logins[i] + TIME_FRAME) < now) 
                 h.item.logins.splice(i,1); // remove elements that already expired
         }
@@ -94,18 +95,22 @@ class LoginLimitor {
 
 
     _cleanupAllExpiredLogins = () => {
-        console.log(">> LoginLimitor: running cleanup....", this.history)
+        const now = new Date().getTime();
+
+        console.log(`>> LoginLimitor: running cleanup.... Now is ${now}`, this.history)
         // going in revere ensures we will be able to 
         // drop items as we go
 
-        for (let i = this.history.length -1; i > 0; i--) {
+        for (let i = this.history.length -1; i >= 0; i--) {
             let historyItem = this.history[i];
+        
 
             // clean up expired logins
-            for (let j = historyItem.logins.length-1; j > 0; j--) {
+            for (let j = historyItem.logins.length-1; j >= 0; j--) {
+
                 if ((historyItem.logins[j] + TIME_FRAME) < now)
                     historyItem.logins.splice(j,1); // remove elements that expired
-            }
+            }   
 
             // finally, if there's no more existing logins, we can drop the current 
             // item from the history. If relevant, it will be added back when they try to log in again.

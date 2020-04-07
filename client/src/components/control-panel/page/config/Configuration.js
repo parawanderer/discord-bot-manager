@@ -59,7 +59,7 @@ class Configuration extends React.Component {
     
 
     renderMainSettings() {
-        if (!this.props.config) {
+        if (!this.props.config || !this.props.config.main) {
             return <Loading/>;
         }
 
@@ -76,7 +76,7 @@ class Configuration extends React.Component {
                                 </div>
                                 <div className="list-answer">
                                     <ToggleButton 
-                                        state={this.props.config.main.activateStatus} 
+                                        state={!(this.props.config.main.activateStatus === "false")} 
                                         propertyKey="activateStatus"
                                         valueUpdateCallback={this.valueUpdateCallback} 
                                         disabled={true}
@@ -99,7 +99,7 @@ class Configuration extends React.Component {
                             </li>
                         </ul>
                         <div className="comment">
-                            Command Prefix set by <div class="admin-id">{this.props.config.main.commandPrefixLastChangeUserID}</div>
+                            Command Prefix set by <div className="admin-id">{this.props.config.main.commandPrefixLastChangeUserID}</div>
                             on {dateFormat(new Date(this.props.config.main.commandPrefixLastChangeTimestamp), 'dddd, mmmm dS, yyyy, h:MM:ss TT')}
                         </div>
 

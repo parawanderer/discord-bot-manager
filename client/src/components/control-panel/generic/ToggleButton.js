@@ -27,7 +27,11 @@ class ToggleButton extends React.Component {
 
     render() {
         return (
-            <button className={`toggle-button${this.state.toggled ? ' toggled' : ''}${this.props.disabled ? ' disabled' : ''}`} onClick={this.onClickHandler}>
+            <button 
+                className={`toggle-button${this.state.toggled ? ' toggled' : ''}${this.props.disabled ? ' disabled' : ''}`} 
+                onClick={this.onClickHandler}
+                disabled={this.props.disabled}
+                >
                 <i className="fas fa-circle"></i>
             </button>
         );

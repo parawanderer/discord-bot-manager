@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { 
-    FETCH_ADMIN, 
     FETCH_GUILD_INFO, 
     FETCH_RECENT_PUNISHMENTS, 
     FETCH_ADMINS, 
@@ -8,7 +7,10 @@ import {
     DELETE_ADMIN, 
     ADD_NEW_ADMIN, 
     FETCH_CONFIG_MAIN, 
-    UPDATE_CONFIG_MAIN 
+    UPDATE_CONFIG_MAIN, 
+    FETCH_SELF,
+    FETCH_CONFIG_DATA,
+    UPDATE_CONFIG_DATA
 } from './types';
 
 
@@ -16,7 +18,7 @@ export const fetchLoginStatus = () =>
     async (dispatch, getState) => {
         const response = await axios.get('/api/self');
         dispatch({
-            type: FETCH_ADMIN,
+            type: FETCH_SELF,
             payload: response.data
         });
     };
@@ -118,3 +120,22 @@ export const updateBaseConfig = (newConfig) =>
             payload: response.data
         });
     };
+
+export const fetchDataConfig = () => 
+    async(dispatch, getState) => {
+        const response = await axios.get('api/config/data');
+        dispatch({
+            type: FETCH_CONFIG_DATA,
+            payload: response.data
+        });
+    };
+
+export const updateDataConfig = (newConfig) => 
+    async(dispatch, getState) => {
+        const response = await axios.put('api/config/data', newConfig);
+        dispatch({
+            type: UPDATE_CONFIG_DATA,
+            payload: response.data
+        });
+    };
+

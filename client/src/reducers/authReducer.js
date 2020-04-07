@@ -1,4 +1,4 @@
-import { FETCH_ADMIN } from '../action/types';
+import { FETCH_SELF } from '../action/types';
 
 
 const isLoginDataChanged = (state, action) => {
@@ -23,7 +23,7 @@ const isLoginDataChanged = (state, action) => {
 
 const authReducer = (state = null, action) => {
     switch(action.type) {
-        case FETCH_ADMIN:
+        case FETCH_SELF:
             // if our login status updated, we will update this...
             if (isLoginDataChanged(state, action)) return action.payload || false;
             return state;

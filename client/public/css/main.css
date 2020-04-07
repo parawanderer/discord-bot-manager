@@ -38,8 +38,7 @@ a:hover {
     width: 20vw;
     margin-left: auto;
     margin-right: auto;
-    box-shadow: 0px 10px 10px #0000004a;
-    border-radius: 6px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .button {
@@ -525,6 +524,7 @@ vertical-align: top;
     padding-right: 10px;
     font-weight: 600;
     white-space: nowrap;
+    display: inline-block;
 }
 
 .list-answer {
@@ -532,6 +532,11 @@ vertical-align: top;
     color: #b0b4c1;
     font-weight: 500;
     width: 100%;
+    display: inline-block;
+}
+
+#home .list-answer {
+    width: auto;
 }
 
 .list-type i {
@@ -1299,4 +1304,192 @@ button.toggle-button.disabled {
 
 .comment > div {
     margin: 0 10px;
+}
+
+.report-blacklist {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 30px 10px;
+}
+
+.blacklist-item {
+    border-bottom: 2px solid #eef0f3;
+    padding: 15px;
+}
+
+.blacklist-item:hover {
+    background: #eef0f3;
+}
+
+.report-blacklist-delete {
+    float: right;
+    background: transparent;
+    border: 0;
+    font-size: 18pt;
+    color: #b9baca;
+    border-radius: 100%;
+    padding: 4px 8px;
+    cursor: pointer;
+    margin-right: 20px;
+    outline: 0;
+    margin-top: -4px;
+}
+
+.blacklist-user {
+    background: #dfe4ea;
+    padding: 0 5px;
+    border-radius: 100px;
+    font-weight: 600;
+    color: #b5bdc7;
+    margin-left: 15px;
+    display: inline-block;
+}
+
+
+#reports{
+    margin: 30px 50px;
+}
+
+#reports .block-title {
+    margin-bottom: 0;
+}
+
+.report-blacklist-delete:hover {
+    background: rgba(186, 191, 195, 0.44);
+}
+
+
+
+#reports .left {
+    width: 65%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#reports .right {
+    width: 35%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.blacklist-user-selected {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 30px;
+}
+
+.discord-role {
+    border: 1.5pt solid grey;
+    display: inline-block;
+    border-radius: 100vw;
+    line-height: 16pt;
+    font-size: 12pt;
+    padding: 0 3pt;
+    margin-right: 0.2em;
+    margin-bottom: 0.2em;
+}
+
+span.discord-role-decorator {
+    height: 1em;
+    display: inline-block;
+    width: 1em;
+    border-radius: 100%;
+    vertical-align: middle;
+    margin-right: 0.3em;
+}
+
+.discord-role-title {
+    display: inline-block;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.button i {
+    margin-right: 0.5em;
+}
+
+.blacklist-user-body .rolelist {
+    border-bottom: 2px solid #eef0f3;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-top: 2px solid #eef0f3;
+    margin-top: 10px;
+}
+
+.blacklist-user-avatar {
+    overflow: hidden;
+    border-radius: 100%;
+    float: left;
+    margin-right: 20px;
+}
+
+.blacklist-user-avatar img {
+    display: block;
+    width: 128px;
+    height: 128px;
+}
+
+.blacklist-user-username {
+    margin-left: 15px;
+    vertical-align: top;
+    line-height: 1;
+    display: block;
+    min-height: 128px;
+}
+
+.blacklist-user-username-text {
+    font-weight: 500;
+    font-size: 17pt;
+    margin-bottom: 10px;
+    padding-top: 10px;
+}
+
+span.blacklist-user-name {
+    display: inline-block;
+}
+
+span.blacklist-user-discr-t {
+    color: #989daf;
+    display: inline-block;
+}
+
+span.blacklist-user-discr {
+    color: #989daf;
+    font-size: 14pt;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.blacklist-user-nick {
+    display: inline-block;
+    font-size: 12pt;
+    color: #cdcdd8;
+}
+
+.blacklist-user-id {
+    background: #dfe4ea;
+    padding: 5px;
+    border-radius: 100px;
+    font-weight: 600;
+    color: #b5bdc7;
+    display: inline-block;
+}
+
+.add-blacklist-buttons .button.cancel {
+    margin-right: 20px;
+}
+
+.add-blacklist-buttons {
+    float: right;
+}
+
+input#new_blacklist_id {
+    width: 70%;
+    margin-top: 15px;
+}
+
+.add-report-blacklist {
+    float: right;
 }

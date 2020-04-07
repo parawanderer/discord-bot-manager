@@ -13,7 +13,7 @@ import Punishments from '../page/Punishments';
 import PunishmentSystem from '../page/PunishmentSystem';
 import Rules from '../page/Rules';
 import TaggableSystem from '../page/TaggableSystem';
-import Reports from '../page/Reports';
+import Reports from '../page/reports/Reports';
 
 
 class ControlPanelContainer extends React.Component {

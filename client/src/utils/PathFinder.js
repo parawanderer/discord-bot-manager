@@ -6,9 +6,9 @@ const PATH_ASSOCIATIONS = {
     "config" : "Configuration",
     "immortal" : "Immortal",
     "punishments" : "Punishments",
+    "severities" : "Punishment System",
     "reports" : "Reports System",
     "rules" : "Rules",
-    "severities" : "Punishment System",
     "taggable" : "Taggable System"
 };
 
