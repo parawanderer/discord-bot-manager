@@ -17,6 +17,14 @@ const configReducer = (state = null, action) => {
             action.payload.reportSystem.reportBlacklist.forEach(userID => {
                 reportBlacklist[userID] = { id: userID, member: null };
             });
+            
+            // let's carry over member data on the reportBlacklist from the old state if we had any
+            if (state && state.reportBlacklist) {
+                Object.keys(state.reportBlacklist).forEach(key => {
+                    reportBlacklist[key] = state.reportBlacklist[key]; // copy over all of these
+                });
+            }
+
 
             return state 
                 ? {...state, data: action.payload, reportBlacklist} 
@@ -28,6 +36,13 @@ const configReducer = (state = null, action) => {
             action.payload.reportSystem.reportBlacklist.forEach(userID => {
                 reportBlacklist[userID] = { id: userID, member: null };
             });
+
+            // let's carry over member data on the reportBlacklist from the old state if we had any
+            if (state && state.reportBlacklist) {
+                Object.keys(state.reportBlacklist).forEach(key => {
+                    reportBlacklist[key] = state.reportBlacklist[key]; // copy over all of these
+                });
+            }
             
             return state 
                 ? {...state, data: action.payload, reportBlacklist} 
@@ -37,10 +52,13 @@ const configReducer = (state = null, action) => {
 
             // Allow us to update blacklisted member "member" object if we ever fetch such a member
             if (state && state.reportBlacklist && state.reportBlacklist[action.payload.id]) {
-                // if a key with the user ID exists, we will set the member variable of this to the fetched member
                 const alteredState = {...state};
-                alteredState.reportBlacklist[action.payload.id].member = action.payload;
-                return alteredState;
+                if (state.reportBlacklist[action.payload.id]) {
+                    // if a key with the user ID exists, we will set the member variable of this to the fetched member
+                    
+                    alteredState.reportBlacklist[action.payload.id].member = action.payload;
+                    return alteredState;
+                }
             }
             return state;
 

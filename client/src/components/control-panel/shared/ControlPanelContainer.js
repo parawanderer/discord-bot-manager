@@ -11,7 +11,7 @@ import Configuration from '../page/config/Configuration';
 import Immortal from '../page/Immortal';
 import Punishments from '../page/Punishments';
 import PunishmentSystem from '../page/PunishmentSystem';
-import Rules from '../page/Rules';
+import Rules from '../page/rules/Rules';
 import TaggableSystem from '../page/TaggableSystem';
 import Reports from '../page/reports/Reports';
 

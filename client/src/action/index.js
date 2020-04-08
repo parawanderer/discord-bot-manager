@@ -10,7 +10,9 @@ import {
     UPDATE_CONFIG_MAIN, 
     FETCH_SELF,
     FETCH_CONFIG_DATA,
-    UPDATE_CONFIG_DATA
+    UPDATE_CONFIG_DATA,
+    FETCH_RULES,
+    UPDATE_RULES
 } from './types';
 
 
@@ -139,3 +141,20 @@ export const updateDataConfig = (newConfig) =>
         });
     };
 
+export const fetchRules = () => 
+    async(dispatch, getState) => {
+        const response = await axios.get('api/rules');
+        dispatch({
+            type: FETCH_RULES,
+            payload: response.data
+        });
+    };
+
+export const updateRules = (newRules) => 
+    async(dispatch, getState) => {
+        const response = await axios.put('api/rules', newRules);
+        dispatch({
+            type: UPDATE_RULES,
+            payload: response.data
+        });
+    };

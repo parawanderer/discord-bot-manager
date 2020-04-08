@@ -13,7 +13,7 @@ import TextInput from '../../generic/TextInput';
 class AdminAddNew extends React.Component {
 
     data = { newAdminID : ''};
-    state = { adminIdError : null };
+    state = { adminIdError : null};
 
     handleValueUpdateCallback = (newValue) => {
         // handle retrieving the updated value from the TextInput object

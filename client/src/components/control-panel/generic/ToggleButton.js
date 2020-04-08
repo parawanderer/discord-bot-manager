@@ -19,8 +19,7 @@ class ToggleButton extends React.Component {
 
     handleValueUpdateCallback = () => {
         if (this.props.valueUpdateCallback && this.props.propertyKey) {
-            const stringVal = this.state.toggled ? "true" : "false";
-            this.props.valueUpdateCallback(this.props.propertyKey, stringVal);
+            this.props.valueUpdateCallback(this.props.propertyKey, !this.state.toggled);
         }
     };
 

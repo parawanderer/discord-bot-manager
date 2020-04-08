@@ -76,10 +76,9 @@ class Configuration extends React.Component {
                                 </div>
                                 <div className="list-answer">
                                     <ToggleButton 
-                                        state={!(this.props.config.main.activateStatus === "false")} 
+                                        state={this.props.config.main.activateStatus} 
                                         propertyKey="activateStatus"
-                                        valueUpdateCallback={this.valueUpdateCallback} 
-                                        disabled={true}
+                                        valueUpdateCallback={this.valueUpdateCallback}
                                     />
                                 </div>
                             </li>
