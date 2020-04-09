@@ -1,13 +1,13 @@
 import React from 'react';
 
-class PunishmentSystem extends React.Component {
+class Filter extends React.Component {
     render() {
         return (
             <div>
-                PunishmentSystem
+                Filter
             </div>
         );
     }
 }
 
-export default PunishmentSystem;
+export default Filter;

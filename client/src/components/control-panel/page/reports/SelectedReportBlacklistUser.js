@@ -1,5 +1,5 @@
 import React from 'react';
-import DiscordRoleBlock from '../../shared/DiscordRoleBlock';
+import DiscordRoleBlock from '../../generic/DiscordRoleBlock';
 
 class SelectedReportBlacklistUser extends React.Component { 
 

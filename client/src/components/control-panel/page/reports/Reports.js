@@ -125,10 +125,11 @@ class Reports extends React.Component {
 
     render() {
 
+        console.log(this.props)
+
         if (!this.props.config || !this.props.config.data) {
             return <Loading/>;
         }
-
 
         return this.renderPage();
     }

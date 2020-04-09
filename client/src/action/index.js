@@ -12,7 +12,12 @@ import {
     FETCH_CONFIG_DATA,
     UPDATE_CONFIG_DATA,
     FETCH_RULES,
-    UPDATE_RULES
+    UPDATE_RULES,
+    FETCH_SEVERITIES,
+    FETCH_SEVERITY,
+    DELETE_SEVERITY,
+    UPDATE_SEVERITY,
+    ADD_SEVERITY
 } from './types';
 
 
@@ -155,6 +160,52 @@ export const updateRules = (newRules) =>
         const response = await axios.put('api/rules', newRules);
         dispatch({
             type: UPDATE_RULES,
+            payload: response.data
+        });
+    };
+
+export const fetchSeverities = () => 
+    async(dispatch, getState) => {
+        const response = await axios.get('api/punish/types');
+        dispatch({
+            type: FETCH_SEVERITIES,
+            payload: response.data
+        });
+    };
+
+export const fetchSeverity = (id) => 
+    async(dispatch, getState) => {
+        const response = await axios.get(`api/punish/types/${id}`);
+        dispatch({
+            type: FETCH_SEVERITY,
+            payload: response.data
+        });
+    };
+
+export const deleteSeverity = (id) => 
+    async(dispatch, getState) => {
+        const response = await axios.delete(`api/punish/types/${id}`);
+        dispatch({
+            type: DELETE_SEVERITY,
+            payload: response.data
+        });
+    };
+
+export const updateSeverity = (id, newData) => 
+    async(dispatch, getState) => {
+        const response = await axios.put(`api/punish/types/${id}`, newData);
+        dispatch({
+            type: UPDATE_SEVERITY,
+            payload: response.data
+        });
+    };
+
+
+export const addNewSeverity = (newData) => 
+    async(dispatch, getState) => {
+        const response = await axios.post(`api/punish/types`, newData);
+        dispatch({
+            type: ADD_SEVERITY,
             payload: response.data
         });
     };

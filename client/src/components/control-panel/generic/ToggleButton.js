@@ -25,6 +25,8 @@ class ToggleButton extends React.Component {
 
 
     render() {
+        // this.props.onClick
+
         return (
             <button 
                 className={`toggle-button${this.state.toggled ? ' toggled' : ''}${this.props.disabled ? ' disabled' : ''}`} 

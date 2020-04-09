@@ -10,9 +10,10 @@ import Admins from '../page/admins/Admins';
 import Configuration from '../page/config/Configuration';
 import Immortal from '../page/Immortal';
 import Punishments from '../page/Punishments';
-import PunishmentSystem from '../page/PunishmentSystem';
+import PunishmentSystem from '../page/severity/PunishmentSystem';
 import Rules from '../page/rules/Rules';
 import TaggableSystem from '../page/TaggableSystem';
+import Filter from '../page/Filter';
 import Reports from '../page/reports/Reports';
 
 
@@ -38,6 +39,7 @@ class ControlPanelContainer extends React.Component {
                         <Route exact path="/Rules" component={Rules} />
                         <Route exact path="/severities" component={PunishmentSystem} />
                         <Route exact path="/taggable" component={TaggableSystem} />
+                        <Route exact path="/filter" component={Filter} />
                     </div>
                 </div>
                 </BrowserRouter>

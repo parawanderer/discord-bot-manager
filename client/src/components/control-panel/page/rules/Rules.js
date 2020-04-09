@@ -18,7 +18,7 @@ class Rules extends React.Component {
 
 
     componentDidMount() {
-        const {config, rules} = this.props;
+        const {config} = this.props;
 
         if (!config || !config.main) this.props.fetchBaseConfig();
 
@@ -217,13 +217,15 @@ class Rules extends React.Component {
             <div id="rules">
                 <div className="rules-container">
                     <h3 className="block-title">Rule Embed System</h3>
-                    <div className="rules-explain">
-                        This page allows you to configure the embeds that will be sent when the bot command 
-                        <span className="command">{config.main.commandPrefix}postrules</span> is used. 
-                        <br/><br/>This page does not provide any level of useful validation (besides rudimentary parsing validation)! 
+
+                    <div className="rules-explain">This page does not provide any level of useful validation (besides rudimentary parsing validation)! 
                         <br/>Using something like 
                         <a href="https://leovoel.github.io/embed-visualizer/" target="_blank" rel="noopener noreferrer"> this </a>
                         is highly recommended!
+                    </div>
+                    <div className="generic-text">
+                    This page allows you to configure the embeds that will be sent when the bot command 
+                        <span className="command">{config.main.commandPrefix}postrules</span> is used. 
                     </div>
                     <div className="rules-body">
                         

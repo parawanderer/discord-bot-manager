@@ -6,7 +6,7 @@ class DiscordRole extends React.Component {
 
         //this.props.role (role object)
 
-        const {id, name, color, position, mentionable} = this.props.role;
+        const {id, name, color} = this.props.role;
 
         return (
             <div className="discord-role" id={`role-${id}`} style={{borderColor: color}} >

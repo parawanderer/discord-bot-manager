@@ -36,7 +36,11 @@ class ReportBlacklist extends React.Component {
                     onClick={this.props.addButtonCallback} 
                     classes="add-report-blacklist" 
                 />
-                <h3 className="block-title">Reports Blacklist</h3>
+                <h3 className="block-title">Reports Blacklist
+                    <span className="list-count">
+                        {this.props.blacklist.length}
+                    </span>
+                </h3>
                 <div className="report-blacklist-body">
                     {blacklistList}
                 </div>

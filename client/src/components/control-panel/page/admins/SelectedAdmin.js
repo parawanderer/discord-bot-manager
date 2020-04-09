@@ -1,5 +1,6 @@
 import React from 'react';
 import dateFormat from 'dateformat';
+import Button from '../../generic/Button';
 
 
 class SelectedAdmin extends React.Component {
@@ -56,10 +57,7 @@ class SelectedAdmin extends React.Component {
                             {dateFormat(new Date(this.props.selected.addedTimestamp), 'dddd, mmmm dS, yyyy, h:MM:ss TT')}
                         </span>
                     </div>
-                    <button className="button delete-admin" onClick={this.props.onDeleteButtonpressCallback}>
-                        <i className="fas fa-trash-alt"></i>
-                        Remove Admin
-                    </button>
+                    <Button icon={<i className="fas fa-trash-alt"></i>} text="Remove Admin" onClick={this.props.onDeleteButtonpressCallback} classes="delete-admin" />
                 </div>
             </div>
         );

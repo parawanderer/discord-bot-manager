@@ -105,7 +105,7 @@ class Admins extends React.Component {
 
     renderAdminCount() {
         return(
-            <span className="admin-count">
+            <span className="list-count">
                 {this.props.admins.length}
             </span>
         );

@@ -4,12 +4,13 @@ const PATH_ASSOCIATIONS = {
     "": "Dashboard",
     "admins" : "Admins",
     "config" : "Configuration",
+    "filter" : "Filter",
     "immortal" : "Immortal",
     "punishments" : "Punishments",
     "severities" : "Punishment System",
     "reports" : "Reports System",
     "rules" : "Rules",
-    "taggable" : "Taggable System"
+    "taggable" : "Taggable System",
 };
 
 const ICON_ASSOCIATIONS = {
@@ -21,7 +22,8 @@ const ICON_ASSOCIATIONS = {
     "reports system": <i className="fad fa-flag-alt"></i>,
     rules: <i className="fad fa-file-alt"></i>,
     "punishment system": <i className="fad fa-gavel"></i>,
-    "taggable system": <i className="fad fa-sensor-alert"></i>
+    "taggable system": <i className="fad fa-sensor-alert"></i>,
+    "filter" :  <i className="fad fa-language"></i>
 };
 
 class IconFinder {

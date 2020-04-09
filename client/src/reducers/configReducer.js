@@ -31,22 +31,22 @@ const configReducer = (state = null, action) => {
                 : { data : action.payload, reportBlacklist};
 
         case UPDATE_CONFIG_DATA:
-            
-            var reportBlacklist = {};
+        
+            var reportBlacklistUpdated = {};
             action.payload.reportSystem.reportBlacklist.forEach(userID => {
-                reportBlacklist[userID] = { id: userID, member: null };
+                reportBlacklistUpdated[userID] = { id: userID, member: null };
             });
 
             // let's carry over member data on the reportBlacklist from the old state if we had any
             if (state && state.reportBlacklist) {
                 Object.keys(state.reportBlacklist).forEach(key => {
-                    reportBlacklist[key] = state.reportBlacklist[key]; // copy over all of these
+                    reportBlacklistUpdated[key] = state.reportBlacklist[key]; // copy over all of these
                 });
             }
             
             return state 
-                ? {...state, data: action.payload, reportBlacklist} 
-                : { data : action.payload, reportBlacklist};
+                ? {...state, data: action.payload, reportBlacklistUpdated} 
+                : { data : action.payload, reportBlacklistUpdated};
 
         case FETCH_MEMBER: 
 

@@ -6,6 +6,7 @@ import recentPunishmentsReducer from './recentPunishmentsReducer';
 import adminsReducer from './adminsReducer';
 import configReducer from './configReducer';
 import rulesReducer from './rulesReducer';
+import severitiesReducer from './severitiesReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -13,5 +14,6 @@ export default combineReducers({
     recent_punishments: recentPunishmentsReducer,
     admins: adminsReducer,
     config: configReducer,
-    rules: rulesReducer
+    rules: rulesReducer,
+    severities: severitiesReducer
 });

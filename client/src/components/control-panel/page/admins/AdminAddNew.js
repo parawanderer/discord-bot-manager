@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 
 import InputValidator from '../../../../utils/InputValidator';
 
-import Button from '../../generic/Button';
-import CloseButton from '../../generic/CloseButton';
 import TextInput from '../../generic/TextInput';
+import EditPopup from '../../generic/EditPopup';
 
 
 
@@ -71,27 +70,28 @@ class AdminAddNew extends React.Component {
     renderAddAdmin() {
         // this.props.successfulSubmitCallback
 
+
         return (
-            <div className="add-admin popup" id="add_admin" >
-                <CloseButton id="close_admin_add" onClick={this.cancelHandler} />
-                <h3 className="block-title">Add Admin </h3>
-                <div className="delete-admin-body">
-                    Provide the ID of the user you'd like to add as an Admin
+            <EditPopup
+                onCancel={this.cancelHandler}
+                onConfirm={this.handleFormSubmission}
+                title={"Add Admin"}
+                componentName={"admin"}
+                confirmText={"Add New Admin"}
+                confirmIcon={<i className="fas fa-user-plus"></i>}
+            >
 
-                    <TextInput 
-                        id="new_admin_id"  
-                        name="new_admin_id" 
-                        placeholder="Admin ID" 
-                        valueUpdateCallback={this.handleValueUpdateCallback}
-                        error={this.state.adminIdError}
-                    />
+                Provide the ID of the user you'd like to add as an Admin
 
-                </div>
-                <div className="delete-admin-buttons">
-                    <Button text="Cancel" classes="cancel" onClick={this.cancelHandler} />
-                    <Button text="Add New Admin" icon={<i className="fas fa-user-plus"></i>} classes="add-admin" onClick={this.handleFormSubmission} />
-                </div>
-            </div>
+                <TextInput 
+                    id="new_admin_id"  
+                    name="new_admin_id" 
+                    placeholder="Admin ID" 
+                    valueUpdateCallback={this.handleValueUpdateCallback}
+                    error={this.state.adminIdError}
+                />
+                
+            </EditPopup>
         );
     }
 

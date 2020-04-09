@@ -44,7 +44,7 @@ a:hover {
 .button {
     font-family: 'Baloo Da 2', cursive;
     font-size: 13pt;
-    padding: 5px 10px;
+    padding: 5px 15px;
     border: 0;
     background: #00d6e9;
     color: white;
@@ -869,8 +869,6 @@ button.admin-delete:disabled:hover {
 }
 
 .button.add-admin i {
-    padding-right: 10px;
-    padding-left: 5px;
     vertical-align: middle;
 }
 
@@ -882,7 +880,7 @@ button.admin-delete:disabled:hover {
     margin-bottom: 0;
 }
 
-span.admin-count {
+span.list-count {
     background: #00d6e9;
     display: inline-block;
     color: white;
@@ -997,10 +995,6 @@ display: inline-block;
     margin-bottom: 20px;
 }
 
-.button.delete-admin i {
-    padding-left: 5px;
-    padding-right: 10px;
-}
 
 .main-container {
     height: 100vh;
@@ -1027,17 +1021,18 @@ display: inline-block;
 }
 
 
-.delete-admin-body {
+.popup-body {
     padding: 10px;
     font-size: 14pt;
     color: #b0b4c1;
+    font-weight: 500;
 }
 
-.delete-admin-buttons {
+.popup-buttons {
     float: right;
 }
 
-.delete-admin-buttons .button.cancel {margin-right: 20px;}
+.popup-buttons .button.cancel {margin-right: 20px;}
 
 .cancel {
     background: #c9cfd6;
@@ -1407,15 +1402,16 @@ span.discord-role-decorator {
 }
 
 .button i {
-    margin-right: 0.5em;
+    margin-right: 0.8em;
+    margin-left: 0.3em;
 }
 
 .blacklist-user-body .rolelist {
     border-bottom: 2px solid #eef0f3;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
     border-top: 2px solid #eef0f3;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .blacklist-user-avatar {
@@ -1504,7 +1500,7 @@ input#new_blacklist_id {
 }
 
 span.command {
-    background: #579cea;
+    background: #12cae9;
     color: white;
     padding: 0 10px;
     border-radius: 200px;
@@ -1595,11 +1591,323 @@ h2.success-title {
     font-size: 20pt;
 }
 
-.success-text {}
-
 #success button {
     width: 70%;
     margin-top: 1em;
     background: #8fe234;
     border-color: #63bd37;
+}
+
+
+#severities {
+    margin: 30px 50px;
+}
+
+
+#severities .left {
+    width: 60%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#severities .right {
+    width: 40%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.severities, .severity-info {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 30px 10px;
+}
+
+.button.type-choose {
+    font-size: 17pt;
+    line-height: 17pt;
+    padding: 10px 30px;
+    margin: 0 10px;
+    min-width: 200px;
+}
+
+.severity-choose {
+    text-align: center;
+}
+
+.button.type-choose {
+    border: 2pt solid #00d6e9;
+    background: transparent;
+    color: #00d6e9;
+    box-shadow: 0px 2px transparent;
+    font-weight: 600;
+}
+
+.selected .button.type-choose {
+    color: white;
+    background: #00d6e9;
+    box-shadow: 0px 2px #15a0d6;
+}
+
+.severity-choose {
+    padding-bottom: 20px;
+    border-bottom: 2px solid #eef0f3;
+}
+
+.severity-list-item {
+    border-bottom: 2px solid #eef0f3;
+    padding: 10px 5px;
+}
+
+.severity-list-item:hover {
+    background: #eef0f3;
+}
+
+.severity-list-item > button {
+    float: right;
+    background: transparent;
+    border: 0;
+    font-size: 18pt;
+    color: #b9baca;
+    border-radius: 100%;
+    padding: 4px 8px;
+    cursor: pointer;
+    outline: 0;
+    margin-right: 10px;
+}
+
+.severity-list-item> button:hover {
+    background: #d3d7e0;
+}
+
+.severity-id {
+    display: inline-block;
+    background: #dfe4ea;
+    padding: 0 10px;
+    border-radius: 100px;
+    font-weight: 600;
+    color: #b5bdc7;
+    margin-left: 10px;
+}
+
+#severities .punishment-severity {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.severity-type {
+    display: inline-block;
+    font-size: 17pt;
+}
+
+.severity-type i {
+    vertical-align: sub;
+}
+
+.severity-text {
+    display: inline-block;
+    margin-left: 12px;
+    font-weight: 600;
+    color: #b9baca;
+}
+
+.generic-text {
+    padding: 20px;
+    font-weight: 500;
+    color: #b5b5bf;
+}
+
+button.severity-edit {
+    padding: 4px;
+}
+
+.severity-icon {
+    background: #323544;
+    display: inline-block;
+    float: left;
+    font-size: 2em;
+    color: white;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    border-radius: 100%;
+    margin-right: 0.3em;
+}
+
+.severity-icon i {
+    vertical-align: sub;
+    position: relative;
+    bottom: -2px;
+}
+
+.severity-desc {
+    font-size: 21pt;
+    padding-top: 5px;
+    min-height: 60px;
+    padding-bottom: 5px;
+}
+
+.severity-desc .punishment-severity {
+    font-size: 14pt;
+}
+
+.severity-desc .punishment-severity {
+    min-width: 50px;
+    text-align: center;
+}
+
+.severties-info-body {
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.severity-info-item {
+    padding: 5px 0;
+}
+
+span.severity-info-title {
+    font-weight: 600;
+    padding: 0 10px;
+    border-radius: 200px;
+    margin-right: 10px;
+    color: #9e9db1;
+}
+
+span.severity-info-data {
+    font-weight: 600;
+    color: #b9baca;
+    display: inline;
+}
+
+.severity-info-data .punishment-severity {
+    margin: 0 !important;
+}
+
+.severity-admin-id {
+    background: #dfe4ea;
+    padding: 5px;
+    border-radius: 100px;
+    font-weight: 600;
+    color: #b5bdc7;
+    display: inline-block;
+    line-height: 14pt;
+}
+
+.severity-control-block {
+    padding: 20px;
+    border-top: 2px solid #eef0f3;
+}
+
+.severity-control-block .delete-type {float: right;}
+
+
+.sev-delete-item {
+    font-size: 15pt;
+    padding: 10px;
+    font-weight: 500;
+    color: #9e9db1;
+}
+
+.sev-delete-item > * {
+    vertical-align: middle;
+}
+
+.sev-delete-item i {
+    color: #46484a;
+    font-size: 20pt;
+}
+
+.severity-info-top {
+    padding: 10px 20px;
+    border-bottom: 2px solid #eef0f3;
+}
+
+.editor-block {
+    display: flex;
+    padding: 5px 0;
+}
+
+.editor-title {
+    font-weight: 600;
+    padding: 0 10px;
+    border-radius: 200px;
+    margin-right: 10px;
+    color: #9e9db1;
+}
+
+.sev-info .punishment-severity {
+    vertical-align: middle;
+    font-size: 14pt;
+    top: -3px;
+    position: relative;
+    margin: 0 5px!important;
+}
+
+.editor-field {width: 60%;}
+
+.editor-block.editor-newline {
+    display: block;
+    padding-bottom: 30px;
+    padding-top: 10px;
+}
+
+.editor-block.editor-newline .editor-title {
+    padding-bottom: 10px;
+}
+
+.editor-block.editor-newline .editor-field {
+    width: auto;
+    padding: 10px;
+}
+
+.sev-editor .comment {
+    display: block;
+    padding: 10px;
+}
+
+.no-perm.true {
+    opacity: 0.5;
+}
+
+#edit_sev {
+    top: 20vh;
+}
+
+.editor-field .button {
+    margin-right: 0.5em;
+}
+
+.button.type-chooser {
+    background: white;
+    color: #00d6e9;
+    /* box-shadow: 0px 2px #15a0d6; */
+    border: 2pt solid transparent;
+    border-color: #00d6e9;
+    padding: 3px 20px;
+}
+
+.button.type-chooser.selected {
+    background: #00d6e9;
+    color: white;
+}
+
+span.time-txt {
+    padding: 0 10px;
+}
+
+.editor-field input[type="number"] {
+    width: 4em;
+}
+
+input.percent-editor, input.severity-editor {
+    width: 6em !important;
+}
+
+.editor-err {
+    color: #ff4b4b;
+}
+
+.severities-bottom {
+    padding-top: 20px;
+    text-align: right;
 }
