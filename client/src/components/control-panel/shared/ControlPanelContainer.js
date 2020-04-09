@@ -13,7 +13,7 @@ import Punishments from '../page/Punishments';
 import PunishmentSystem from '../page/severity/PunishmentSystem';
 import Rules from '../page/rules/Rules';
 import TaggableSystem from '../page/TaggableSystem';
-import Filter from '../page/Filter';
+import Filter from '../page/filter/Filter';
 import Reports from '../page/reports/Reports';
 
 

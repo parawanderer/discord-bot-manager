@@ -123,8 +123,6 @@ class PunishmentSystem extends React.Component {
 
 
     severityAddNewHandler = async (newData) => {
-        console.log("Clicked Add new")
-        console.log(newData);
         // let's set the current user now...
 
         newData.added_by = this.props.auth.user.adminUID;

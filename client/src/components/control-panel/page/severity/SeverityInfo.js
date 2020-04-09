@@ -91,7 +91,7 @@ class SeverityInfo extends React.Component {
                         ID
                     </span>
                     <span className="severity-info-data">
-                        <div className="severity-id">#{id}</div>
+                        <div className="severity-id">{id}</div>
                     </span>
                 </div>
                 <div className="severity-info-item">

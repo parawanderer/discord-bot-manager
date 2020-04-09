@@ -6,6 +6,7 @@ import InputValidator from '../../../../utils/InputValidator';
 import Button from '../../generic/Button';
 import CloseButton from '../../generic/CloseButton';
 import TextInput from '../../generic/TextInput';
+import EditPopup from '../../generic/EditPopup';
 
 
 
@@ -67,10 +68,15 @@ class BlacklistaddNew extends React.Component {
         // this.props.successfulSubmitCallback
 
         return (
-            <div className="add-blacklist popup" id="add_blacklist" >
-                <CloseButton id="close_blacklist_add" onClick={this.cancelHandler} />
-                <h3 className="block-title">Add Blacklisted User </h3>
-                <div className="delete-admin-body">
+            <EditPopup
+                onCancel={this.cancelHandler}
+                onConfirm={this.handleFormSubmission}
+                title={"Add Blacklisted User"}
+                componentName={"blacklist"}
+                confirmText={"Add User To Blacklist"}
+                confirmIcon={<i className="fas fa-user-plus"></i>}
+            >
+
                     Provide the ID of the user you'd like to add to the blacklist
 
                     <TextInput 
@@ -80,13 +86,30 @@ class BlacklistaddNew extends React.Component {
                         valueUpdateCallback={this.handleValueUpdateCallback}
                         error={this.state.blacklistIdError}
                     />
+                
+            </EditPopup>
 
-                </div>
-                <div className="add-blacklist-buttons">
-                    <Button text="Cancel" classes="cancel" onClick={this.cancelHandler} />
-                    <Button text="Add User To Blacklist" icon={<i className="fas fa-user-plus"></i>} classes="add-blacklist" onClick={this.handleFormSubmission} />
-                </div>
-            </div>
+
+            // <div className="add-blacklist popup" id="add_blacklist" >
+            //     <CloseButton id="close_blacklist_add" onClick={this.cancelHandler} />
+            //     <h3 className="block-title">Add Blacklisted User </h3>
+            //     <div className="delete-admin-body">
+            //         Provide the ID of the user you'd like to add to the blacklist
+
+            //         <TextInput 
+            //             id="new_blacklist_id"  
+            //             name="new_blacklist_id" 
+            //             placeholder="User ID" 
+            //             valueUpdateCallback={this.handleValueUpdateCallback}
+            //             error={this.state.blacklistIdError}
+            //         />
+
+            //     </div>
+            //     <div className="add-blacklist-buttons">
+            //         <Button text="Cancel" classes="cancel" onClick={this.cancelHandler} />
+            //         <Button text="Add User To Blacklist" icon={<i className="fas fa-user-plus"></i>} classes="add-blacklist" onClick={this.handleFormSubmission} />
+            //     </div>
+            // </div>
         );
     }
 

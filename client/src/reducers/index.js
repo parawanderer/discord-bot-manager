@@ -7,6 +7,7 @@ import adminsReducer from './adminsReducer';
 import configReducer from './configReducer';
 import rulesReducer from './rulesReducer';
 import severitiesReducer from './severitiesReducer';
+import filterReducer from './filterReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -15,5 +16,6 @@ export default combineReducers({
     admins: adminsReducer,
     config: configReducer,
     rules: rulesReducer,
-    severities: severitiesReducer
+    severities: severitiesReducer,
+    filter : filterReducer
 });

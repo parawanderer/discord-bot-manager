@@ -117,25 +117,27 @@ class SeverityList extends React.Component {
         this.convertToSortedInternal();
 
         return (
-            <div className="severities">
-                <div className="severity-choose">
-                    <div className={this.state.selectedMutes ? 'selected' : ''} style={{display:'inline-block'}}>
-                    <Button 
-                        text="Mutes" 
-                        icon={<i className="fas fa-microphone-alt-slash"></i>}
-                        onClick={this.selectMutes}
-                        classes={`type-choose`}
-                    />
-                    </div>
-                    <div className={!this.state.selectedMutes ? 'selected' : ''} style={{display:'inline-block'}}>
-                    <Button 
-                        text="Bans" 
-                        icon={<i className="fas fa-ban"></i>}
-                        onClick={this.selectBans}  
-                        classes={`type-choose`}
-                    />
-                    </div>
+            <div className="severity-outer">
+            <div className="severity-choose">
+                <div className={this.state.selectedMutes ? 'selected' : ''} style={{display:'inline-block'}}>
+                <Button 
+                    text="Mutes" 
+                    icon={<i className="fas fa-microphone-alt-slash"></i>}
+                    onClick={this.selectMutes}
+                    classes={`type-choose`}
+                />
                 </div>
+                <div className={!this.state.selectedMutes ? 'selected' : ''} style={{display:'inline-block'}}>
+                <Button 
+                    text="Bans" 
+                    icon={<i className="fas fa-ban"></i>}
+                    onClick={this.selectBans}  
+                    classes={`type-choose`}
+                />
+                </div>
+            </div>
+
+            <div className="severities">
                 <div className="severities-body">
                     {this.state.selectedMutes ? this.renderPunishments('mutes') : this.renderPunishments('bans')}
                 </div>
@@ -146,6 +148,7 @@ class SeverityList extends React.Component {
                         onClick={this.props.createNewCallback}
                     />
                 </div>
+            </div>
             </div>
         );
     }

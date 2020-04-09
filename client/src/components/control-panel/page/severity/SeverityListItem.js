@@ -60,9 +60,6 @@ class SeverityListItem extends React.Component {
                 <button className="severity-delete" onClick={onDelete}><i className="fas fa-trash-alt"></i></button>
                 <button className="severity-edit" onClick={onEdit}><i className="fas fa-edit"></i></button>
 
-                <div className="severity-id">
-                    #{id}
-                </div>
                 {this.getSeverity()}
                 <div className="severity-type">{this.getTypeIcon()}</div>
                 {this.getTextDescription()}

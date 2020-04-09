@@ -17,7 +17,9 @@ import {
     FETCH_SEVERITY,
     DELETE_SEVERITY,
     UPDATE_SEVERITY,
-    ADD_SEVERITY
+    ADD_SEVERITY,
+    FETCH_FILTER_WORDS,
+    FETCH_FILTER_LINKS
 } from './types';
 
 
@@ -206,6 +208,25 @@ export const addNewSeverity = (newData) =>
         const response = await axios.post(`api/punish/types`, newData);
         dispatch({
             type: ADD_SEVERITY,
+            payload: response.data
+        });
+    };
+
+
+export const fetchWhitelistedLinks = () => 
+    async(dispatch, getState) => {
+        const response = await axios.get('api/filter/words');
+        dispatch({
+            type: FETCH_FILTER_WORDS,
+            payload: response.data
+        });
+    };
+
+export const fetchFilteredWords = () => 
+    async(dispatch, getState) => {
+        const response = await axios.get('api/filter/links');
+        dispatch({
+            type: FETCH_FILTER_LINKS,
             payload: response.data
         });
     };

@@ -22,7 +22,6 @@ class Admins extends React.Component {
     };
 
     async componentDidMount() {
-        console.log("fetchAdminsDetailed")
         await this.props.fetchAdminsDetailed();
 
         // foreach admin fetch admin details...
