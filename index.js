@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 
-const generateToken = require('./services/randomTokenGenerator');
+if (process.env.NODE_ENV !== 'production') require('dotenv').load();
+
 const keys = require('./config/keys');
 
 const SESSION_MAX_AGE = require('./services/SESSION_MAX_AGE');
