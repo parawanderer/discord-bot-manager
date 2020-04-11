@@ -32,12 +32,18 @@
 1) Set up .env file
 
 2) Move shell/BotManager.sh to /usr/local/bin/BotManager.sh
+   & make sure it is executable
 
         $ mv shell/BotManager.sh /usr/local/bin/BotManager.sh
+        $ chmod +x /usr/local/bin/BotManager.sh
 
-3) Move shell/BotManagerService.sh to /etc/rc.d/init.d/BotManager
+3) Move shell/BotManagerService.sh to /etc/init.d/BotManager
+   & make sure it is executable
+   & enable the daemon
 
-        $ mv shell/BotManagerService.sh /etc/rc.d/init.d/BotManager
+        $ mv shell/BotManagerService.sh /etc/init.d/BotManager
+        $ chmod +x /etc/init.d/BotManager
+        $ update-rc.d BotManager defaults
 
 4) Build application first:
 
@@ -45,4 +51,4 @@
 
 5) Run as service:
 
-        TODO
+        $ service BotManager start

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
 if (process.env.NODE_ENV === 'production') require('dotenv').config();
 
@@ -43,7 +44,14 @@ if (process.env.NODE_ENV === 'production') {
     // catch all case. if none of the previous things work.
     const path = require('path');
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+        const filePath = path.resolve(__dirname, 'client', 'build', 'index.html');
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) return console.log(err);
+            
+            const result = data.replace(/\{OG_DOMAIN}/g, keys.selfRootDomain); // inject rootDomain in place of {OG_DOMAIN} dynamically
+            res.send(result);
+        });
+        //res.sendFile();
     });
 } else {
     app.get('/', async (req, res) => {
