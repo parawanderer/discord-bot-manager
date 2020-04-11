@@ -4,7 +4,7 @@
   "description": "Mineplex Bot Manager Web App",
   "main": "index.js",
   "scripts": {
-    "prod-build": "npm install && npm install --prefix client && npm run build --prefix client",
+    "prod-build": "npm install --production && npm install --prefix client && npm run build --prefix client",
     "server": "nodemon index.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
