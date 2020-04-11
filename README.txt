@@ -2,6 +2,8 @@
                    Deployment Steps
 //////////////////////////////////////////////////////
 
+!! EXPECTING NODEJS TO BE INSTALLED ALREADY !! 
+
 
 1) Set up .env file on production server 
 (see .env.example for example file)
@@ -23,6 +25,8 @@
 //////////////////////////////////////////////////////
         Alternatively, to run as service
 //////////////////////////////////////////////////////
+
+!! EXPECTING NODEJS TO BE INSTALLED ALREADY !! 
 
 
 1) Set up .env file
