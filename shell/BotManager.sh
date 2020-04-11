@@ -9,8 +9,6 @@ MAIN_DIR=/var/nodejs/discord-bot-manager
 PATH_TO_START_FILE=$MAIN_DIR/index.js
 PID_PATH_NAME=/tmp/BotManager-pid
 
-export NODE_ENV=production
-
 case $1 in
 start)
        echo "Starting $SERVICE_NAME ..."

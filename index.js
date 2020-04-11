@@ -37,6 +37,18 @@ require('./routes/botApiRoutes')(app);
 
 
 if (process.env.NODE_ENV === 'production') {
+
+
+    // this is required to be above app.use(express.static('client/build')); for allowing this to overrule the index page
+    app.get('/', (req, res) => {
+        const filePath = path.resolve(__dirname, 'client', 'build', 'index.html');
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) return console.log(err);
+            const result = data.replace(/\{OG_DOMAIN}/g, keys.selfRootDomain); // inject rootDomain in place of {OG_DOMAIN} dynamically
+            res.send(result);
+        });
+    });
+
     // express will serve up production assets like our main.js file, or main.css file!
     app.use(express.static('client/build'));
 
@@ -47,7 +59,6 @@ if (process.env.NODE_ENV === 'production') {
         const filePath = path.resolve(__dirname, 'client', 'build', 'index.html');
         fs.readFile(filePath, 'utf8', (err, data) => {
             if (err) return console.log(err);
-            
             const result = data.replace(/\{OG_DOMAIN}/g, keys.selfRootDomain); // inject rootDomain in place of {OG_DOMAIN} dynamically
             res.send(result);
         });
