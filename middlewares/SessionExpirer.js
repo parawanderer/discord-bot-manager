@@ -27,7 +27,7 @@ class SessionExpirer {
      * Express middleware hookup
      */
     requestHandler = (req, res, next) => {
-        if (!req.session.adminUID) next(); // move on to the next handler if we're not logged in
+        if (!req.session.adminUID) return next(); // move on to the next handler if we're not logged in
 
         const userID = req.session.adminUID;
 
@@ -42,7 +42,7 @@ class SessionExpirer {
             this._deletePendingExpirySession(userID);
         }
 
-        next();
+        return next();
     };
 
     _deletePendingExpirySession = (userID) => {
