@@ -58,7 +58,7 @@ class FilterEndpoint {
                 type,
                 data
             };
-            return (await botAPI.post(`${API_URI_FILTER}/words/${id}`, postData)).data;
+            return (await botAPI.put(`${API_URI_FILTER}/words/${id}`, postData)).data;
         } catch (e) {
             return null;
         }
@@ -92,9 +92,7 @@ class FilterEndpoint {
 
     addLink = async (data) => {
         try { 
-            const postData = {
-                data
-            };
+            const postData = data;
             return (await botAPI.post(`${API_URI_FILTER}/links`, postData)).data;
         } catch (e) {
             return null;
@@ -104,9 +102,10 @@ class FilterEndpoint {
     updateLink = async (id, data) => {
         try { 
             const postData = {
-                data
+                id,
+                url: data.url
             };
-            return (await botAPI.post(`${API_URI_FILTER}/links/${id}`, postData)).data;
+            return (await botAPI.put(`${API_URI_FILTER}/links/${id}`, postData)).data;
         } catch (e) {
             return null;
         }

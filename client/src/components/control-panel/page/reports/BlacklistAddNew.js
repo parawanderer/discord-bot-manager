@@ -3,12 +3,8 @@ import { connect } from 'react-redux';
 
 import InputValidator from '../../../../utils/InputValidator';
 
-import Button from '../../generic/Button';
-import CloseButton from '../../generic/CloseButton';
 import TextInput from '../../generic/TextInput';
 import EditPopup from '../../generic/EditPopup';
-
-
 
 
 class BlacklistaddNew extends React.Component {

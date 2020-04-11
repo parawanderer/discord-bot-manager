@@ -52,7 +52,7 @@ class SeverityListItem extends React.Component {
         // this.props.onDelete
         // this.props.onEdit
 
-        const {id, onHover, onDelete, onEdit} = this.props;
+        const {onHover, onDelete, onEdit} = this.props;
 
 
         return (

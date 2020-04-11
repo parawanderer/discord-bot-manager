@@ -10,7 +10,7 @@ const PATH_ASSOCIATIONS = {
     "severities" : "Punishment System",
     "reports" : "Reports System",
     "rules" : "Rules",
-    "taggable" : "Taggable System",
+    "react-role" : "Reaction Role System",
 };
 
 const ICON_ASSOCIATIONS = {
@@ -22,7 +22,7 @@ const ICON_ASSOCIATIONS = {
     "reports system": <i className="fad fa-flag-alt"></i>,
     rules: <i className="fad fa-file-alt"></i>,
     "punishment system": <i className="fad fa-gavel"></i>,
-    "taggable system": <i className="fad fa-sensor-alert"></i>,
+    "reaction role system": <i className="fad fa-sensor-alert"></i>,
     "filter" :  <i className="fad fa-language"></i>
 };
 

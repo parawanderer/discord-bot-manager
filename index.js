@@ -27,23 +27,8 @@ app.use(cookieSession(
 
 app.use('/api', SessionExpirer.requestHandler);
 
-// app.use((req, res, next) => {
-//     req.session.views = (req.session.views || 0) + 1;
-//     res.end(req.session.views + ' views')
-// }); 
-
 
 // setup routes
-app.get('/', async (req, res) => {
-    res.redirect("http://localhost:3000/")
-
-    // res.send(
-    //     {   
-    //         hello: "world",
-    //         session: req.session
-    //     }
-    // );
-});
 
 
 
@@ -60,6 +45,10 @@ if (process.env.NODE_ENV === 'production') {
     const path = require('path');
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
+} else {
+    app.get('/', async (req, res) => {
+        res.redirect("http://localhost:3000/")
     });
 }
 

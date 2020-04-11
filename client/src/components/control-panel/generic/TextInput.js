@@ -10,9 +10,16 @@ class TextInput extends React.Component {
     } 
 
 
+    updateValueMiddleware = (currentValueString) => {
+        if (this.props.valueUpdateMiddlewareCallback) {
+            return this.props.valueUpdateMiddlewareCallback(currentValueString);
+        }
+        return currentValueString;
+    };
+
     updateValue = (event) => {
-        this.setState({value : event.target.value});
-        const newValue = event.target.value;
+        const newValue = this.updateValueMiddleware(event.target.value);
+        this.setState({value : newValue});
         
         if (this.props.valueUpdateCallback) this.props.valueUpdateCallback(newValue); // pass on the new value to the callback.
     };

@@ -1914,12 +1914,7 @@ input.percent-editor, input.severity-editor {
     text-align: right;
 }
 
-.filter-block {
-    background: white;
-    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
-    padding: 50px;
-    margin: 30px 10vw;
-}
+
 
 th {
     font-weight: 600;
@@ -2001,10 +1996,15 @@ button.table-edit {
 
 .filter-section.shown {
     display: block;
+    margin: 30px 50px;
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 50px;
 }
 
 .filter-section {
     display: none;
+    margin: 0;
 }
 
 .button.add-word, .button.add-link {
@@ -2026,4 +2026,122 @@ button.table-edit {
 
 .severity-info {
     margin-top: 80px;
+}
+
+.button.word-type {
+    background: transparent;
+    border: 0;
+    color: grey;
+    border: 3px solid grey;
+    padding: 3px 5px;
+    width: 102px;
+}
+
+.editor-field .word-editor {
+    width: 80%;
+}
+
+.word-editor .editor-field {
+    width: 80%;
+}
+
+button.button.word-type.word-type-exact {
+    color: #04d3e8;
+    border-color: #04d3e8;
+}
+
+button.button.word-type.word-type-containing {
+    color: #426afb;
+    border-color: #426afb;
+}
+
+button.button.word-type.word-type-whitelist {
+    color: #54d23d;
+    border-color: #54d23d;
+}
+
+button.button.word-type.word-type-exact.current {
+    color: white;
+    background: #04d3e8;
+}
+
+button.button.word-type.word-type-containing.current {
+    color: white;
+    background: #426afb;
+}
+
+button.button.word-type.word-type-whitelist.current {
+    color: white;
+    background: #54d23d;
+}
+
+.word-editor .editor-field #new_word {
+    width: 100%;
+}
+
+.filter-inner-block {
+    display: inline-block;
+    border-left: 2px solid #e6ecec;
+    border-right: 2px solid #e6ecec;
+}
+
+.explain pre {
+    display: inline-block;
+    margin: 0;
+    background: #a0aab5;
+    border-radius: 4px;
+    padding: 0 4px;
+    color: #4f5761;
+}
+
+#filter .left {
+    width: 65%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#filter .right {
+    width: 35%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#filter .right .explain {
+    margin: 0;
+    margin-right: 10px;
+    margin-top: 31px;
+}
+
+.infobar.shown {
+    display: block;
+}
+
+.infobar {
+    display: none;
+}
+
+#edit_word .text-field-error {
+    display: none;
+}
+
+.filter-inner-block pre {
+    font-size: 11pt;
+    font-weight: 500;
+    margin: 0.3em 0;
+}
+
+.link-editor .text-field-error {
+    display: none;
+}
+
+.link-editor .editor-block {
+    align-items: center;
+}
+
+.link-editor .editor-field {
+    width: 80%;
+}
+
+.link-editor .editor-field #new_link {
+    width: 100%;
 }

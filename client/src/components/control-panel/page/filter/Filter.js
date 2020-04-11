@@ -56,17 +56,14 @@ class Filter extends React.Component {
                 </div>
 
                 <div className="filter-block">
-                    
-                    <div className="filter-body">
-                        <WordsList 
+                    <WordsList 
                             show={this.state.selectedWords}
                             words={this.props.filter.words}
                          />
-                        <LinksList 
-                            show={!this.state.selectedWords}
-                            links={this.props.filter.links}
-                        />
-                    </div>
+                    <LinksList 
+                        show={!this.state.selectedWords}
+                        links={this.props.filter.links}
+                    />
                 </div>
                 
             </div>

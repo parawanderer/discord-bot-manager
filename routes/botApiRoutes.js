@@ -112,10 +112,10 @@ module.exports = (app) => {
     });
 
 
-    app.post('/api/filter/links/:id', 
+    app.post('/api/filter/links', 
     requireLogin,
     async (req, res) => {
-        res.send(await FilterEndpoint.addLink(req.body.data));
+        res.send(await FilterEndpoint.addLink(req.body));
     });
 
     app.delete('/api/filter/links/:id', 
@@ -127,7 +127,7 @@ module.exports = (app) => {
     app.put('/api/filter/links/:id', 
     requireLogin,
     async (req, res) => {
-        res.send(await FilterEndpoint.updateLink(req.params.id, req.body.data));
+        res.send(await FilterEndpoint.updateLink(req.params.id, req.body));
     });
 
 

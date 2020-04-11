@@ -12,7 +12,7 @@ import Immortal from '../page/Immortal';
 import Punishments from '../page/Punishments';
 import PunishmentSystem from '../page/severity/PunishmentSystem';
 import Rules from '../page/rules/Rules';
-import TaggableSystem from '../page/TaggableSystem';
+import ReactionRoleSystem from '../page/ReactionRoleSystem';
 import Filter from '../page/filter/Filter';
 import Reports from '../page/reports/Reports';
 
@@ -38,7 +38,7 @@ class ControlPanelContainer extends React.Component {
                         <Route exact path="/punishments" component={Punishments} />
                         <Route exact path="/Rules" component={Rules} />
                         <Route exact path="/severities" component={PunishmentSystem} />
-                        <Route exact path="/taggable" component={TaggableSystem} />
+                        <Route exact path="/react-role" component={ReactionRoleSystem} />
                         <Route exact path="/filter" component={Filter} />
                     </div>
                 </div>
