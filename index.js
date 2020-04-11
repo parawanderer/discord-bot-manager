@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 
-if (process.env.NODE_ENV !== 'production') require('dotenv').load();
+if (process.env.NODE_ENV === 'production') require('dotenv').config();
 
 const keys = require('./config/keys');
 
@@ -30,8 +30,6 @@ app.use('/api', SessionExpirer.requestHandler);
 
 
 // setup routes
-
-
 
 require('./routes/authRoutes')(app);
 require('./routes/botApiRoutes')(app);

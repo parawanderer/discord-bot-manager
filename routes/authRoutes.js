@@ -91,6 +91,7 @@ module.exports = (app) => {
         }
 
         // verify that session authState and state passed back by discord is the same. If not, show error.
+        
         if (req.session.authState !== req.query.state) {
             res.send(loginError);
             return;
