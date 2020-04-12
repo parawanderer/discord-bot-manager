@@ -41,6 +41,13 @@ class SeverityListItem extends React.Component {
         );
     }
 
+    onDelete = () => {
+        const {onDelete} = this.props;
+        if (onDelete) {
+            return onDelete;
+        }
+    }
+
     render() {
         // this.props.id
         // this.props.type_raw
@@ -57,7 +64,7 @@ class SeverityListItem extends React.Component {
 
         return (
             <div className="severity-list-item" onMouseEnter={onHover}>
-                <button className="severity-delete" onClick={onDelete}><i className="fas fa-trash-alt"></i></button>
+                <button className="severity-delete" onClick={this.onDelete} disabled={!onDelete}><i className="fas fa-trash-alt"></i></button>
                 <button className="severity-edit" onClick={onEdit}><i className="fas fa-edit"></i></button>
 
                 {this.getSeverity()}

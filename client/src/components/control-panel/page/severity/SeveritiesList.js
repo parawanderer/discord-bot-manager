@@ -54,7 +54,7 @@ class SeverityList extends React.Component {
                     percentage={p.percentage}
                     added_by={p.added_by}
                     onHover={() => this.selectHandler(p.id)}
-                    onDelete={this.props.onDeleteCallback}
+                    onDelete={(p.type_raw === 1 && p.severity === 1) ? null : this.props.onDeleteCallback} // sev1 mute cannot be deleted, only edited.
                     onEdit={this.props.onEditCallback}
                 />
             );

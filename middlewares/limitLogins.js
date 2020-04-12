@@ -12,11 +12,14 @@ module.exports = (req, res, next) => {
 
     if (!LoginLimitor.canLogin(requestIP)) {
         addError(req, ERROR_MESSAGE);
+        
+        res.redirect("/");
+        return;
 
-        return res.status(ERROR_CODE).send({
-            error: ERROR_CODE,
-            message: ERROR_MESSAGE
-        });
+        // return res.status(ERROR_CODE).send({
+        //     error: ERROR_CODE,
+        //     message: ERROR_MESSAGE
+        // });
     }
         
     next();

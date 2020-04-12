@@ -2145,3 +2145,8 @@ button.button.word-type.word-type-whitelist.current {
 .link-editor .editor-field #new_link {
     width: 100%;
 }
+
+button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
