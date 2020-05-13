@@ -28,6 +28,8 @@ class ImmortalList extends React.Component {
                 websiteID={immortal.website_id}
                 onDeleteButtonpressCallback={this.onDeleteItemCallback} 
                 mouseEnterCallback={this.onHoverItemCallback}
+                minecraftInfo={immortal.minecraft_info}
+                active={immortal.active}
             />
             );        
 
@@ -39,7 +41,28 @@ class ImmortalList extends React.Component {
                     </span>
                 </h3>
                 <div className="immortal-list-body">
-                    {immortalList}
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>
+                                Active
+                            </th>
+                            <th>
+                                Minecraft Info
+                            </th>
+                            <th>
+                                Discord ID
+                            </th>
+                            <th>
+                                Website ID
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                        {immortalList}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         );

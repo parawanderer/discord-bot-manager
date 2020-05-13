@@ -2,8 +2,6 @@ const fs = require('fs');
 const Jimp = require('jimp');
 
 const requireLogin = require('../middlewares/requireLogin');
-const SessionExpirer = require('../middlewares/SessionExpirer');
-const HTTPErrorHandler = require('../services/HTTPErrorHandler');
 
 const { MinecraftUserEndpoint } = require('../services/minecraft-api/MinecraftUserEndpoint');
 const { MinecraftHandler, instance : minecraft } = require('../services/minecraft-api/MinecraftHandler');

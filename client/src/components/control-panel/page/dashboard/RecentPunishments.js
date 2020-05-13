@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Loading from '../../generic/Loading';
 
 import { fetchRecentPunishments } from '../../../../action/index';
+import ActiveState from '../../generic/ActiveState';
 
 
 const RECENT_PUNISHMENT_NUM = 6;
@@ -85,24 +86,6 @@ class RecentPunishments extends React.Component {
         );
     }
 
-    getActiveState(activeState) {
-        if (activeState) {
-            return (
-                <div className="punishment-active-state punishment-active">
-                    <i className="fas fa-check"></i>
-                    Active
-                </div>
-            );
-        }
-        return (
-            <div className="punishment-active-state punishment-inactive">
-                <i className="fas fa-slash"></i>
-                Inactive
-            </div>
-        );
-
-    }
-
     getUsername(punishment) {
         return (
             <div className="punishment-username">
@@ -140,7 +123,7 @@ class RecentPunishments extends React.Component {
         
         const id = this.getID(punishment);
 
-        const activeState = this.getActiveState(punishment.active_state);
+        const activeState = <ActiveState active={punishment.active_state}/>
 
         const time = this.getTimestamp(punishment);
 

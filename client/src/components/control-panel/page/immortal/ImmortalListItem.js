@@ -1,23 +1,66 @@
 import React from 'react';
+import ActiveState from '../../generic/ActiveState';
 
 const ImmortalListItem = (props) => {
 
+    const { userID, websiteID, mouseEnterCallback, onDeleteButtonpressCallback, minecraftInfo, active } = props;
 
-    const { userID, minecraftUUID, websiteID, mouseEnterCallback, onDeleteButtonpressCallback } = props;
+    const renderMinecraftInfo = () => {
+        if (!minecraftInfo) {
+            return (
+                <div className="immortal-user-mc">
+                    <div className="immortal-mc-head no-data"/>
+                    <div className="immortal-mc-name no-data"/>
+                </div>
+            );
+        }
+        return (
+            <div className="immortal-user-mc">
+                <div className="immortal-mc-head">
+                    {
+                        minecraftInfo.hasSkin ?
+                        <img src={minecraftInfo.skin} alt={`${minecraftInfo.name}'s minecraft skin`}/>
+                        :
+                        <img src={'/img/steve.png'} alt={`${minecraftInfo.name}'s minecraft skin`}/>
+                    }
+                    
+                </div>
+                <div className="immortal-mc-name">
+                    {minecraftInfo.name}
+                </div>
+            </div>
+        );
+    };
+
 
     return (
-        <div className="immortal-item" onMouseEnter={() => { mouseEnterCallback(userID) }}>
-            <button className="immortal-delete" onClick={() => { onDeleteButtonpressCallback(userID) }}><i className="fas fa-unlink"></i></button>
-            <div className="immortal-user">
-                {userID}
-            </div>
-            <div className="immortal-user-mc">
-                {minecraftUUID}
-            </div>
-            <div className="immortal-user-www">
-                {websiteID}
-            </div>
-        </div>
+        <tr className="immortal-item" onMouseEnter={() => { mouseEnterCallback(userID) }}>
+            <td className="immortal-active-state">
+                <ActiveState active={active} />
+            </td>
+            <td className="immortal-mc-info">
+                {renderMinecraftInfo()}
+            </td>
+            <td className="immortal-discord-info">
+                <div className="immortal-user">
+                    {userID}
+                </div>
+            </td>
+            <td className="immortal-www-info">
+                <div className="immortal-user-www">
+                    {websiteID}
+                </div>
+            </td>
+            <td>
+                <button 
+                    className="immortal-delete" 
+                    onClick={() => { onDeleteButtonpressCallback(userID) }}
+                    disabled={!active}
+                >
+                    <i className="fas fa-unlink"></i>
+                </button>
+            </td>
+        </tr>
     );
 };
 

@@ -1,64 +1,97 @@
 import React from 'react';
 import { connect } from "react-redux";
 
-import { fetchImmortals } from '../../../../action';
+import { fetchImmortals, fetchMinecraftPlayer, fetchMember, deactivateImmortal } from '../../../../action';
 
 import Loading from '../../generic/Loading';
 import ImmortalList from './ImmortalList';
 import SelectedImmortalUser from './SelectedImmortalUser';
+import InputValidator from '../../../../utils/InputValidator';
+import ImmortalUnlink from './ImmortalUnlink';
 
 
 class Immortal extends React.Component {
 
-    componentDidMount() {
-        this.props.fetchImmortals();
+    state = {
+        selectedImmortal: null,
+        selectedForDeletion: null,
+        showDelete : false
+    };
+
+    componentDidMount = async () => {
+        await this.props.fetchImmortals();
+
+        // const { immortal } = this.props;
+
+        // for (let i = 0; i < immortal.length; i++) {
+        //     this.props.fetchMinecraftPlayer(InputValidator.stripDashesFromUUID(immortal[i].minecraft_uuid));
+        // }
+    };
+
+    getUserIfExists = (discordId) => {
+        const { immortal } = this.props;
+
+        for (let i = 0; i < immortal.length; i++) {
+            if (immortal[i].discord_id === discordId) return immortal[i];
+        }
+        return null;
     }
 
     hoveredUserHandler = async (userID) => {
 
-        // // sanity check?
-        // if (!this.props.config.reportBlacklist[userID]) return;
+        // don't update while showing deletion popup
+        if (this.state.showDelete) return;
+
+        // sanity check?
+        const user = this.getUserIfExists(userID);
+        if (!user) return;
         
-        // // fetch member if we do not have details for the member yet...
-        // if (!this.props.config.reportBlacklist[userID].member) {
-        //     await this.props.fetchMember(userID);
-        // }
-        // // set current selected member in component state
+        // fetch member if we do not have details for the member yet...
+        if (!user.member) {
+            await this.props.fetchMember(user.discord_id);
+        }
+
+        // fetch minecraft data if we do not have details for the minecraft user yet...
+        if (!user.minecraft_info) {
+            if (InputValidator.isValidUUID(user.minecraft_uuid)) {
+                await this.props.fetchMinecraftPlayer(InputValidator.stripDashesFromUUID(user.minecraft_uuid));
+            } else {
+                console.warn(`User ${user.discord_id} had invalid minecraft UUID association. See object:`, user);
+            }
+        }
+        // set current selected member in component state
         
-        // this.setState({
-        //     selectedMember: this.props.config.reportBlacklist[userID].member
-        // });
+        this.setState({
+            selectedImmortal: user
+        });
 
     };
 
-    unlinkImmortalHandler = async (userID) => {
-        // This will not use a confirmation check.
+    unlinkImmortalHandler = (discordUserId) => {
 
-        // // sanity check?
-        // if (!this.props.config.reportBlacklist[userID]) return;
+        const user = this.getUserIfExists(discordUserId);
+        if (!user) return;
 
-        // // we will need to copy the "data" config and update it, then send it off
-        // const newData = {...this.props.config.data};
-        // // loop through until we find the deleted ID
-        // const reportBlacklist = newData.reportSystem.reportBlacklist;
-        // for (let i = reportBlacklist.length -1; i >= 0; i--) {
-        //     if (reportBlacklist[i] === userID) {
-        //         reportBlacklist.splice(i, 1);
-        //         break;
-        //     }
-        // }
+        this.setState({
+            showDelete: true,
+            selectedForDeletion: user
+        });
+    };
 
-        // // send back the entirey config object into our API handler
-        // await this.props.updateDataConfig(newData);
-        // // this will update when it is processed.
+    handleDeleteConfirm = async () => {
+        const immortalToUnlink = this.state.selectedForDeletion;
 
-        // // let's quickly check if this user wasn't selected to be displayed in the sidebar? If they were, we will unselect them
-        // if (this.state.selectedMember && this.state.selectedMember.id === userID) {
-        //     // unselect the user
-        //     this.setState({
-        //         selectedMember: null
-        //     });
-        // }
+        await this.props.deactivateImmortal(immortalToUnlink.discord_id);
+
+        this.hideUnlinkUser();
+
+    };
+
+    hideUnlinkUser = () => {
+        this.setState({
+            selectedForDeletion: null,
+            showDelete : false
+        });
     };
 
 
@@ -66,25 +99,34 @@ class Immortal extends React.Component {
         const { immortal } = this.props;
 
         return (
-            <div id="immortal">
-                <div className="left">
-                    <ImmortalList 
-                        immortals={immortal} 
-                        deleteCallback={this.unlinkImmortalHandler}
-                        hoverCallback={this.hoveredUserHandler}
-                    />
+            <React.Fragment>
+                <div id="immortal">
+                    <div className="left">
+                        <ImmortalList 
+                            immortals={immortal} 
+                            deleteCallback={this.unlinkImmortalHandler}
+                            hoverCallback={this.hoveredUserHandler}
+                        />
+                    </div>
+                    <div className="right">
+                        {/* <SelectedReportBlacklistUser 
+                            member={this.state.selectedMember}
+                            deleteCallback={this.deleteBlacklistForUser}
+                        /> */}
+                        <SelectedImmortalUser
+                            immortal={this.state.selectedImmortal}
+                            deleteCallback={this.unlinkImmortalHandler}
+                        />
+                    </div>
                 </div>
-                <div className="right">
-                    {/* <SelectedReportBlacklistUser 
-                        member={this.state.selectedMember}
-                        deleteCallback={this.deleteBlacklistForUser}
-                    /> */}
-                    {/* <SelectedImmortalUser
-                        member={this.state.selectedMember}
-                        deleteCallback={this.deleteBlacklistForUser}
-                    /> */}
-                </div>
-            </div>
+                <ImmortalUnlink
+                    immortal={this.state.selectedForDeletion}
+                    show={this.state.showDelete}
+                    onCancel={this.hideUnlinkUser}
+                    onDeleteConfirm={this.confirmDeleteSelectedAdmin}
+                />
+
+            </React.Fragment>
         );
     }
 
@@ -104,4 +146,4 @@ const mapStateToProps = (state, ownProps) => {
     };
 }
 
-export default connect(mapStateToProps, { fetchImmortals } )(Immortal);
+export default connect(mapStateToProps, { fetchImmortals, fetchMinecraftPlayer, fetchMember, deactivateImmortal } )(Immortal);

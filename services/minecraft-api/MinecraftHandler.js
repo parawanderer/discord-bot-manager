@@ -24,6 +24,7 @@ class MinecraftHandler {
     static isExpiredSkin = (skinFileCreationTimeNumber = 0) => {
         if (typeof skinFileCreationTimeNumber !== typeof 0) return null;
         const now = new Date().getTime();
+        console.log("Now", now, "skinFileCreationTimeNumber + MAX_CACHE_TIME_SKINS", skinFileCreationTimeNumber + MAX_CACHE_TIME_SKINS);
         return (skinFileCreationTimeNumber + MAX_CACHE_TIME_SKINS) < now;
     };
 
@@ -143,23 +144,20 @@ class MinecraftHandler {
         const skinImgBuffer = Buffer.from(response.data, 'binary'); // create nodeJS buffer based on skin image response
 
         // write bare skin file (we don't really need to edit anything about this)
+        if (fs.existsSync(pathSkin)) fs.unlinkSync(pathSkin);
         fs.writeFileSync(pathSkin, skinImgBuffer, WRITE_OPTIONS);
 
 
         // we will now try to generate the "head" image by doing some cropping and overlaying...
-        try {
-            const image = await Jimp.read(skinImgBuffer); // read skin image
-            const hair = image.clone();
+        const image = await Jimp.read(skinImgBuffer); // read skin image
+        const hair = image.clone();
 
-            image.crop(8,8,8,8); 
-            hair.crop(40,8,8,8); 
-            image.composite(hair, 0, 0); // place hair on top of base image crop
+        image.crop(8,8,8,8); 
+        hair.crop(40,8,8,8); 
+        image.composite(hair, 0, 0); // place hair on top of base image crop
 
-            await image.writeAsync(pathHead); // finally, write "head" file...
-
-        } catch (e) {
-            console.error(e);
-        }
+        if (fs.existsSync(pathHead)) fs.unlinkSync(pathHead);
+        await image.writeAsync(pathHead); // finally, write "head" file...
     };
 }
 

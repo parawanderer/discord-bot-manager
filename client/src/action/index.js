@@ -28,8 +28,10 @@ import {
     UPDATE_WHITELISTED_LINK,
     FETCH_IMMORTALS,
     DEACTIVATE_IMMORTAL,
-    FETCH_IMMORTAL
+    FETCH_IMMORTAL,
+    FETCH_MINECRAFT_PLAYER
 } from './types';
+import InputValidator from '../utils/InputValidator';
 
 
 export const fetchLoginStatus = () => 
@@ -297,9 +299,20 @@ export const updateWhitelistedLink = (id, newData) =>
 export const fetchImmortals = () => 
     async(dispatch, getState) => {
         const response = await axios.get('/api/immortal');
+        const immortalList = response.data;
+
+        for (let i = 0; i < immortalList.length; i++) {
+            const immortal = immortalList[i];
+            try {
+                const cleanUUID = InputValidator.stripDashesFromUUID(immortal.minecraft_uuid);
+                const minecraftData = await axios.get(`/api/mc/player/${cleanUUID}`, { timeout: 1000 * 60 });
+                immortal['minecraft_info'] = {...minecraftData.data, skin: `/api/mc/head/${cleanUUID}.png?size=60` };
+            } catch (e) { }
+        }
+
         dispatch({
             type: FETCH_IMMORTALS,
-            payload: response.data
+            payload: immortalList
         });
     };
 
@@ -314,9 +327,22 @@ export const fetchImmortal = (id) =>
 
 export const deactivateImmortal = (id) =>
     async(dispatch, getState) => {
-        const response = await axios.delete(`/api/immortal/${id}`);
+        const response = await axios.delete(`/api/immortal/${id}`, { data: { remove_link : true }});
         dispatch({
             type: DEACTIVATE_IMMORTAL,
             payload: response.data
         });
+    };
+
+export const fetchMinecraftPlayer = (uuid) =>
+    async(dispatch, getState) => {
+        try {
+            const response = await axios.get(`/api/mc/player/${uuid}`, { timeout: 1000 * 60 });
+            dispatch({
+                type: FETCH_MINECRAFT_PLAYER,
+                payload: {...response.data, skin: `/api/mc/head/${uuid}.png?size=60`}
+            });
+        } catch (e) {
+
+        }
     };
