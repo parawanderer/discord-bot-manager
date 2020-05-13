@@ -6,7 +6,6 @@ const Jimp = require('jimp');
 const {instance: api, MinecraftUserEndpoint} = require('./MinecraftUserEndpoint');
 const HTTPErrorHandler = require('../HTTPErrorHandler');
 
-const MAX_CACHE_TIME_HEAD = 1000 * 60 * 10; // 10 minutes
 const MAX_CACHE_TIME_SKINS = 1000 * 60 * 10; // 10 minutes
 const MAX_CACHE_TIME_PLAYER_INFO = 1000 * 60 * 2; // 2 minutes
 
@@ -17,17 +16,10 @@ const WRITE_OPTIONS = {
 
 
 class MinecraftHandler {
-
-    static MAX_CACHE_TIME_HEAD = MAX_CACHE_TIME_HEAD;
+    
     static MAX_CACHE_TIME_SKINS = MAX_CACHE_TIME_SKINS;
     static MAX_CACHE_TIME_PLAYER_INFO = MAX_CACHE_TIME_PLAYER_INFO;
 
-
-    static isExpiredHead = (headFileCreationTimeNumber = 0) => {
-        if (typeof headFileCreationTimeNumber !== typeof 0) return null;
-        const now = new Date().getTime();
-        return (headFileCreationTimeNumber + MAX_CACHE_TIME_HEAD) < now;
-    };
 
     static isExpiredSkin = (skinFileCreationTimeNumber = 0) => {
         if (typeof skinFileCreationTimeNumber !== typeof 0) return null;
@@ -121,11 +113,29 @@ class MinecraftHandler {
 
         fs.writeFileSync(pathPlayer, JSON.stringify(playerData), WRITE_OPTIONS);
 
-        if (!hasSkin) return; // player doesn't have a skin. End here, nothing else to do.
+        if (!hasSkin) {
+            if (fs.existsSync(pathHead)) fs.unlinkSync(pathHead); // delete this if it exists, user no longer has a skin...
+            if (fs.existsSync(pathSkin)) fs.unlinkSync(pathSkin); // delete this if it exists, user no longer has a skin...
+            
+            return; // player doesn't have a skin. End here, nothing else to do.
+        }
 
 
 
         // Else we will finalise by writing the head and skin file.
+
+        // we will first check if they may not (yet) be expired? 
+        // We'll assume both have approx the same expiry date, so we will just look at the skin.
+
+        if (fs.existsSync(pathSkin)) {
+            // file already existed, now we will check the stats...
+            const stats = fs.statSync(pathSkin);
+
+            if (!MinecraftHandler.isExpiredSkin(stats.mtimeMs)) {
+                return; // not yet expired. End processing here, we don't need to re-fetch skins..
+            }
+        }
+        // else continue to updating the skin...
 
         const skinURI = textureDetail.textures['SKIN'].url;
 
@@ -149,7 +159,6 @@ class MinecraftHandler {
 
         } catch (e) {
             console.error(e);
-            return null;
         }
     };
 }

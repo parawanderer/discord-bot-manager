@@ -34,8 +34,11 @@ const MAX_BROWSER_IMAGE_CACHE = 86400;
 module.exports = (app) => {
 
     /**
+     * Get user head by UUID
+     * 
      * Assumed format of request
-     * /api/mc/user/head/12345567894453453243?size=50
+     * /api/mc/head/12345567894453453243.png?size=50
+     * size 50 is default
      */
     app.get('/api/mc/head/:uuid', 
     requireLogin,
@@ -58,25 +61,22 @@ module.exports = (app) => {
         }
 
         uuid = MinecraftUserEndpoint.stripDashesFromUUID(uuid);
-        console.log("uuid", uuid);
-
-        const dataPath = `cache/mc/head/${uuid}.png`;
+        const dataPath = MinecraftHandler.getHeadPath(uuid);
 
         if (fs.existsSync(dataPath)) {
             // check if we've already saved the given head?
-            fs.stat(dataPath, async (err, stats) => {
-                if (err) {
-                    return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
-                }
+            try {
+                const stats = fs.statSync(dataPath);
 
-                if (MinecraftHandler.isExpiredHead(stats.mtimeMs)) {
-                    // expired head. Fetch everything anew..
+                if (MinecraftHandler.isExpiredSkin(stats.mtimeMs)) {
+                    // expired skin. Fetch everything anew..
                     await minecraft.fetchAndSaveUserData(uuid);
-                    
-                } else {
-                    // not yet expired.
                 }
-            });
+                // else not yet expired.
+                
+            } catch (err) {
+                return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
+            }
         } else {
             // head did not yet exist.
             await minecraft.fetchAndSaveUserData(uuid);
@@ -98,13 +98,163 @@ module.exports = (app) => {
             // there was an error reading the image
             return res.status(generic500.status).send(generic500);
         }
+    });
 
 
-        // const internalResponse = await GuildEndpoint.getGuildInfo();
-        // if (HTTPErrorHandler.isError(internalResponse)) {
-        //     return res.status(internalResponse.status).send(internalResponse.data); //
-        // }
-        // res.send(internalResponse);
+    /**
+     * Get user skin by UUID
+     * 
+     * /api/mc/skin/12345567894453453243.png
+     */
+    app.get('/api/mc/skin/:uuid', 
+    requireLogin,
+    async (req, res) => {
+        
+        let uuid = req.params.uuid.replace('.png','');
+
+        // verify that uuid is valid?
+        if (!MinecraftUserEndpoint.isValidUUID(uuid)) {
+            // if invalid, error with message
+            return res.status(MinecraftUserEndpoint.generic400.status).send(MinecraftUserEndpoint.generic400);
+        }
+        uuid = MinecraftUserEndpoint.stripDashesFromUUID(uuid);
+        const dataPath = MinecraftHandler.getSkinPath(uuid);
+
+        if (fs.existsSync(dataPath)) {
+            // check if we've already saved the given skin?
+            try {
+                const stats = fs.statSync(dataPath);
+
+                if (MinecraftHandler.isExpiredSkin(stats.mtimeMs)) {
+                    // expired skin. Fetch everything anew..
+                    await minecraft.fetchAndSaveUserData(uuid);
+                }
+                // else not yet expired.
+                
+            } catch (err) {
+                return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
+            }
+        } else {
+            // skin did not yet exist.
+            await minecraft.fetchAndSaveUserData(uuid);
+        }
+
+        // get skin image and render up to correct scale
+        try {
+            const imageBuffer = fs.readFileSync(dataPath);
+
+            res.set('Content-Type', Jimp.MIME_PNG);
+            res.set('Cache-Control', `public, max-age=${MAX_BROWSER_IMAGE_CACHE}`); // caching headers
+
+            res.send(imageBuffer);
+
+        } catch (e) {
+            // there was an error reading the image
+            return res.status(generic500.status).send(generic500);
+        }
+    });
+
+
+    /**
+     * Get player base info by UUID
+     * 
+     * /api/mc/skin/12345567894453453243
+     */
+    app.get('/api/mc/player/:uuid', 
+    requireLogin,
+    async (req, res) => {
+        
+        let uuid = req.params.uuid;
+
+        // verify that uuid is valid?
+        if (!MinecraftUserEndpoint.isValidUUID(uuid)) {
+            // if invalid, error with message
+            return res.status(MinecraftUserEndpoint.generic400.status).send(MinecraftUserEndpoint.generic400);
+        }
+        uuid = MinecraftUserEndpoint.stripDashesFromUUID(uuid);
+        const dataPath = MinecraftHandler.getPlayerPath(uuid);
+
+        if (fs.existsSync(dataPath)) {
+            // check if we've already saved the given player data?
+            try {
+                const stats = fs.statSync(dataPath);
+
+                if (MinecraftHandler.isExpiredInfo(stats.mtimeMs)) {
+                    // expired skin. Fetch everything anew..
+                    await minecraft.fetchAndSaveUserData(uuid);
+                }
+                // else not yet expired.
+                
+            } catch (err) {
+                return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
+            }
+        } else {
+            // skin did not yet exist.
+            await minecraft.fetchAndSaveUserData(uuid);
+        }
+
+        try {
+            const file = fs.readFileSync(dataPath, 'utf8');
+
+            res.header("Content-Type",'application/json');
+            res.send(file);
+
+        } catch (err) {
+            return res.status(generic500.status).send(generic500);
+        }
+    });
+
+
+     /**
+     * Get full player details by UUID
+     * (original mojang API response)
+     * 
+     * /api/mc/detail/12345567894453453243
+     */
+    app.get('/api/mc/detail/:uuid', 
+    requireLogin,
+    async (req, res) => {
+        
+        let uuid = req.params.uuid;
+
+        // verify that uuid is valid?
+        if (!MinecraftUserEndpoint.isValidUUID(uuid)) {
+            // if invalid, error with message
+            return res.status(MinecraftUserEndpoint.generic400.status).send(MinecraftUserEndpoint.generic400);
+        }
+        uuid = MinecraftUserEndpoint.stripDashesFromUUID(uuid);
+        const dataPath = MinecraftHandler.getDetailPath(uuid);
+
+        if (fs.existsSync(dataPath)) {
+            // check if we've already saved the given player data?
+
+            try {
+                const stats = fs.statSync(dataPath);
+
+                if (MinecraftHandler.isExpiredInfo(stats.mtimeMs)) {
+                    // expired skin. Fetch everything anew..
+                    await minecraft.fetchAndSaveUserData(uuid);
+                }
+                // else not yet expired.
+
+            } catch (err) {
+                return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
+            }
+
+        } else {
+            // skin did not yet exist.
+            await minecraft.fetchAndSaveUserData(uuid);
+        }
+
+        try {
+            const file = fs.readFileSync(dataPath, 'utf8');
+
+            res.header("Content-Type",'application/json');
+            res.send(file);
+
+        } catch (err) {
+            return res.status(generic500.status).send(generic500);
+        }
     });
 
 };
