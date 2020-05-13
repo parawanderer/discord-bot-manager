@@ -1,5 +1,6 @@
 const botAPI = require('./axiosPreset');
 const { API_URI_GUILD } = require('./URIs');
+const HTTPErrorHandler = require('../HTTPErrorHandler');
 
 /**
  * Handles everything else to do with the /guild bot API endpoint
@@ -11,7 +12,7 @@ class GuildEndpoint {
         try { 
             return (await botAPI.get(API_URI_GUILD)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -19,7 +20,7 @@ class GuildEndpoint {
         try { 
             return (await botAPI.get(`${API_URI_GUILD}/roles`)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 }

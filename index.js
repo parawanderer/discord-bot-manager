@@ -34,6 +34,7 @@ app.use('/api', SessionExpirer.requestHandler);
 
 require('./routes/authRoutes')(app);
 require('./routes/botApiRoutes')(app);
+require('./routes/minecraftApiRoutes')(app);
 
 
 if (process.env.NODE_ENV === 'production') {

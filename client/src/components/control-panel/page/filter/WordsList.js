@@ -218,12 +218,16 @@ class WordsList extends React.Component {
                             <ol>
                                 <li>
                                     <div className="filter-type exact">Exact</div> matches are matched first. This works by breaking 
-                                    every set of characters separated by a space and considering it a "word", then matching it against 
+                                    every set of characters separated by a space and considering it a "word", converting every word to generic characters (see below), 
+                                    and then matching it against 
                                     every word added as <div className="filter-type exact">Exact</div>.
                                     <br/>
                                     This is the fastest type of matching (and the safest). Spaces are <b>not</b> allowed here.<br/>
                                     This matching is as the name implies (and is case insensitive). If an exact match is found the message
                                      will be filtered/deleted and logged.
+                                     <br/>
+                                     <br/>
+                                     Exact overrules both Whitelist and comes before Containing. 
                                 </li>
                                 <br/>
                                 <li>
@@ -244,7 +248,7 @@ class WordsList extends React.Component {
                                     If in step 1 or step 2 a match was found, this will be matched against the <div className="filter-type whitelist">Whitelist</div>. 
                                     The whitelist overrules both exact and included matches.
                                     <br/><br/>
-                                    E.g. If "assassin" is used in a message, and "ass" is filtered as <div className="filter-type exact">Exact</div>,
+                                    E.g. If "assassin" is used in a message, and "ass" is filtered as <div className="filter-type included">Included</div>,
                                      but "assassin" is added as <div className="filter-type whitelist">Whitelist</div>, then "assassin" specifically will not get filtered. 
                                     If a sentence such as "assassin's ass" is said, "assassin" will be disregarded, but the second stand-alone "ass" 
                                     will be detected and filtered. 

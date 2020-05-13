@@ -1,5 +1,6 @@
 const botAPI = require('./axiosPreset');
 const { API_URI_IMMORTAL } = require('./URIs');
+const HTTPErrorHandler = require('../HTTPErrorHandler');
 
 
 /**
@@ -12,7 +13,7 @@ class ImmortalEndpoint {
         try { 
             return (await botAPI.get(API_URI_IMMORTAL)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -20,7 +21,7 @@ class ImmortalEndpoint {
         try { 
             return (await botAPI.get(`${API_URI_IMMORTAL}/${id}`)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -29,7 +30,7 @@ class ImmortalEndpoint {
         try { 
             return (await botAPI.post(API_URI_IMMORTAL, immortalData)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -43,7 +44,7 @@ class ImmortalEndpoint {
                 return (await botAPI.delete(`${API_URI_IMMORTAL}/${id}`)).data;
             }
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 

@@ -1,2 +1,6 @@
 node_modules
 .env
+cache/mc/detail/*
+cache/mc/head/*
+cache/mc/player/*
+cache/mc/skin/*

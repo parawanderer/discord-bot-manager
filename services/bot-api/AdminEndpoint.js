@@ -1,6 +1,7 @@
 const Admin = require('../../models/Admin');
 const botAPI = require('./axiosPreset');
 const { API_URI_ADMIN } = require('./URIs');
+const HTTPErrorHandler = require('../HTTPErrorHandler');
 
 /**
  * Handles everything to do with /admin bot API endpoint
@@ -24,7 +25,7 @@ class AdminEndpoint {
             return false;
 
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     }   
 
@@ -36,7 +37,7 @@ class AdminEndpoint {
 
         } catch (e) { 
             if (e.response.status === 404) return false; // server responded with 404, admin does not exist
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     }
 
@@ -48,7 +49,7 @@ class AdminEndpoint {
             return new Admin(response.data);
 
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     }
 
@@ -66,7 +67,7 @@ class AdminEndpoint {
             return new Admin(response.data);
 
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     }
 }

@@ -1,6 +1,6 @@
 const generateToken = require('../services/randomTokenGenerator');
 const { generateDiscordOAuthURL, fetchUserToken, fetchUserData } = require('../services/discordOAUTH2');
-const { AdminEndpoint } = require('../services/bot_api');
+const { AdminEndpoint } = require('../services/bot-api');
 const limitLogins = require('../middlewares/limitLogins');
 const { addError, clearError } = require('../services/sessionError');
 

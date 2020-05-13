@@ -1,5 +1,6 @@
 const botAPI = require('./axiosPreset');
 const { API_URI_PUNISHMENTS } = require('./URIs');
+const HTTPErrorHandler = require('../HTTPErrorHandler');
 
 
 /**
@@ -13,7 +14,7 @@ class PunishmentsEndpoint {
         try { 
             return (await botAPI.get(`${API_URI_PUNISHMENTS}/history`)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -29,7 +30,7 @@ class PunishmentsEndpoint {
 
             return (await botAPI.post(`${API_URI_PUNISHMENTS}/history/search`, searchParams)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -37,7 +38,7 @@ class PunishmentsEndpoint {
         try { 
             return (await botAPI.get(`${API_URI_PUNISHMENTS}/history/${userID}`)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -50,7 +51,7 @@ class PunishmentsEndpoint {
         try { 
             return (await botAPI.put(`${API_URI_PUNISHMENTS}/history/${userID}`, action)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -58,7 +59,7 @@ class PunishmentsEndpoint {
         try { 
             return (await botAPI.get(`${API_URI_PUNISHMENTS}/punishment/${id}`)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -66,7 +67,7 @@ class PunishmentsEndpoint {
         try { 
             return (await botAPI.delete(`${API_URI_PUNISHMENTS}/punishment/${id}`)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 

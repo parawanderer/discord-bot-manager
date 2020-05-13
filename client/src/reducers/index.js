@@ -8,6 +8,7 @@ import configReducer from './configReducer';
 import rulesReducer from './rulesReducer';
 import severitiesReducer from './severitiesReducer';
 import filterReducer from './filterReducer';
+import immortalsReducer from './immortalsReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -17,5 +18,6 @@ export default combineReducers({
     config: configReducer,
     rules: rulesReducer,
     severities: severitiesReducer,
-    filter : filterReducer
+    filter : filterReducer,
+    immortal: immortalsReducer
 });

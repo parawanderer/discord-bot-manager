@@ -140,8 +140,11 @@ class SeverityInfo extends React.Component {
         // added_b
         // props.onDeleteButtonpressCallback
         // props.onEditButtonpressCallback
+        const { sev } = this.props;
 
-        if (!this.props.sev) return null;
+        if (!sev) return null;
+
+        const isSev1Mute = sev.type_raw === 1 && sev.severity === 1;
 
         return (
             <div className="severity-info">
@@ -149,7 +152,7 @@ class SeverityInfo extends React.Component {
                 {this.renderInfoBlock()}
                 <div className="severity-control-block">
                     <Button icon={<i className="fas fa-edit"></i>} text="Edit" onClick={this.props.onEditButtonpressCallback} classes="edit-type" />
-                    <Button icon={<i className="fas fa-trash-alt"></i>} text="Remove" onClick={this.props.onDeleteButtonpressCallback} classes="delete-type" />
+                    <Button icon={<i className="fas fa-trash-alt"></i>} text="Remove" onClick={this.props.onDeleteButtonpressCallback} classes="delete-type" disabled={isSev1Mute} />
                 </div>
             </div>
         );

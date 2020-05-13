@@ -25,7 +25,10 @@ import {
     UPDATE_FILTERED_WORD,
     ADD_WHITELISTED_LINK,
     DELETE_WHITELISTED_LINK,
-    UPDATE_WHITELISTED_LINK
+    UPDATE_WHITELISTED_LINK,
+    FETCH_IMMORTALS,
+    DEACTIVATE_IMMORTAL,
+    FETCH_IMMORTAL
 } from './types';
 
 
@@ -287,6 +290,33 @@ export const updateWhitelistedLink = (id, newData) =>
         const response = await axios.put(`/api/filter/links/${id}`, newData);
         dispatch({
             type: UPDATE_WHITELISTED_LINK,
+            payload: response.data
+        });
+    };
+
+export const fetchImmortals = () => 
+    async(dispatch, getState) => {
+        const response = await axios.get('/api/immortal');
+        dispatch({
+            type: FETCH_IMMORTALS,
+            payload: response.data
+        });
+    };
+
+export const fetchImmortal = (id) => 
+    async(dispatch, getState) => {
+        const response = await axios.get(`/api/immortal/${id}`);
+        dispatch({
+            type: FETCH_IMMORTAL,
+            payload: response.data
+        });
+    };
+
+export const deactivateImmortal = (id) =>
+    async(dispatch, getState) => {
+        const response = await axios.delete(`/api/immortal/${id}`);
+        dispatch({
+            type: DEACTIVATE_IMMORTAL,
             payload: response.data
         });
     };

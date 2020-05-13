@@ -2150,3 +2150,29 @@ button[disabled] {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+
+.immortal-list {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 30px 10px;
+}
+
+
+#immortal {
+    margin: 30px 50px;
+}
+
+
+#immortal .left {
+    width: 65%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#immortal .right {
+    width: 35%;
+    display: inline-block;
+    vertical-align: top;
+}

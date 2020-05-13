@@ -10,16 +10,17 @@ class Button extends React.Component {
 
     render() {
 
-        this.icon = this.props.icon || null;
-        this.text = this.props.text || "Button";
-        this.onClick = this.props.onClick || null;
-        this.classes = this.props.classes || '';
-        this.idItem = this.props.id || null;
+        const icon = this.props.icon || null;
+        const text = this.props.text || "Button";
+        const onClick = this.props.onClick || null;
+        const classes = this.props.classes || '';
+        const idItem = this.props.id || null;
+        const disabled = this.props.disabled || false;
 
         return (
-        <button className={`button ${this.classes}`} onClick={this.onClick} id={this.idItem}>
-            {this.icon}
-            {this.text}
+        <button className={`button ${classes}` + (disabled ? ' disabled' : '')} onClick={onClick} id={idItem} disabled={disabled}>
+            {icon}
+            {text}
         </button>);
     }
 }

@@ -1,5 +1,6 @@
 const botAPI = require('./axiosPreset');
 const { API_URI_FILTER } = require('./URIs');
+const HTTPErrorHandler = require('../HTTPErrorHandler');
 
 
 /**
@@ -9,10 +10,10 @@ class FilterEndpoint {
     botAPI = botAPI;
 
     getAllWords = async () => {
-        try { 
+        try {
             return (await botAPI.get(`${API_URI_FILTER}/words`)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -20,7 +21,7 @@ class FilterEndpoint {
         try { 
             return (await botAPI.get(`${API_URI_FILTER}/words/${id}`)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -38,7 +39,7 @@ class FilterEndpoint {
             };
             return (await botAPI.post(`${API_URI_FILTER}/words`, postData)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -46,7 +47,7 @@ class FilterEndpoint {
         try { 
             return (await botAPI.delete(`${API_URI_FILTER}/words/${id}`)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -60,7 +61,7 @@ class FilterEndpoint {
             };
             return (await botAPI.put(`${API_URI_FILTER}/words/${id}`, postData)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -70,7 +71,7 @@ class FilterEndpoint {
         try { 
             return (await botAPI.get(`${API_URI_FILTER}/links`)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -78,7 +79,7 @@ class FilterEndpoint {
         try { 
             return (await botAPI.get(`${API_URI_FILTER}/links/${id}`)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -86,7 +87,7 @@ class FilterEndpoint {
         try { 
             return (await botAPI.delete(`${API_URI_FILTER}/links/${id}`)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -95,7 +96,7 @@ class FilterEndpoint {
             const postData = data;
             return (await botAPI.post(`${API_URI_FILTER}/links`, postData)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -107,7 +108,7 @@ class FilterEndpoint {
             };
             return (await botAPI.put(`${API_URI_FILTER}/links/${id}`, postData)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 

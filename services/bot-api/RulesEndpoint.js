@@ -1,5 +1,6 @@
 const botAPI = require('./axiosPreset');
 const { API_URI_RULES } = require('./URIs');
+const HTTPErrorHandler = require('../HTTPErrorHandler');
 
 /**
  * Handles everything to do with /rules bot API endpoint
@@ -11,7 +12,7 @@ class RulesEndpoint {
         try { 
             return (await botAPI.get(API_URI_RULES)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 
@@ -20,7 +21,7 @@ class RulesEndpoint {
         try { 
             return (await botAPI.put(API_URI_RULES, newData)).data;
         } catch (e) {
-            return null;
+            return HTTPErrorHandler.makeGenericError(e);
         }
     };
 }

@@ -8,7 +8,7 @@ import PageTop from './PageTop';
 import Home from '../page/Home';
 import Admins from '../page/admins/Admins';
 import Configuration from '../page/config/Configuration';
-import Immortal from '../page/Immortal';
+import Immortal from '../page/immortal/Immortal';
 import Punishments from '../page/Punishments';
 import PunishmentSystem from '../page/severity/PunishmentSystem';
 import Rules from '../page/rules/Rules';
