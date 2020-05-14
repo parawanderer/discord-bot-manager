@@ -78,6 +78,7 @@ module.exports = (app) => {
             }
         } else {
             // head did not yet exist.
+            console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
             await minecraft.fetchAndSaveUserData(uuid);
         }
 
@@ -95,7 +96,7 @@ module.exports = (app) => {
             });
         } catch (e) {
             // there was an error reading the image
-            console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
+            console.error(`Error handling head image for minecraft user ${uuid}`, err);
             return res.status(generic500.status).send(generic500);
         }
     });
@@ -132,10 +133,12 @@ module.exports = (app) => {
                 // else not yet expired.
                 
             } catch (err) {
+                console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
                 return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
             }
         } else {
             // skin did not yet exist.
+            console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
             await minecraft.fetchAndSaveUserData(uuid);
         }
 
@@ -150,6 +153,7 @@ module.exports = (app) => {
 
         } catch (e) {
             // there was an error reading the image
+            console.error(`Error sending back skin image for minecraft user ${uuid}`, err);
             return res.status(generic500.status).send(generic500);
         }
     });
@@ -164,7 +168,7 @@ module.exports = (app) => {
     requireLogin,
     async (req, res) => {
         
-        let uuid = req.params.uuid;
+        let uuid = req.params.uuid.replace('.json','');
 
         // verify that uuid is valid?
         if (!MinecraftUserEndpoint.isValidUUID(uuid)) {
@@ -186,10 +190,12 @@ module.exports = (app) => {
                 // else not yet expired.
                 
             } catch (err) {
+                console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
                 return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
             }
         } else {
             // skin did not yet exist.
+            console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
             await minecraft.fetchAndSaveUserData(uuid);
         }
 
@@ -200,6 +206,7 @@ module.exports = (app) => {
             res.send(file);
 
         } catch (err) {
+            console.error(`Error sending back player info for minecraft user ${uuid}`, err);
             return res.status(generic500.status).send(generic500);
         }
     });
@@ -215,7 +222,7 @@ module.exports = (app) => {
     requireLogin,
     async (req, res) => {
         
-        let uuid = req.params.uuid;
+        let uuid = req.params.uuid.replace('.json','');
 
         // verify that uuid is valid?
         if (!MinecraftUserEndpoint.isValidUUID(uuid)) {
@@ -238,11 +245,13 @@ module.exports = (app) => {
                 // else not yet expired.
 
             } catch (err) {
+                console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
                 return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
             }
 
         } else {
             // skin did not yet exist.
+            console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
             await minecraft.fetchAndSaveUserData(uuid);
         }
 
@@ -253,6 +262,7 @@ module.exports = (app) => {
             res.send(file);
 
         } catch (err) {
+            console.error(`Error sending back player detail for minecraft user ${uuid}`, err);
             return res.status(generic500.status).send(generic500);
         }
     });

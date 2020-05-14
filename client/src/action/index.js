@@ -327,7 +327,7 @@ export const fetchImmortal = (id) =>
 
 export const deactivateImmortal = (id) =>
     async(dispatch, getState) => {
-        const response = await axios.delete(`/api/immortal/${id}`, { data: { remove_link : true }});
+        const response = await axios.delete(`/api/immortal/${id}`, { data: { removeLink : true }});
         dispatch({
             type: DEACTIVATE_IMMORTAL,
             payload: response.data

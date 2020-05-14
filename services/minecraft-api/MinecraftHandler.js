@@ -111,7 +111,7 @@ class MinecraftHandler {
      * 
      * @param {string} uuid         String UUID of the minecraft user to fetch the data for
      * 
-     * @returns {void} void
+     * @returns {Promise<void>} void
      */
     fetchAndSaveUserData = async (uuid) => {
         if (!MinecraftUserEndpoint.isValidUUID(uuid)) 
