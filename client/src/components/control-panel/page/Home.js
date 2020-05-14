@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 
-import { fetchGuildInfo } from '../../../action';
+import { fetchGuildInfo, fetchRecentPunishments } from '../../../action';
 
 import Loading from '../generic/Loading';
 import DiscordServer from './dashboard/DiscordServer';
@@ -13,6 +13,7 @@ class Home extends React.Component {
 
     componentDidMount() {
         this.props.fetchGuildInfo();
+        this.props.fetchRecentPunishments();
     }
 
     renderInfo() {
@@ -53,4 +54,4 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
-export default connect(mapStateToProps, { fetchGuildInfo })(Home);
+export default connect(mapStateToProps, { fetchGuildInfo, fetchRecentPunishments })(Home);

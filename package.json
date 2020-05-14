@@ -9,6 +9,9 @@
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
+  "nodemonConfig": {
+    "ignore": ["cache/*"]
+  },
   "author": "Shane B.",
   "license": "ISC",
   "dependencies": {

@@ -26,6 +26,9 @@ class MinecraftHandler {
     
     static MAX_CACHE_TIME_SKINS = MAX_CACHE_TIME_SKINS;
     static MAX_CACHE_TIME_PLAYER_INFO = MAX_CACHE_TIME_PLAYER_INFO;
+    inProcess = [];
+    debugRequestHistory = {};
+    lastRequestHistory = {};
 
 
     /**
@@ -58,6 +61,8 @@ class MinecraftHandler {
 
     /**
      * Internal helper. Will fetch the given URL as an arraybuffer
+     * 
+     * @returns {AxiosPromise<any>}
      */
     static fetchImage = async (url) => {
         const config = {
@@ -105,6 +110,19 @@ class MinecraftHandler {
     }
 
 
+    _addToInProcess = (uuid) => {
+        this.inProcess.push(uuid);
+    }
+
+    _hasInProcess = (uuid) => {
+        return this.inProcess.includes(uuid);
+    }
+
+    _removeInProcess = (uuid) => {
+        const index = this.inProcess.indexOf(uuid);
+        this.inProcess.splice(index, 1);
+    }
+
     /**
      * This has multiple points at which it could throw an exception and die. Thus the exception must be catched for it externally.
      * Logically this is structured in such a way as to minimise issues if the process stops somewhere along the way.
@@ -117,10 +135,44 @@ class MinecraftHandler {
         if (!MinecraftUserEndpoint.isValidUUID(uuid)) 
             throw Error(`Invalid uuid argument "${uuid}" provided to MinecraftHandler#fetchAndSaveUserData()`);
 
+        uuid = MinecraftUserEndpoint.stripDashesFromUUID(uuid);
+
         // fetch mojang API response...
-        const data = await api.getUserData(uuid);
-        if (HTTPErrorHandler.isError(data)) 
-            throw Error(`Error fetching user data for "${uuid}" in MinecraftHandler#fetchAndSaveUserData()`, data);
+
+         console.log("Preparing to fetch for", uuid); // DEBUG
+
+        if (this._hasInProcess(uuid)) return; // don't make multiple calls while the other one has 
+        // not yet finished for the same user, or we will get request banned from the mojang API
+        
+        let data;
+        this._addToInProcess(uuid);
+
+        try {
+            data = await api.getUserData(uuid);
+        } catch (e) {}
+
+        this._removeInProcess(uuid);
+
+        if (HTTPErrorHandler.isError(data)){
+            const error = data; // data.response && data.response.request && data.response.request.data ? data.response.request.data  : data
+            const errorDesc = `Error fetching user data for "${uuid}" in MinecraftHandler#fetchAndSaveUserData(): Returned status code ${error.status}`;
+            console.error(errorDesc, error.data);
+            throw Error(errorDesc);
+        }
+
+
+        // Debug block
+        console.log("this.lastRequestHistory", this.lastRequestHistory); // DEBUG
+        this.debugRequestHistory[uuid] = (this.debugRequestHistory[uuid] || 0) +1; // DEBUG
+        console.log("this.debugRequestHistory", this.debugRequestHistory); // DEBUG
+        const now = new Date().toString(); // DEBUG
+        console.log("Now", now); // DEBUG
+        console.log("last request:", this.lastRequestHistory[uuid]); // DEBUG
+        console.log("last global request", this.lastRequestHistory['last global request']) // DEBUG
+        this.lastRequestHistory[uuid] = `${now} (${uuid})`; // DEBUG
+        this.lastRequestHistory['last global request'] = `${now} (${uuid})`; // DEBUG
+        // end debug block
+
 
         /**
          * {

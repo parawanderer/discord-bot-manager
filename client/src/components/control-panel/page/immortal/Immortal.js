@@ -8,9 +8,12 @@ import ImmortalList from './ImmortalList';
 import SelectedImmortalUser from './SelectedImmortalUser';
 import InputValidator from '../../../../utils/InputValidator';
 import ImmortalUnlink from './ImmortalUnlink';
+import MinecraftStatus from './MinecraftStatus';
 
 
 class Immortal extends React.Component {
+
+    _allowIndividualFetches = false;
 
     state = {
         selectedImmortal: null,
@@ -19,13 +22,11 @@ class Immortal extends React.Component {
     };
 
     componentDidMount = async () => {
+
+        this._allowIndividualFetches = false;
         await this.props.fetchImmortals();
-
-        // const { immortal } = this.props;
-
-        // for (let i = 0; i < immortal.length; i++) {
-        //     this.props.fetchMinecraftPlayer(InputValidator.stripDashesFromUUID(immortal[i].minecraft_uuid));
-        // }
+        this._allowIndividualFetches= true;
+        
     };
 
     getUserIfExists = (discordId) => {
@@ -52,7 +53,7 @@ class Immortal extends React.Component {
         }
 
         // fetch minecraft data if we do not have details for the minecraft user yet...
-        if (!user.minecraft_info) {
+        if (!user.minecraft_info && this._allowIndividualFetches) {
             if (InputValidator.isValidUUID(user.minecraft_uuid)) {
                 await this.props.fetchMinecraftPlayer(InputValidator.stripDashesFromUUID(user.minecraft_uuid));
             } else {
@@ -101,6 +102,8 @@ class Immortal extends React.Component {
         return (
             <React.Fragment>
                 <div id="immortal">
+                    <MinecraftStatus/>
+
                     <div className="left">
                         <ImmortalList 
                             immortals={immortal} 

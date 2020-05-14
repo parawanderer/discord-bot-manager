@@ -7,19 +7,19 @@ const { MinecraftUserEndpoint } = require('../services/minecraft-api/MinecraftUs
 const { MinecraftHandler, instance : minecraft } = require('../services/minecraft-api/MinecraftHandler');
 
 
-const generic500 = {
+const GENERIC_500 = {
     status: 500,
     message: 'Internal Server Error',
     description: 'Internal Server Error'
 };
 
-const invalidSizeArgError = {
+const INVALID_SIZE_ARG_ERROR = {
     status: 400,
     message: 'Bad Request',
     description: 'Path parameter "size" could not be parsed to a valid integer'
 };
 
-const sizeTooLargeError = {
+const SIZE_TOO_LARGE_ERROR = {
     status: 400,
     message: 'Bad Request',
     description: 'Parameter "size" was too large!'
@@ -29,7 +29,48 @@ const sizeTooLargeError = {
 const MAX_SIZE_ARG = 1000;
 const MAX_BROWSER_IMAGE_CACHE = 86400;
 
+
 module.exports = (app) => {
+
+
+    /**
+     * Generic handler for fetching/re-fetching data
+     * 
+     * @param {string} dataPath      Path that the given data is supposed to be located at
+     * @param {boolean} isImage       Whether or not the data is an image (longer caching periods)
+     * @param {string} uuid       uuid of the given user (for erroring)
+     */
+    const refreshData = async (dataPath, isImage = false, uuid) => {
+        const isExpiredHandler = isImage ? MinecraftHandler.isExpiredSkin : MinecraftHandler.isExpiredInfo;
+
+        if (fs.existsSync(dataPath)) {
+            // check if we've already saved the given file?
+            try {
+                const stats = fs.statSync(dataPath);
+
+                if (isExpiredHandler(stats.mtimeMs)) {
+                    // expired skin. Fetch everything anew..
+                    await minecraft.fetchAndSaveUserData(uuid);
+                }
+                // else not yet expired.
+                
+            } catch (err) {
+                console.error(`Error fetching MC "${uuid}":`, err);
+                return false;
+            }
+        } else {
+            // file did not yet exist.
+            try {
+                await minecraft.fetchAndSaveUserData(uuid);
+            }  catch (err) {
+                console.error(`Error fetching MC "${uuid}":`, err);
+                return false;
+            }
+        }
+        return true;
+    };
+
+
 
     /**
      * Get user head by UUID
@@ -52,42 +93,55 @@ module.exports = (app) => {
         }
         // verify that request params are valid?
         if (isNaN(size) || size <= 0) {
-            return res.status(invalidSizeArgError.status).send(invalidSizeArgError);
+            return res.status(INVALID_SIZE_ARG_ERROR.status).send(INVALID_SIZE_ARG_ERROR);
         }
         else if (size > MAX_SIZE_ARG) {
-            return res.status(sizeTooLargeError.status).send(sizeTooLargeError);
+            return res.status(SIZE_TOO_LARGE_ERROR.status).send(SIZE_TOO_LARGE_ERROR);
         }
 
         uuid = MinecraftUserEndpoint.stripDashesFromUUID(uuid);
         const dataPath = MinecraftHandler.getHeadPath(uuid);
 
-        if (fs.existsSync(dataPath)) {
-            // check if we've already saved the given head?
-            try {
-                const stats = fs.statSync(dataPath);
+        const dataRefreshSuccess = await refreshData(dataPath,true,uuid);
 
-                if (MinecraftHandler.isExpiredSkin(stats.mtimeMs)) {
-                    // expired skin. Fetch everything anew..
-                    await minecraft.fetchAndSaveUserData(uuid);
-                }
-                // else not yet expired.
-                
-            } catch (err) {
-                console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
-                return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
+        if (!dataRefreshSuccess) {
+            // check if we at least have the file right now to send back as a fallback?
+            if (!fs.existsSync(dataPath)) {
+                // this is the only case where we will definitively return an 500 error as there's no fallback to return.
+                return res.status(GENERIC_500.status).send(GENERIC_500);
             }
-        } else {
-            // head did not yet exist.
-            console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
-            await minecraft.fetchAndSaveUserData(uuid);
         }
+
+        // if (fs.existsSync(dataPath)) {
+        //     // check if we've already saved the given head?
+        //     try {
+        //         const stats = fs.statSync(dataPath);
+
+        //         if (MinecraftHandler.isExpiredSkin(stats.mtimeMs)) {
+        //             // expired skin. Fetch everything anew..
+        //             await minecraft.fetchAndSaveUserData(uuid);
+        //         }
+        //         // else not yet expired.
+                
+        //     } catch (err) {
+        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
+        //         return res.status(GENERIC_500.status).send(GENERIC_500); // there was an error retrieving stats.
+        //     }
+        // } else {
+        //     // head did not yet exist.
+        //     try {
+        //         await minecraft.fetchAndSaveUserData(uuid);
+        //     }  catch (err) {
+        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.response && err.response.data ? err.response.data  : err);
+        //     }
+        // }
 
         // get head image and render up to correct scale
         try {
             const image = await Jimp.read(dataPath);
             image.resize(size, size, Jimp.RESIZE_NEAREST_NEIGHBOR).getBuffer(Jimp.MIME_PNG, (err, buffer) =>{ 
                 //handle err
-                if (err) return res.status(generic500.status).send(generic500);
+                if (err) return res.status(GENERIC_500.status).send(GENERIC_500);
 
                 // send back image at the size requested (or default size 50)
                 res.set('Content-Type', Jimp.MIME_PNG);
@@ -97,7 +151,7 @@ module.exports = (app) => {
         } catch (e) {
             // there was an error reading the image
             console.error(`Error handling head image for minecraft user ${uuid}`, err);
-            return res.status(generic500.status).send(generic500);
+            return res.status(GENERIC_500.status).send(GENERIC_500);
         }
     });
 
@@ -121,26 +175,40 @@ module.exports = (app) => {
         uuid = MinecraftUserEndpoint.stripDashesFromUUID(uuid);
         const dataPath = MinecraftHandler.getSkinPath(uuid);
 
-        if (fs.existsSync(dataPath)) {
-            // check if we've already saved the given skin?
-            try {
-                const stats = fs.statSync(dataPath);
+        const dataRefreshSuccess = await refreshData(dataPath,true,uuid);
 
-                if (MinecraftHandler.isExpiredSkin(stats.mtimeMs)) {
-                    // expired skin. Fetch everything anew..
-                    await minecraft.fetchAndSaveUserData(uuid);
-                }
-                // else not yet expired.
-                
-            } catch (err) {
-                console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
-                return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
+        if (!dataRefreshSuccess) {
+            // check if we at least have the file right now to send back as a fallback?
+            if (!fs.existsSync(dataPath)) {
+                // this is the only case where we will definitively return an 500 error as there's no fallback to return.
+                return res.status(GENERIC_500.status).send(GENERIC_500);
             }
-        } else {
-            // skin did not yet exist.
-            console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
-            await minecraft.fetchAndSaveUserData(uuid);
         }
+
+
+        // if (fs.existsSync(dataPath)) {
+        //     // check if we've already saved the given skin?
+        //     try {
+        //         const stats = fs.statSync(dataPath);
+
+        //         if (MinecraftHandler.isExpiredSkin(stats.mtimeMs)) {
+        //             // expired skin. Fetch everything anew..
+        //             await minecraft.fetchAndSaveUserData(uuid);
+        //         }
+        //         // else not yet expired.
+                
+        //     } catch (err) {
+        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
+        //         return res.status(GENERIC_500.status).send(GENERIC_500); // there was an error retrieving stats.
+        //     }
+        // } else {
+        //     // skin did not yet exist.
+        //     try {
+        //         await minecraft.fetchAndSaveUserData(uuid);
+        //     }  catch (err) {
+        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
+        //     }
+        // }
 
         // get skin image and render up to correct scale
         try {
@@ -154,7 +222,7 @@ module.exports = (app) => {
         } catch (e) {
             // there was an error reading the image
             console.error(`Error sending back skin image for minecraft user ${uuid}`, err);
-            return res.status(generic500.status).send(generic500);
+            return res.status(GENERIC_500.status).send(GENERIC_500);
         }
     });
 
@@ -178,26 +246,40 @@ module.exports = (app) => {
         uuid = MinecraftUserEndpoint.stripDashesFromUUID(uuid);
         const dataPath = MinecraftHandler.getPlayerPath(uuid);
 
-        if (fs.existsSync(dataPath)) {
-            // check if we've already saved the given player data?
-            try {
-                const stats = fs.statSync(dataPath);
+        const dataRefreshSuccess = await refreshData(dataPath,false, uuid);
 
-                if (MinecraftHandler.isExpiredInfo(stats.mtimeMs)) {
-                    // expired skin. Fetch everything anew..
-                    await minecraft.fetchAndSaveUserData(uuid);
-                }
-                // else not yet expired.
-                
-            } catch (err) {
-                console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
-                return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
+        if (!dataRefreshSuccess) {
+            // check if we at least have the file right now to send back as a fallback?
+            if (!fs.existsSync(dataPath)) {
+                // this is the only case where we will definitively return an 500 error as there's no fallback to return.
+                return res.status(GENERIC_500.status).send(GENERIC_500);
             }
-        } else {
-            // skin did not yet exist.
-            console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
-            await minecraft.fetchAndSaveUserData(uuid);
         }
+
+
+        // if (fs.existsSync(dataPath)) {
+        //     // check if we've already saved the given player data?
+        //     try {
+        //         const stats = fs.statSync(dataPath);
+
+        //         if (MinecraftHandler.isExpiredInfo(stats.mtimeMs)) {
+        //             // expired skin. Fetch everything anew..
+        //             await minecraft.fetchAndSaveUserData(uuid);
+        //         }
+        //         // else not yet expired.
+                
+        //     } catch (err) {
+        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
+        //         return res.status(GENERIC_500.status).send(GENERIC_500); // there was an error retrieving stats.
+        //     }
+        // } else {
+        //     // skin did not yet exist.
+        //     try {
+        //         await minecraft.fetchAndSaveUserData(uuid);
+        //     }  catch (err) {
+        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
+        //     }
+        // }
 
         try {
             const file = fs.readFileSync(dataPath, 'utf8');
@@ -207,7 +289,7 @@ module.exports = (app) => {
 
         } catch (err) {
             console.error(`Error sending back player info for minecraft user ${uuid}`, err);
-            return res.status(generic500.status).send(generic500);
+            return res.status(GENERIC_500.status).send(GENERIC_500);
         }
     });
 
@@ -232,28 +314,41 @@ module.exports = (app) => {
         uuid = MinecraftUserEndpoint.stripDashesFromUUID(uuid);
         const dataPath = MinecraftHandler.getDetailPath(uuid);
 
-        if (fs.existsSync(dataPath)) {
-            // check if we've already saved the given player data?
+        const dataRefreshSuccess = await refreshData(dataPath,false, uuid);
 
-            try {
-                const stats = fs.statSync(dataPath);
-
-                if (MinecraftHandler.isExpiredInfo(stats.mtimeMs)) {
-                    // expired skin. Fetch everything anew..
-                    await minecraft.fetchAndSaveUserData(uuid);
-                }
-                // else not yet expired.
-
-            } catch (err) {
-                console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
-                return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
+        if (!dataRefreshSuccess) {
+            // check if we at least have the file right now to send back as a fallback?
+            if (!fs.existsSync(dataPath)) {
+                // this is the only case where we will definitively return an 500 error as there's no fallback to return.
+                return res.status(GENERIC_500.status).send(GENERIC_500);
             }
-
-        } else {
-            // skin did not yet exist.
-            console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
-            await minecraft.fetchAndSaveUserData(uuid);
         }
+
+        // if (fs.existsSync(dataPath)) {
+        //     // check if we've already saved the given player data?
+
+        //     try {
+        //         const stats = fs.statSync(dataPath);
+
+        //         if (MinecraftHandler.isExpiredInfo(stats.mtimeMs)) {
+        //             // expired skin. Fetch everything anew..
+        //             await minecraft.fetchAndSaveUserData(uuid);
+        //         }
+        //         // else not yet expired.
+
+        //     } catch (err) {
+        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
+        //         return res.status(GENERIC_500.status).send(GENERIC_500); // there was an error retrieving stats.
+        //     }
+
+        // } else {
+        //     // skin did not yet exist.
+        //     try {
+        //         await minecraft.fetchAndSaveUserData(uuid);
+        //     }  catch (err) {
+        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
+        //     }
+        // }
 
         try {
             const file = fs.readFileSync(dataPath, 'utf8');
@@ -263,7 +358,7 @@ module.exports = (app) => {
 
         } catch (err) {
             console.error(`Error sending back player detail for minecraft user ${uuid}`, err);
-            return res.status(generic500.status).send(generic500);
+            return res.status(GENERIC_500.status).send(GENERIC_500);
         }
     });
 

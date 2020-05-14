@@ -9,6 +9,7 @@ import rulesReducer from './rulesReducer';
 import severitiesReducer from './severitiesReducer';
 import filterReducer from './filterReducer';
 import immortalsReducer from './immortalsReducer';
+import mcStatusReducer from './mcStatusReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -19,5 +20,6 @@ export default combineReducers({
     rules: rulesReducer,
     severities: severitiesReducer,
     filter : filterReducer,
-    immortal: immortalsReducer
+    immortal: immortalsReducer,
+    mc_status : mcStatusReducer
 });

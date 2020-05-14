@@ -39,6 +39,8 @@ class MinecraftUserEndpoint {
     /**
      * Only one request per minute is allowed for a given UUID
      * 
+     * {@link https://wiki.vg/Mojang_API#UUID_-.3E_Profile_.2B_Skin.2FCape}
+     * 
      * @param minecraftUUID         String UUID of user
      */
     getUserData = async (minecraftUUID) => {
@@ -51,7 +53,7 @@ class MinecraftUserEndpoint {
         try {
             return (await api.get(`session/minecraft/profile/${uuid}`)).data;
         } catch (e) {
-            console.error("Error fetching Minecraft User Info", e);
+            console.error(`[${new Date().toISOString()}] Error fetching Minecraft User Info for "${uuid}"`);
             return HTTPErrorHandler.makeGenericError(e);
         }
     }

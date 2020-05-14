@@ -45,7 +45,7 @@ class ImmortalList extends React.Component {
                         <tbody>
                         <tr>
                             <th>
-                                Active
+                                Linking State
                             </th>
                             <th>
                                 Minecraft Info

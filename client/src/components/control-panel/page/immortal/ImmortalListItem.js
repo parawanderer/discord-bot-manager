@@ -59,6 +59,13 @@ const ImmortalListItem = (props) => {
                 >
                     <i className="fas fa-unlink"></i>
                 </button>
+                <a href={`https://www.mineplex.com/admin.php?users/${websiteID}/edit`} target="_blank" rel="noopener noreferrer">
+                    <button 
+                        className="immortal-edit-web"
+                    >
+                        <i className="fas fa-edit"></i>
+                    </button>
+                </a>
             </td>
         </tr>
     );

@@ -29,7 +29,8 @@ import {
     FETCH_IMMORTALS,
     DEACTIVATE_IMMORTAL,
     FETCH_IMMORTAL,
-    FETCH_MINECRAFT_PLAYER
+    FETCH_MINECRAFT_PLAYER,
+    FETCH_MINECRAFT_STATUS
 } from './types';
 import InputValidator from '../utils/InputValidator';
 
@@ -304,9 +305,20 @@ export const fetchImmortals = () =>
         for (let i = 0; i < immortalList.length; i++) {
             const immortal = immortalList[i];
             try {
+                // const cleanUUID = InputValidator.stripDashesFromUUID(immortal.minecraft_uuid);
+                // const minecraftData = await axios.get(`/api/mc/player/${cleanUUID}`, { timeout: 1000 * 60 *2 });
+                // immortal['minecraft_info'] = {...minecraftData.data, skin: `/api/mc/head/${cleanUUID}.png?size=60` }
+                
                 const cleanUUID = InputValidator.stripDashesFromUUID(immortal.minecraft_uuid);
-                const minecraftData = await axios.get(`/api/mc/player/${cleanUUID}`, { timeout: 1000 * 60 *2 });
-                immortal['minecraft_info'] = {...minecraftData.data, skin: `/api/mc/head/${cleanUUID}.png?size=60` };
+                axios.get(`/api/mc/player/${cleanUUID}`, { timeout: 1000 * 60 *2 })
+                    .then(response => {
+                        dispatch({
+                            type: FETCH_MINECRAFT_PLAYER,
+                            payload: {...response.data, skin: `/api/mc/head/${cleanUUID}.png?size=60` }
+                        });
+                    })
+                    .catch(err => undefined);
+
             } catch (e) { }
         }
 
@@ -341,6 +353,19 @@ export const fetchMinecraftPlayer = (uuid) =>
             dispatch({
                 type: FETCH_MINECRAFT_PLAYER,
                 payload: {...response.data, skin: `/api/mc/head/${uuid}.png?size=60`}
+            });
+        } catch (e) {
+
+        }
+    };
+
+export const fetchMcApiStatus = (uuid) =>
+    async(dispatch, getState) => {
+        try {
+            const response = await axios.get('https://status.mojang.com/check');
+            dispatch({
+                type: FETCH_MINECRAFT_STATUS,
+                payload: response.data
             });
         } catch (e) {
 
