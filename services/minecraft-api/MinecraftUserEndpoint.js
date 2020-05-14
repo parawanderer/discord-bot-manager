@@ -51,7 +51,7 @@ class MinecraftUserEndpoint {
         try {
             return (await api.get(`session/minecraft/profile/${uuid}`)).data;
         } catch (e) {
-            console.log(e);
+            console.error("Error fetching Minecraft User Info", e);
             return HTTPErrorHandler.makeGenericError(e);
         }
     }

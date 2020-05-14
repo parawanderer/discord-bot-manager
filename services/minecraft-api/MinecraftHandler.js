@@ -14,6 +14,13 @@ const WRITE_OPTIONS = {
     flag: 'w'
 };
 
+/*
+TODO: eventually, it may be a better idea to update to using redis 
+for same reasons as mentioned here: https://github.com/crafatar/crafatar
+
+The tiny 8*8 pixel image files will spam up the storage space by taking out 16Kb blocks that they don't need
+Thus an easier solution may be storing all of this in base 64 strings in a redish hash
+*/
 
 class MinecraftHandler {
     
@@ -21,19 +28,37 @@ class MinecraftHandler {
     static MAX_CACHE_TIME_PLAYER_INFO = MAX_CACHE_TIME_PLAYER_INFO;
 
 
-    static isExpiredSkin = (skinFileCreationTimeNumber = 0) => {
+    /**
+     * Used to check against current time if the creation time (in MS) is an expired or unexpired time
+     * 
+     * @param {number} skinFileCreationTimeNumber       mtime of the skin file
+     * 
+     * @returns {boolean|null}      Boolean if the `skinFileCreationTimeNumber` was provided based on whether 
+     * or not it's considered "expired", null if `skinFileCreationTimeNumber` was not a valid number.
+     */
+    static isExpiredSkin = (skinFileCreationTimeNumber) => {
         if (typeof skinFileCreationTimeNumber !== typeof 0) return null;
         const now = new Date().getTime();
-        console.log("Now", now, "skinFileCreationTimeNumber + MAX_CACHE_TIME_SKINS", skinFileCreationTimeNumber + MAX_CACHE_TIME_SKINS);
         return (skinFileCreationTimeNumber + MAX_CACHE_TIME_SKINS) < now;
     };
 
-    static isExpiredInfo = (infoFileCreationTimeNumber = 0) => {
+    /**
+     * Used to check against current time if the creation time (in MS) is an expired or unexpired time
+     * 
+     * @param {number} infoFileCreationTimeNumber       mtime of the info file
+     * 
+     * @returns {boolean|null}      Boolean if the `skinFileCreationTimeNumber` was provided based on whether 
+     * or not it's considered "expired", null if `skinFileCreationTimeNumber` was not a valid number.
+     */
+    static isExpiredInfo = (infoFileCreationTimeNumber) => {
         if (typeof infoFileCreationTimeNumber !== typeof 0) return null;
         const now = new Date().getTime();
         return (infoFileCreationTimeNumber + MAX_CACHE_TIME_PLAYER_INFO) < now;
     };
 
+    /**
+     * Internal helper. Will fetch the given URL as an arraybuffer
+     */
     static fetchImage = async (url) => {
         const config = {
             url,
@@ -45,6 +70,8 @@ class MinecraftHandler {
 
     /**
      * this path is relative to the program entry point (root level index.js in this case)
+     * 
+     * @param {string} uuid         String UUID of the minecraft user
      */
     static getDetailPath = (uuid) => {
         return `cache/mc/detail/${uuid}.json`;
@@ -52,6 +79,8 @@ class MinecraftHandler {
 
     /**
      * this path is relative to the program entry point (root level index.js in this case)
+     * 
+     * @param {string} uuid         String UUID of the minecraft user
      */
     static getPlayerPath = (uuid) => {
         return `cache/mc/player/${uuid}.json`;
@@ -59,6 +88,8 @@ class MinecraftHandler {
 
     /**
      * this path is relative to the program entry point (root level index.js in this case)
+     * 
+     * @param {string} uuid         String UUID of the minecraft user
      */
     static getHeadPath = (uuid) => {
         return `cache/mc/head/${uuid}.png`;
@@ -66,12 +97,22 @@ class MinecraftHandler {
 
     /**
      * this path is relative to the program entry point (root level index.js in this case)
+     * 
+     * @param {string} uuid         String UUID of the minecraft user
      */
     static getSkinPath = (uuid) => {
         return `cache/mc/skin/${uuid}.png`;
     }
 
 
+    /**
+     * This has multiple points at which it could throw an exception and die. Thus the exception must be catched for it externally.
+     * Logically this is structured in such a way as to minimise issues if the process stops somewhere along the way.
+     * 
+     * @param {string} uuid         String UUID of the minecraft user to fetch the data for
+     * 
+     * @returns {void} void
+     */
     fetchAndSaveUserData = async (uuid) => {
         if (!MinecraftUserEndpoint.isValidUUID(uuid)) 
             throw Error(`Invalid uuid argument "${uuid}" provided to MinecraftHandler#fetchAndSaveUserData()`);
@@ -110,7 +151,7 @@ class MinecraftHandler {
         const hasSkin = !!textureDetail.textures['SKIN']; // check if there is a skin (may not exist)
         const isAlex = hasSkin && textureDetail.textures['SKIN'].metadata && textureDetail.textures['SKIN'].metadata.model === "slim";
 
-        const playerData = {id, name, hasSkin, isAlex : isAlex}; // we will now handle "/player" data, which is a simplified (internal usage) version of "detail"
+        const playerData = {id, name, hasSkin, isAlex}; // we will now handle "/player" data, which is a simplified (internal usage) version of "detail"
 
         fs.writeFileSync(pathPlayer, JSON.stringify(playerData), WRITE_OPTIONS);
 

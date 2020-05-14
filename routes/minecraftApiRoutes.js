@@ -73,6 +73,7 @@ module.exports = (app) => {
                 // else not yet expired.
                 
             } catch (err) {
+                console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
                 return res.status(generic500.status).send(generic500); // there was an error retrieving stats.
             }
         } else {
@@ -94,6 +95,7 @@ module.exports = (app) => {
             });
         } catch (e) {
             // there was an error reading the image
+            console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err);
             return res.status(generic500.status).send(generic500);
         }
     });

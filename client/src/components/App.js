@@ -6,6 +6,8 @@ import ControlPanelContainer from './control-panel/shared/ControlPanelContainer'
 
 import { fetchLoginStatus } from '../action';
 
+// css is not in the static folder to allow it to be compiled and minified by the build process
+import '../css/main.css';
 
 import Loading from './control-panel/generic/Loading';
 

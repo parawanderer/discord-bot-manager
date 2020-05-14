@@ -1,5 +1,6 @@
 import React from 'react';
 import DiscordRoleBlock from '../../generic/DiscordRoleBlock';
+import Button from '../../generic/Button';
 
 class SelectedImmortalUser extends React.Component { 
 
@@ -53,13 +54,21 @@ class SelectedImmortalUser extends React.Component {
         );
     }
 
-    renderMinecraftInfoBlock() {
-        const {minecraft_info, minecraft_uuid} = this.props.immortal;
+    renderUserInfoBlock() {
+        const {minecraft_info, minecraft_uuid, website_id} = this.props.immortal;
 
         if (!minecraft_info) {
             // no minecraft info
             return (
                 <div className="immortal-user-info">
+                    <div className="sidebar-info-item">
+                        <span className="sidebar-info-title">
+                            Website ID
+                        </span>
+                        <span className="sidebar-info-data">
+                            {website_id}
+                        </span>
+                    </div>
                     <div className="sidebar-info-item">
                         <span className="sidebar-info-title">
                             Minecraft UUID
@@ -76,6 +85,14 @@ class SelectedImmortalUser extends React.Component {
 
         return (
             <div className="immortal-user-info">
+                <div className="sidebar-info-item">
+                    <span className="sidebar-info-title">
+                        Website ID
+                    </span>
+                    <span className="sidebar-info-data">
+                        {website_id}
+                    </span>
+                </div>
                 <div className="sidebar-info-item">
                     <span className="sidebar-info-title">
                         Minecraft UUID
@@ -120,17 +137,25 @@ class SelectedImmortalUser extends React.Component {
                     {this.renderUserName()}
                 </div>
                 <div className="immortal-user-body">
-                    {this.renderMinecraftInfoBlock()}
+                    {this.renderUserInfoBlock()}
                     <DiscordRoleBlock memberRoles={member.roles}/>
 
-                    <button 
-                        className="button delete-report-immortal" 
+                    <Button     
+                        classes="button delete-immortal" 
                         onClick={() => deleteCallback(immortal.discord_id)}
                         disabled={!immortal.active}
-                    >
-                        <i className="fas fa-unlink"></i>
-                        Unlink Immortal
-                    </button>
+                        icon={<i className="fas fa-unlink"></i>}
+                        text={"Unlink Immortal"}
+                    />
+
+                    <a href={`https://www.mineplex.com/admin.php?users/${immortal.website_id}/edit`} target="_blank" rel="noopener noreferrer">
+                        <Button     
+                            classes="button edit-website" 
+                            icon={<i className="fas fa-edit"></i>}
+                            text={"Edit Web User"}
+                        />
+                    </a>
+
                 </div>
             </div>
         );

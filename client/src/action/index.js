@@ -305,7 +305,7 @@ export const fetchImmortals = () =>
             const immortal = immortalList[i];
             try {
                 const cleanUUID = InputValidator.stripDashesFromUUID(immortal.minecraft_uuid);
-                const minecraftData = await axios.get(`/api/mc/player/${cleanUUID}`, { timeout: 1000 * 60 });
+                const minecraftData = await axios.get(`/api/mc/player/${cleanUUID}`, { timeout: 1000 * 60 *2 });
                 immortal['minecraft_info'] = {...minecraftData.data, skin: `/api/mc/head/${cleanUUID}.png?size=60` };
             } catch (e) { }
         }
