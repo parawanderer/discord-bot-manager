@@ -139,7 +139,7 @@ class MinecraftHandler {
 
         // fetch mojang API response...
 
-         console.log("Preparing to fetch for", uuid); // DEBUG
+        //  console.log("Preparing to fetch for", uuid); // DEBUG
 
         if (this._hasInProcess(uuid)) return; // don't make multiple calls while the other one has 
         // not yet finished for the same user, or we will get request banned from the mojang API
@@ -162,15 +162,15 @@ class MinecraftHandler {
 
 
         // Debug block
-        console.log("this.lastRequestHistory", this.lastRequestHistory); // DEBUG
-        this.debugRequestHistory[uuid] = (this.debugRequestHistory[uuid] || 0) +1; // DEBUG
-        console.log("this.debugRequestHistory", this.debugRequestHistory); // DEBUG
-        const now = new Date().toString(); // DEBUG
-        console.log("Now", now); // DEBUG
-        console.log("last request:", this.lastRequestHistory[uuid]); // DEBUG
-        console.log("last global request", this.lastRequestHistory['last global request']) // DEBUG
-        this.lastRequestHistory[uuid] = `${now} (${uuid})`; // DEBUG
-        this.lastRequestHistory['last global request'] = `${now} (${uuid})`; // DEBUG
+        // console.log("this.lastRequestHistory", this.lastRequestHistory); // DEBUG
+        // this.debugRequestHistory[uuid] = (this.debugRequestHistory[uuid] || 0) +1; // DEBUG
+        // console.log("this.debugRequestHistory", this.debugRequestHistory); // DEBUG
+        // const now = new Date().toString(); // DEBUG
+        // console.log("Now", now); // DEBUG
+        // console.log("last request:", this.lastRequestHistory[uuid]); // DEBUG
+        // console.log("last global request", this.lastRequestHistory['last global request']) // DEBUG
+        // this.lastRequestHistory[uuid] = `${now} (${uuid})`; // DEBUG
+        // this.lastRequestHistory['last global request'] = `${now} (${uuid})`; // DEBUG
         // end debug block
 
 
