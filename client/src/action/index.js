@@ -30,7 +30,12 @@ import {
     DEACTIVATE_IMMORTAL,
     FETCH_IMMORTAL,
     FETCH_MINECRAFT_PLAYER,
-    FETCH_MINECRAFT_STATUS
+    FETCH_MINECRAFT_STATUS,
+    FETCH_PUNISHMENTS,
+    FETCH_SEARCH_PUNISHMENTS,
+    SET_PUNISHMENTS_PAGE,
+    SET_PUNISHMENTS_PER_PAGE,
+    FETCH_MEMBER_FAILURE
 } from './types';
 import InputValidator from '../utils/InputValidator';
 
@@ -76,12 +81,27 @@ export const fetchAdminsDetailed = () =>
     async (dispatch, getState) => {
         const response = await axios.get('/api/admin');
 
+        const {member_fetch_history} = getState();
+
         if (response.data) {
             for (let i =0; i < response.data.length; i++) {
                 const admin = response.data[i];
-                const responseMember = await axios.get(`/api/members/${admin.userId}`);
-                if (responseMember && responseMember.data && responseMember.data.id) {
-                    admin.member = responseMember.data;
+
+                if (member_fetch_history.fetched_ids.includes(admin.id)) {
+                    // retrieve from fetch history if it exists in there
+                    admin.member = member_fetch_history.member_history[admin.id];
+                } else {
+                    // else freshly fetch
+                    const responseMember = await axios.get(`/api/members/${admin.userId}`);
+                    if (responseMember && responseMember.data && responseMember.data.id) {
+                        admin.member = responseMember.data;
+    
+                        // dispatch as a member fetch event globally...
+                        dispatch({
+                            type: FETCH_MEMBER,
+                            payload: responseMember.data
+                        });
+                    }
                 }
             }
         }
@@ -94,11 +114,18 @@ export const fetchAdminsDetailed = () =>
 
 export const fetchMember = (id) => 
     async (dispatch, getState) => {
-        const response = await axios.get(`/api/members/${id}`);
-        dispatch({
-            type: FETCH_MEMBER,
-            payload: response.data
-        });
+        try {
+            const response = await axios.get(`/api/members/${id}`);
+            dispatch({
+                type: FETCH_MEMBER,
+                payload: response.data
+            });
+        } catch (e) {
+            dispatch({
+                type: FETCH_MEMBER_FAILURE,
+                payload: id
+            });
+        }
     };
 
 export const deleteAdmin = (id) => 
@@ -302,13 +329,18 @@ export const fetchImmortals = () =>
         const response = await axios.get('/api/immortal');
         const immortalList = response.data;
 
+        const {member_fetch_history} = getState();
+
         for (let i = 0; i < immortalList.length; i++) {
             const immortal = immortalList[i];
-            try {
-                // const cleanUUID = InputValidator.stripDashesFromUUID(immortal.minecraft_uuid);
-                // const minecraftData = await axios.get(`/api/mc/player/${cleanUUID}`, { timeout: 1000 * 60 *2 });
-                // immortal['minecraft_info'] = {...minecraftData.data, skin: `/api/mc/head/${cleanUUID}.png?size=60` }
-                
+
+            // if the member was already fetched in history, then set it from this
+            if (member_fetch_history.fetched_ids.includes(immortal.discord_id)) {
+                // retrieve from fetch history if it exists in there
+                immortal.member = member_fetch_history.member_history[immortal.discord_id];
+            }
+
+            try {  
                 const cleanUUID = InputValidator.stripDashesFromUUID(immortal.minecraft_uuid);
                 axios.get(`/api/mc/player/${cleanUUID}`, { timeout: 1000 * 60 *2 })
                     .then(response => {
@@ -320,6 +352,8 @@ export const fetchImmortals = () =>
                     .catch(err => undefined);
 
             } catch (e) { }
+
+
         }
 
         dispatch({
@@ -371,3 +405,89 @@ export const fetchMcApiStatus = (uuid) =>
 
         }
     };
+
+/**
+ * 
+ * @param {number} page 
+ * @param {number} perPage 
+ */
+export const fetchAllPunishments = (page = 1, perPage = 50) => 
+    async (dispatch, getState) => {
+
+        const requestData = {
+            per_page: perPage >= 1 ? perPage : 10,
+            page: page >= 1 ? page : 1
+        };
+
+        const response = await axios.post('/api/punish/history/search', requestData);
+
+        dispatch({
+            type: FETCH_PUNISHMENTS,
+            payload: response.data
+        });
+    };
+
+export const searchPunishmentsByUsername = (username = '', page = 1, perPage = 50) => 
+    async (dispatch, getState) => {
+
+        const requestData = {
+            per_page: perPage >= 1 ? perPage : 10,
+            page: page >= 1 ? page : 1,
+            username : username || ''
+        };
+
+        const response = await axios.post('/api/punish/history/search', requestData);
+
+        dispatch({
+            type: FETCH_SEARCH_PUNISHMENTS,
+            payload: response.data
+        });
+    };
+
+export const searchPunishmentsByUsernameDiscriminator = (username = '', discriminator = '0000', page = 1, perPage = 50) => 
+    async (dispatch, getState) => {
+
+        const requestData = {
+            per_page: perPage >= 1 ? perPage : 10,
+            page: page >= 1 ? page : 1,
+            username : username || '',
+            discriminator: discriminator || '0000'
+        };
+
+        const response = await axios.post('/api/punish/history/search', requestData);
+
+        dispatch({
+            type: FETCH_SEARCH_PUNISHMENTS,
+            payload: response.data
+        });
+    };
+
+export const searchPunishmentsByUserID = (userID, page = 1, perPage = 50) => 
+    async (dispatch, getState) => {
+
+        const requestData = {
+            per_page: perPage >= 1 ? perPage : 10,
+            page: page >= 1 ? page : 1,
+            user_id: userID || ''
+        };
+
+        const response = await axios.post('/api/punish/history/search', requestData);
+
+        dispatch({
+            type: FETCH_SEARCH_PUNISHMENTS,
+            payload: response.data
+        });
+    };
+
+export const setPunishmentsPage = (newPage) => {
+    return {
+        type: SET_PUNISHMENTS_PAGE,
+        payload: newPage
+    }
+};
+export const setPunishmentsPerPage = (newPerPage) => {
+    return {
+        type: SET_PUNISHMENTS_PER_PAGE,
+        payload: newPerPage
+    }
+};

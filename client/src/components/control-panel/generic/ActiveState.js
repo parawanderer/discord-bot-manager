@@ -2,19 +2,21 @@ import React from 'react';
 
 const ActiveState = (props) => {
 
+    //props.short
+
     if (props.active) {
         return (
-            <div className="active-state active">
+            <div className={"active-state active" + (props.short ? ' short' : '')}>
                 <i className="fas fa-check"></i>
-                Active
+                {props.short ? '' : 'Active'}
             </div>
         );
     }
 
     return (
-        <div className="active-state inactive">
+        <div className={"active-state inactive" + (props.short ? ' short' : '')}>
             <i className="fas fa-slash"></i>
-            Inactive
+            {props.short ? '' : 'Inactive'}
         </div>
     );
 };

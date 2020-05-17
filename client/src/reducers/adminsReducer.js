@@ -1,5 +1,6 @@
 import {FETCH_ADMINS, FETCH_MEMBER, DELETE_ADMIN, ADD_NEW_ADMIN, FETCH_ADMINS_DETAIL} from '../action/types';
 
+
 const adminsReducer = (state = null, action) => {
     switch(action.type) {
 
@@ -7,7 +8,6 @@ const adminsReducer = (state = null, action) => {
             return action.payload || null;
 
         case FETCH_MEMBER:
-            // TODO: separate general fetch member from fetch admin
             if (state === null) return state;
             for (let i =0; i < state.length; i++) {
                 if (state[i].userId === action.payload.id) {

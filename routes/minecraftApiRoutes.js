@@ -39,14 +39,18 @@ module.exports = (app) => {
      * @param {string} dataPath      Path that the given data is supposed to be located at
      * @param {boolean} isImage       Whether or not the data is an image (longer caching periods)
      * @param {string} uuid       uuid of the given user (for erroring)
+     * 
+     * @returns                 true on successful refresh, false if there was an error with the refresh process
      */
     const refreshData = async (dataPath, isImage = false, uuid) => {
         const isExpiredHandler = isImage ? MinecraftHandler.isExpiredSkin : MinecraftHandler.isExpiredInfo;
+        console.log("dataPath", dataPath);
 
         if (fs.existsSync(dataPath)) {
             // check if we've already saved the given file?
             try {
                 const stats = fs.statSync(dataPath);
+                //console.log("isExpiredHandler(stats.mtimeMs):", isExpiredHandler(stats.mtimeMs));
 
                 if (isExpiredHandler(stats.mtimeMs)) {
                     // expired skin. Fetch everything anew..
@@ -103,45 +107,22 @@ module.exports = (app) => {
         const dataPath = MinecraftHandler.getHeadPath(uuid);
 
         const dataRefreshSuccess = await refreshData(dataPath,true,uuid);
-
-        if (!dataRefreshSuccess) {
-            // check if we at least have the file right now to send back as a fallback?
-            if (!fs.existsSync(dataPath)) {
-                // this is the only case where we will definitively return an 500 error as there's no fallback to return.
-                return res.status(GENERIC_500.status).send(GENERIC_500);
-            }
-        }
-
-        // if (fs.existsSync(dataPath)) {
-        //     // check if we've already saved the given head?
-        //     try {
-        //         const stats = fs.statSync(dataPath);
-
-        //         if (MinecraftHandler.isExpiredSkin(stats.mtimeMs)) {
-        //             // expired skin. Fetch everything anew..
-        //             await minecraft.fetchAndSaveUserData(uuid);
-        //         }
-        //         // else not yet expired.
-                
-        //     } catch (err) {
-        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
-        //         return res.status(GENERIC_500.status).send(GENERIC_500); // there was an error retrieving stats.
-        //     }
-        // } else {
-        //     // head did not yet exist.
-        //     try {
-        //         await minecraft.fetchAndSaveUserData(uuid);
-        //     }  catch (err) {
-        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.response && err.response.data ? err.response.data  : err);
-        //     }
-        // }
-
-        // get head image and render up to correct scale
+        
         try {
+
+            if (!dataRefreshSuccess) {
+                // check if we at least have the file right now to send back as a fallback?
+                if (!fs.existsSync(dataPath)) {
+                    // this is the only case where we will definitively return an 500 error as there's no fallback to return.
+                    return res.status(GENERIC_500.status).send(GENERIC_500);
+                }
+            }
+    
+            // get head image and render up to correct scale
+
             const image = await Jimp.read(dataPath);
             image.resize(size, size, Jimp.RESIZE_NEAREST_NEIGHBOR).getBuffer(Jimp.MIME_PNG, (err, buffer) =>{ 
-                //handle err
-                if (err) return res.status(GENERIC_500.status).send(GENERIC_500);
+                if (err) return res.status(GENERIC_500.status).send(GENERIC_500); //handle err
 
                 // send back image at the size requested (or default size 50)
                 res.set('Content-Type', Jimp.MIME_PNG);
@@ -177,41 +158,17 @@ module.exports = (app) => {
 
         const dataRefreshSuccess = await refreshData(dataPath,true,uuid);
 
-        if (!dataRefreshSuccess) {
-            // check if we at least have the file right now to send back as a fallback?
-            if (!fs.existsSync(dataPath)) {
-                // this is the only case where we will definitively return an 500 error as there's no fallback to return.
-                return res.status(GENERIC_500.status).send(GENERIC_500);
-            }
-        }
-
-
-        // if (fs.existsSync(dataPath)) {
-        //     // check if we've already saved the given skin?
-        //     try {
-        //         const stats = fs.statSync(dataPath);
-
-        //         if (MinecraftHandler.isExpiredSkin(stats.mtimeMs)) {
-        //             // expired skin. Fetch everything anew..
-        //             await minecraft.fetchAndSaveUserData(uuid);
-        //         }
-        //         // else not yet expired.
-                
-        //     } catch (err) {
-        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
-        //         return res.status(GENERIC_500.status).send(GENERIC_500); // there was an error retrieving stats.
-        //     }
-        // } else {
-        //     // skin did not yet exist.
-        //     try {
-        //         await minecraft.fetchAndSaveUserData(uuid);
-        //     }  catch (err) {
-        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
-        //     }
-        // }
-
-        // get skin image and render up to correct scale
         try {
+            if (!dataRefreshSuccess) {
+                // check if we at least have the file right now to send back as a fallback?
+                if (!fs.existsSync(dataPath)) {
+                    // this is the only case where we will definitively return an 500 error as there's no fallback to return.
+                    return res.status(GENERIC_500.status).send(GENERIC_500);
+                }
+            }
+
+            // get skin image and render up to correct scale
+
             const imageBuffer = fs.readFileSync(dataPath);
 
             res.set('Content-Type', Jimp.MIME_PNG);
@@ -248,40 +205,16 @@ module.exports = (app) => {
 
         const dataRefreshSuccess = await refreshData(dataPath,false, uuid);
 
-        if (!dataRefreshSuccess) {
-            // check if we at least have the file right now to send back as a fallback?
-            if (!fs.existsSync(dataPath)) {
-                // this is the only case where we will definitively return an 500 error as there's no fallback to return.
-                return res.status(GENERIC_500.status).send(GENERIC_500);
-            }
-        }
-
-
-        // if (fs.existsSync(dataPath)) {
-        //     // check if we've already saved the given player data?
-        //     try {
-        //         const stats = fs.statSync(dataPath);
-
-        //         if (MinecraftHandler.isExpiredInfo(stats.mtimeMs)) {
-        //             // expired skin. Fetch everything anew..
-        //             await minecraft.fetchAndSaveUserData(uuid);
-        //         }
-        //         // else not yet expired.
-                
-        //     } catch (err) {
-        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
-        //         return res.status(GENERIC_500.status).send(GENERIC_500); // there was an error retrieving stats.
-        //     }
-        // } else {
-        //     // skin did not yet exist.
-        //     try {
-        //         await minecraft.fetchAndSaveUserData(uuid);
-        //     }  catch (err) {
-        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
-        //     }
-        // }
-
         try {
+
+            if (!dataRefreshSuccess) {
+                // check if we at least have the file right now to send back as a fallback?
+                if (!fs.existsSync(dataPath)) {
+                    // this is the only case where we will definitively return an 500 error as there's no fallback to return.
+                    return res.status(GENERIC_500.status).send(GENERIC_500);
+                }
+            }
+
             const file = fs.readFileSync(dataPath, 'utf8');
 
             res.header("Content-Type",'application/json');
@@ -316,41 +249,16 @@ module.exports = (app) => {
 
         const dataRefreshSuccess = await refreshData(dataPath,false, uuid);
 
-        if (!dataRefreshSuccess) {
-            // check if we at least have the file right now to send back as a fallback?
-            if (!fs.existsSync(dataPath)) {
-                // this is the only case where we will definitively return an 500 error as there's no fallback to return.
-                return res.status(GENERIC_500.status).send(GENERIC_500);
-            }
-        }
-
-        // if (fs.existsSync(dataPath)) {
-        //     // check if we've already saved the given player data?
-
-        //     try {
-        //         const stats = fs.statSync(dataPath);
-
-        //         if (MinecraftHandler.isExpiredInfo(stats.mtimeMs)) {
-        //             // expired skin. Fetch everything anew..
-        //             await minecraft.fetchAndSaveUserData(uuid);
-        //         }
-        //         // else not yet expired.
-
-        //     } catch (err) {
-        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
-        //         return res.status(GENERIC_500.status).send(GENERIC_500); // there was an error retrieving stats.
-        //     }
-
-        // } else {
-        //     // skin did not yet exist.
-        //     try {
-        //         await minecraft.fetchAndSaveUserData(uuid);
-        //     }  catch (err) {
-        //         console.error(`Error fetching and updating user data for minecraft user ${uuid}`, err.data || err);
-        //     }
-        // }
-
         try {
+
+            if (!dataRefreshSuccess) {
+                // check if we at least have the file right now to send back as a fallback?
+                if (!fs.existsSync(dataPath)) {
+                    // this is the only case where we will definitively return an 500 error as there's no fallback to return.
+                    return res.status(GENERIC_500.status).send(GENERIC_500);
+                }
+            }
+
             const file = fs.readFileSync(dataPath, 'utf8');
 
             res.header("Content-Type",'application/json');

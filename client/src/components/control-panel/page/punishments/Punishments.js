@@ -1,10 +1,13 @@
 import React from 'react';
+import PunishmentList from './PunishmentsList';
+import PunishmentItem from './PunishmentItem';
 
 class Punishments extends React.Component {
     render() {
         return (
             <div>
-                Punishments
+                <PunishmentList/>
+                {/* <PunishmentItem/> */}
             </div>
         );
     }

@@ -162,7 +162,6 @@ class LinksList extends React.Component {
     render() {
         // this.props.links
         // this.props.show?
-        console.log(this.props);
 
         return (
             <React.Fragment>

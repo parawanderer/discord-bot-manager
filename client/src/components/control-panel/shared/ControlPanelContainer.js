@@ -9,7 +9,7 @@ import Home from '../page/Home';
 import Admins from '../page/admins/Admins';
 import Configuration from '../page/config/Configuration';
 import Immortal from '../page/immortal/Immortal';
-import Punishments from '../page/Punishments';
+import Punishments from '../page/punishments/Punishments';
 import PunishmentSystem from '../page/severity/PunishmentSystem';
 import Rules from '../page/rules/Rules';
 import ReactionRoleSystem from '../page/ReactionRoleSystem';
@@ -27,7 +27,7 @@ class ControlPanelContainer extends React.Component {
                     <NavLogo />
                     <Nav />
                 </div>
-                <div className="main-container">
+                <div className="main-container" id="main-container">
                     <PageTop />
                     <div className="page-content">
                         <Route exact path="/" component={Home} />

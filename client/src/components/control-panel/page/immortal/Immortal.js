@@ -112,10 +112,6 @@ class Immortal extends React.Component {
                         />
                     </div>
                     <div className="right">
-                        {/* <SelectedReportBlacklistUser 
-                            member={this.state.selectedMember}
-                            deleteCallback={this.deleteBlacklistForUser}
-                        /> */}
                         <SelectedImmortalUser
                             immortal={this.state.selectedImmortal}
                             deleteCallback={this.unlinkImmortalHandler}

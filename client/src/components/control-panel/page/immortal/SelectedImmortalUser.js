@@ -4,6 +4,34 @@ import Button from '../../generic/Button';
 
 class SelectedImmortalUser extends React.Component { 
 
+    _mainContainerElement = null;
+    _fullListElement = null;
+    _windowHeight = null;
+    _stickStrollOffset = 0;
+
+    componentDidMount() {
+        this._mainContainerElement = document.getElementById("main-container");
+        this._fullListElement = document.getElementById("immortal-list");
+        this._windowHeight = window.innerHeight;
+        this._mainContainerElement.addEventListener('scroll', this.handleScroll, { passive: true })
+    }
+
+    componentWillUnmount() {
+        this._mainContainerElement.removeEventListener('scroll', this.handleScroll)
+    }
+
+    handleScroll = (event) => {
+        const scrollTop = this._mainContainerElement.scrollTop;
+        const tenPercentOfHeight = this._windowHeight / 10;
+        const maxScroll = this._fullListElement.offsetTop - tenPercentOfHeight;
+        if (scrollTop > maxScroll) {
+            this._stickStrollOffset = scrollTop - maxScroll;
+            this.setState({scrollStick: true});
+        } else {
+            this.setState({scrollStick: false});
+        }
+    };
+
     renderAvatar() {
         const {member} = this.props.immortal;
         if (!member.effective_avatar) {
@@ -62,22 +90,22 @@ class SelectedImmortalUser extends React.Component {
             return (
                 <div className="immortal-user-info">
                     <div className="sidebar-info-item">
-                        <span className="sidebar-info-title">
+                        <div className="sidebar-info-title">
                             Website ID
-                        </span>
-                        <span className="sidebar-info-data">
+                        </div>
+                        <div className="sidebar-info-data">
                             {website_id}
-                        </span>
+                        </div>
                     </div>
                     <div className="sidebar-info-item">
-                        <span className="sidebar-info-title">
+                        <div className="sidebar-info-title">
                             Minecraft UUID
-                        </span>
-                        <span className="sidebar-info-data">
-                            <span className="info-id mc-id">
+                        </div>
+                        <div className="sidebar-info-data">
+                            <div className="info-id mc-id">
                                 {minecraft_uuid}
-                            </span>
-                        </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             );
@@ -86,22 +114,22 @@ class SelectedImmortalUser extends React.Component {
         return (
             <div className="immortal-user-info">
                 <div className="sidebar-info-item">
-                    <span className="sidebar-info-title">
+                    <div className="sidebar-info-title">
                         Website ID
-                    </span>
-                    <span className="sidebar-info-data">
+                    </div>
+                    <div className="sidebar-info-data">
                         {website_id}
-                    </span>
+                    </div>
                 </div>
                 <div className="sidebar-info-item">
-                    <span className="sidebar-info-title">
+                    <div className="sidebar-info-title">
                         Minecraft UUID
-                    </span>
-                    <span className="sidebar-info-data">
-                        <span className="info-id mc-id">
+                    </div>
+                    <div className="sidebar-info-data">
+                        <div className="info-id mc-id">
                             {minecraft_uuid}
-                        </span>
-                    </span>
+                        </div>
+                    </div>
                 </div>
                 <div className="sidebar-info-minecraft-block">
                     <div className="mc-head">
@@ -131,7 +159,9 @@ class SelectedImmortalUser extends React.Component {
         const {member} = immortal;
 
         return (
-            <div className="immortal-user-selected">
+            <div className={"immortal-user-selected" + (this.state && this.state.scrollStick ? " stick" : "")}
+                style={this.state && this.state.scrollStick ? {transform: `translateY(${this._stickStrollOffset}px)`} : undefined}
+            >
                 <div className="immortal-user-base">
                     {this.renderAvatar()}
                     {this.renderUserName()}

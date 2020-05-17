@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from "react-redux";
-import dateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
 
 import Loading from '../../generic/Loading';
 
 import { fetchRecentPunishments } from '../../../../action/index';
 import ActiveState from '../../generic/ActiveState';
+import PunishmentSeverityHelper from '../../../../utils/PunishmentSeverityHelper';
+import Username from '../../generic/Username';
 
 
 const RECENT_PUNISHMENT_NUM = 6;
@@ -27,43 +28,6 @@ class RecentPunishments extends React.Component {
                 ); 
             });
         return <ul>{invites}</ul>;
-    }
-
-    getPunishment(rawType) {
-        switch(rawType) {
-            case 1:
-                return (<div className="punishment-type">
-                            <i className="fad fa-microphone-alt-slash"></i>
-                        </div>);
-
-            case 2:
-                return (<div className="punishment-type">
-                        <i className="fad fa-ban"></i>
-                    </div>);
-            default:
-                return (
-                    <div className="punishment-type">
-                        <i className="fad fa-exclamation-circle"></i>
-                    </div>);
-        }
-    }
-
-    getSeverity(severity, rawType) {
-        if (severity === "0") {
-            if (rawType !== 0) {
-                return (
-                    <div className="punishment-severity perm">
-                        PERM
-                    </div>
-                );
-            }
-            return null;
-        }
-        return (
-            <div className={`punishment-severity sev${severity}`}>
-                {severity}
-            </div>
-        );
     }
 
     getPunishmentReason(staffNote) {
@@ -88,11 +52,7 @@ class RecentPunishments extends React.Component {
 
     getUsername(punishment) {
         return (
-            <div className="punishment-username">
-                {punishment.user_name}
-                <span className="discriminator-split">#</span>
-                <span className="discriminator">{punishment.user_discriminator}</span>
-            </div>
+            <Username username={punishment.user_name} discriminator={punishment.user_discriminator}/>
         );
     }
 
@@ -102,20 +62,14 @@ class RecentPunishments extends React.Component {
             <div className="punishment-time">
                 <div className="punishment-time-prefix">WHEN</div>
                 <div className="punishment-reason">
-                {dateFormat(new Date(punishment.timestamp), 'dddd, mmmm dS, yyyy, h:MM:ss TT')}
+                {PunishmentSeverityHelper.getPunishmentTimestamp(punishment)}
                 </div>
             </div>
         );
     }
 
     getID(punishment) {
-        return (
-            <Link to={`/punishments/punishment/${punishment.id}`}>
-                <div className="punishment-id">
-                    #{punishment.id}
-                </div>
-            </Link>
-        );
+        return PunishmentSeverityHelper.getIdLink(punishment);
     }
 
 
@@ -127,9 +81,9 @@ class RecentPunishments extends React.Component {
 
         const time = this.getTimestamp(punishment);
 
-        const type = this.getPunishment(punishment.raw_type);
+        const type = PunishmentSeverityHelper.getPunishmentType(punishment.raw_type);
 
-        const severity = this.getSeverity(punishment.severity, punishment.raw_type);
+        const severity = PunishmentSeverityHelper.getPunishmentSeverity(punishment.severity, punishment.raw_type);
 
         const username = this.getUsername(punishment);
 

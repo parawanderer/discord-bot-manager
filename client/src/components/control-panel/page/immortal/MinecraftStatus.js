@@ -60,6 +60,8 @@ class SelectedImmortalUser extends React.Component {
             case 2:
                 colour = '#dc5050';
                 break;
+            default:
+                colour = ''
         }
 
         return (

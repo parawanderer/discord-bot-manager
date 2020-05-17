@@ -34,7 +34,7 @@ class ImmortalList extends React.Component {
             );        
 
         return (
-            <div className="immortal-list">
+            <div className="immortal-list" id="immortal-list">
                 <h3 className="block-title">Immortals
                     <span className="list-count">
                         {immortals.length}

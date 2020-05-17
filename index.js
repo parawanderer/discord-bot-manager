@@ -66,8 +66,8 @@ if (process.env.NODE_ENV === 'production') {
         //res.sendFile();
     });
 } else {
-    app.get('/', async (req, res) => {
-        res.redirect("http://localhost:3000/")
+    app.get('*', async (req, res) => {
+        res.redirect("http://localhost:3000" + (req.url || "/"));
     });
 }
 

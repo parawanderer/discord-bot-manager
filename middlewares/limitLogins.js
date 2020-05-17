@@ -15,11 +15,6 @@ module.exports = (req, res, next) => {
         
         res.redirect("/");
         return;
-
-        // return res.status(ERROR_CODE).send({
-        //     error: ERROR_CODE,
-        //     message: ERROR_MESSAGE
-        // });
     }
         
     next();

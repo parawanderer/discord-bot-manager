@@ -1,15 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import LoginScreen from './LoginScreen';
 import ControlPanelContainer from './control-panel/shared/ControlPanelContainer';
+import Loading from './control-panel/generic/Loading';
+import LoginContainer from './control-panel/shared/LoginContainer';
 
 import { fetchLoginStatus } from '../action';
 
 // css is not in the static folder to allow it to be compiled and minified by the build process
 import '../css/main.css';
 
-import Loading from './control-panel/generic/Loading';
+
 
 
 const POLLING_RATE_MS = 1000 * 30; // 30 seconds
@@ -59,7 +60,7 @@ class App extends React.Component {
         }
         // show login screen
         return (
-            <LoginScreen />
+            <LoginContainer/>
         );
     }
 
