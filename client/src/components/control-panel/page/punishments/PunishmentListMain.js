@@ -275,7 +275,13 @@ class PunishmentListMain extends React.Component {
         this.setState({loadingNewPage : true});
 
         if (option === 'username') {
+            // username search. Pretty simple.
             this.props.disableScroll();
+
+            if (this.props.location.search) {
+                // if we were at ?id=whatever reset this to just /punishments
+                this.props.history.push('/punishments');
+            }
 
             this._searchTerm = searchValue;
             await this.props.searchPunishmentsByUsername(searchValue, 1, 100);
@@ -296,6 +302,11 @@ class PunishmentListMain extends React.Component {
         else if (option === 'with_discriminator')
         {   
             let searchError = null;
+
+            if (this.props.location.search) {
+                // if we were at ?id=whatever reset this to just /punishments
+                this.props.history.push('/punishments');
+            }
 
             if (DISCORD_REGEX.test(searchValue)) {
                 this.props.disableScroll();
@@ -327,8 +338,11 @@ class PunishmentListMain extends React.Component {
         else if (option === 'user_id')
         {   
             let searchError = null;
-            
+
             if (InputValidator.isDiscordID(searchValue)) {
+
+                // set up the 'query' string /punishments?id=whatever
+                this.props.history.push(`/punishments?id=${searchValue}`);
 
                 this.props.enableScroll();
                 this._searchTerm = searchValue;
