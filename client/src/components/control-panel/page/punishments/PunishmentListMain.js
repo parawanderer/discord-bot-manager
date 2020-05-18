@@ -229,19 +229,30 @@ class PunishmentListMain extends React.Component {
         this._canNavigate = true;
     }
 
-    handleReload = async () => {
+    handleReload = async (stayOnCurrentUserIfById = false) => {
         if (!this._canNavigate) return;// already in the process of navigating
         this.props.enableScroll();
 
         const { page, per_page } = this.props.punishments;
-        this._flagSearchByUserId = false;
+        //this._flagSearchByUserId = false;
 
         this._canNavigate = false;
         this.setState({loadingNewPage : true});
-        if (this.props.location.search) {
-            this.props.history.push('/punishments');
+
+        console.log("stayOnCurrentUserIfById", stayOnCurrentUserIfById);
+
+        if (this._flagSearchByUserId && stayOnCurrentUserIfById) {
+            await this.handleSearch('user_id', this._flagSearchByUserId);
+            
+        } else {
+            this._flagSearchByUserId = false;
+            console.log("a");
+            if (this.props.location.search) {
+                this.props.history.push('/punishments');
+            }
+            await this.props.fetchAllPunishments(page, per_page);
         }
-        await this.props.fetchAllPunishments(page, per_page);
+        
         this.setState({loadingNewPage : false});
         this._canNavigate = true;
     }
@@ -400,7 +411,7 @@ class PunishmentListMain extends React.Component {
                 <div className="punishments-nav-load">
                     {this.state.loadingNewPage ? <Loading text=" "/> : null}
                 </div>
-                <button onClick={this.handleReload} disabled={this.state.loadingNewPage || this._flagSearchByUserId }>
+                <button onClick={() => this.handleReload(true)} disabled={this.state.loadingNewPage}>
                     <i className="fas fa-repeat-alt"></i>
                 </button>
                 <button onClick={this.handleNavigateLeft} disabled={this.state.loadingNewPage || this._flagSearchByUserId || this.isFirstPage()}>
@@ -494,7 +505,7 @@ class PunishmentListMain extends React.Component {
                     <Button text="Unban" classes="user-unpunish unban" disabled={!hasActiveBans} onClick={this.handleShowUnban}/>
                     <Button text="Unpunish" classes="user-unpunish unpunish" disabled={!(hasActiveMutes || hasActiveBans)} onClick={this.handleShowUnpunish}/>
 
-                    <Button text="Return to All Punishments" onClick={this.handleReload} classes="return-to-all"/>
+                    <Button text="Return to All Punishments" onClick={() => this.handleReload(false)} classes="return-to-all"/>
                 </React.Fragment>
             );
         } else {
@@ -708,7 +719,7 @@ class PunishmentListMain extends React.Component {
                         </h1>
                     </div>
                     <div className="member-results-desc">
-                        <Button text="Return to All Punishments" onClick={this.handleReload} classes="return-to-all-members"/>
+                        <Button text="Return to All Punishments" onClick={() => this.handleReload(false)} classes="return-to-all-members"/>
                     </div>
                     {this.renderMatchingMemberList()}
                 </div>
