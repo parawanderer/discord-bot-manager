@@ -14,12 +14,14 @@ import Button from '../../generic/Button';
 import PunishmentSeverityHelper from '../../../../utils/PunishmentSeverityHelper';
 import Username from '../../generic/Username';
 import ActiveState from '../../generic/ActiveState';
+import PunishmentDetailWipe from './PunishmentDetailWipe';
 
 
 class PunishmentDetail extends React.Component { 
 
     state = {
-        isLoading: false
+        isLoading: false,
+        showWipeMenu: false
     };
 
     _awaitingMembers = [];
@@ -70,6 +72,19 @@ class PunishmentDetail extends React.Component {
             });
     }
 
+    handleShowWipeConfirm = () => {
+        this.setState({showWipeMenu : true});
+    }
+
+    handleHideWipeMenu= () => {
+        this.setState({showWipeMenu : false});
+    }
+
+    handleWipePunishment = async () => {
+        this.handleHideWipeMenu();
+        await this.props.wipePunishmentById(this.getPunishment().id);
+    };
+
     hasMember(id) {
         const {member_fetch_history} = this.props;
         return member_fetch_history.fetched_ids.includes(id);
@@ -85,7 +100,7 @@ class PunishmentDetail extends React.Component {
     }
 
     getPunishment() {
-        if (this.props.punishment_detail.id !== this.getID()) {
+        if (!this.props.punishment_detail || this.props.punishment_detail.id !== this.getID()) {
             return null;
         }
         return this.props.punishment_detail.data;
@@ -161,7 +176,6 @@ class PunishmentDetail extends React.Component {
             </React.Fragment>
         );
     }
-
 
     renderPunishedUser() {
         const {punishment_detail} = this.props;
@@ -256,7 +270,7 @@ class PunishmentDetail extends React.Component {
                 data = (
                     <React.Fragment>
                         <div className="inline-avatar-container">
-                            <img src={member.effective_avatar} className="inline-avatar"/>
+                            <img src={member.effective_avatar} className="inline-avatar"  alt="user avatar"/>
                         </div>
                         <Username username={member.username} discriminator={member.discriminator}/>
                         <span className="punishment-userid">
@@ -338,7 +352,7 @@ class PunishmentDetail extends React.Component {
                 data = (
                     <React.Fragment>
                         <div className="inline-avatar-container">
-                            <img src={member.effective_avatar} className="inline-avatar"/>
+                            <img src={member.effective_avatar} className="inline-avatar"  alt="user avatar"/>
                         </div>
                         <Username username={member.username} discriminator={member.discriminator}/>
                         <span className="punishment-userid">
@@ -405,7 +419,7 @@ class PunishmentDetail extends React.Component {
                 data = (
                     <React.Fragment>
                         <div className="inline-avatar-container">
-                            <img src={member.effective_avatar} className="inline-avatar"/>
+                            <img src={member.effective_avatar} className="inline-avatar" alt="user avatar"/>
                         </div>
                         <Username username={member.username} discriminator={member.discriminator}/>
                         <span className="punishment-userid">
@@ -448,7 +462,6 @@ class PunishmentDetail extends React.Component {
         );
     }
 
-
     renderPunishmentAdditionalInfo(punishment) {
         let removalData = null;
         let wipeData = null;
@@ -481,12 +494,12 @@ class PunishmentDetail extends React.Component {
         );
     }
 
-
     renderPunishmentInfo() {
         const {punishment_detail} = this.props;
         if (!punishment_detail) return null;
 
         const punishment = punishment_detail.data;
+        if (!punishment) return null;
 
         const duration = punishment.raw_type !== 0 
             ? this.renderGenericInfoItem("Duration", PunishmentSeverityHelper.timeToReadableString(punishment.duration)) 
@@ -495,6 +508,13 @@ class PunishmentDetail extends React.Component {
         return (
             <div className="punishment-info">
                 <div className="punishment-info-top">
+                    <Button 
+                        text="Wipe Punishment" 
+                        icon={<i className="fas fa-eye-slash"></i>} 
+                        classes="wipe-punishment" 
+                        disabled={!punishment.visible}
+                        onClick={this.handleShowWipeConfirm}
+                    />
                     {this.renderPunishmentType(punishment)}
                 </div>
                 <div className="punishment-info-body">
@@ -514,28 +534,36 @@ class PunishmentDetail extends React.Component {
 
     renderPunishmentDetail() {
         return (
-            <div id="punishment-detail">
-                <div className="left">
-                    <div className="punishment-go-back">
-                        <button className="punishment-go-back-btn" onClick={() => {
-                            this.props.history.push('/punishments');
-                        }}>
-                            <i className="fas fa-chevron-left"></i>
-                        </button>
-                        <div className="text">
-                            Back to List
+            <React.Fragment>
+                <div id="punishment-detail">
+                    <div className="left">
+                        <div className="punishment-go-back">
+                            <button className="punishment-go-back-btn" onClick={() => {
+                                this.props.history.push('/punishments');
+                            }}>
+                                <i className="fas fa-chevron-left"></i>
+                            </button>
+                            <div className="text">
+                                Back to List
+                            </div>
+                        </div>
+                        <h1 className="main-title">Punishment Detail</h1>
+                        {this.renderPunishmentInfo()}
+                    </div>
+                    <div className="right">
+                        <div className="punishment-det-top">
+                            <h1>User Detail</h1>
+                            {this.renderPunishedUser()}
                         </div>
                     </div>
-                    <h1 className="main-title">Punishment Detail</h1>
-                    {this.renderPunishmentInfo()}
                 </div>
-                <div className="right">
-                    <div className="punishment-det-top">
-                        <h1>User Detail</h1>
-                        {this.renderPunishedUser()}
-                    </div>
-                </div>
-            </div>
+                <PunishmentDetailWipe
+                    punishment={this.getPunishment()}
+                    show={this.state.showWipeMenu}
+                    onCancel={this.handleHideWipeMenu}
+                    onDeleteConfirm={this.handleWipePunishment}
+                />
+            </React.Fragment>
         );
     }
 

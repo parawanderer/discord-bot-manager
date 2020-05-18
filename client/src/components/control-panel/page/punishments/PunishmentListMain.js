@@ -1,14 +1,25 @@
 import React from 'react';
 
 import { connect} from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
+
+
 import {fetchAllPunishments, searchPunishmentsByUserID, searchPunishmentsByUsername, 
-    searchPunishmentsByUsernameDiscriminator, setPunishmentsPage, setPunishmentsPerPage } from '../../../../action';
+    searchPunishmentsByUsernameDiscriminator, setPunishmentsPage, setPunishmentsPerPage, fetchMember } from '../../../../action';
 
 import PunishmentSearch from './PunishmentSearch';
 import Loading from '../../generic/Loading';
 import PunishmentListItem from './PunishmentListItem';
 import PunishmentPerPageSelector from './PunishmentPerPageSelector';
+import Username from '../../generic/Username';
+import InputValidator from '../../../../utils/InputValidator';
+import Button from '../../generic/Button';
 
+
+const MEMBER_SEARCH_ID_STR = "member-search-id";
+const MEMBER_SEARCH_MEMBER_STR = "member-search-member";
+const MEMBER_SEARCH_BUTTONS="member-search-opt";
 
 
 class PunishmentListMain extends React.Component { 
@@ -16,14 +27,62 @@ class PunishmentListMain extends React.Component {
 
     state = {
         loadingNewPage: false,
-        showEditPerPage: false
+        showEditPerPage: false,
+        searchError: null
     };
 
     _canNavigate = true;
+    _searchTerm = null;
+    _flagSearchByUserId = false;
+
 
     componentDidMount() {
-        const { per_page, page } = this.props.punishments;
-        this.props.fetchAllPunishments(page, per_page);
+        const GET_USER_ID_HISTORY_REGEX = /^\?id=(.+)$/;
+
+        const { per_page, page, data } = this.props.punishments;
+
+        if (data) {
+            // let's check if the most recent data display was an ID search?
+            if (data.search_data && data.search_data.user_id) {
+                this._flagSearchByUserId = true;
+                this._searchTerm = data.search_data.user_id;
+                this.forceUpdate();
+            }
+        }
+
+        const {search} = this.props.location;
+        if (search) {
+            if (GET_USER_ID_HISTORY_REGEX.test(search)) {
+                const id = GET_USER_ID_HISTORY_REGEX.exec(search)[1];
+
+                if (InputValidator.isDiscordID(id)) {
+                    // requested for specific id in path params...
+                    this.handleSearch('user_id', id);
+                } else {
+                    this.props.fetchAllPunishments(page, per_page);
+                    this.props.history.push('/punishments');
+                }
+
+            } else {
+                this.props.fetchAllPunishments(page, per_page);
+                this.props.history.push('/punishments');
+            }
+        } else {
+            if ((!data) || (data && !(data.search_data.user_id || data.search_data.username))) {
+                // only actually _refresh_ the general list. Do not refresh if we previously fetched a specific user's history
+                this.props.fetchAllPunishments(page, per_page);
+            }
+        }
+    }
+
+    hasMember(id) {
+        const {member_fetch_history} = this.props;
+        return member_fetch_history.fetched_ids.includes(id);
+    }
+
+    getMember(id) {
+        const {member_fetch_history} = this.props;
+        return member_fetch_history.member_history[id];
     }
 
     isFirstPage() {
@@ -45,6 +104,7 @@ class PunishmentListMain extends React.Component {
     handleShowPageEditor = () => {
         this.setState({showEditPerPage : true});
     }
+
     handleHidePageEditor = () => {
         this.setState({showEditPerPage : false});
     }
@@ -92,14 +152,126 @@ class PunishmentListMain extends React.Component {
 
     handleReload = async () => {
         if (!this._canNavigate) return;// already in the process of navigating
+        this.props.enableScroll();
 
         const { page, per_page } = this.props.punishments;
+        this._flagSearchByUserId = false;
 
         this._canNavigate = false;
         this.setState({loadingNewPage : true});
+        if (this.props.location.search) {
+            this.props.history.push('/punishments');
+        }
         await this.props.fetchAllPunishments(page, per_page);
         this.setState({loadingNewPage : false});
         this._canNavigate = true;
+    }
+
+    handleSearch = async (option, searchValue) => {
+        if (!this._canNavigate) return;// already in the process of navigating
+        
+        const { page, per_page } = this.props.punishments;
+        const DISCORD_REGEX = /^(.+)#([0-9]{4})$/;
+        this._flagSearchByUserId = false;
+
+        if (!searchValue) {
+            this.setState({searchError : "No search term provided!"});
+            return; // nothing provided
+        }
+
+        if (searchValue.length < 3) {
+            this.setState({searchError : "Search term too short!"});
+            return; // too short
+        }
+
+        this._canNavigate = false;
+        this.setState({loadingNewPage : true});
+
+        if (option === 'username') {
+            this.props.disableScroll();
+
+            this._searchTerm = searchValue;
+            await this.props.searchPunishmentsByUsername(searchValue, page, per_page);
+
+            const {matching_user_ids} = this.props.punishments.data;
+            const requested = [];
+            for (let i = 0; i < matching_user_ids.length; i++) {
+                const userID = matching_user_ids[i];
+                if (!this.hasMember(userID) && !requested.includes(userID)) {
+                    requested.push(userID);
+                    this.props.fetchMember(userID);
+                }
+            }
+
+            this._canNavigate = true;
+            this.setState({loadingNewPage : false, searchError : null});
+        } 
+        else if (option === 'with_discriminator')
+        {   
+            let searchError = null;
+
+            if (DISCORD_REGEX.test(searchValue)) {
+                this.props.disableScroll();
+
+                this._searchTerm = searchValue;
+                const data = DISCORD_REGEX.exec(searchValue);
+                const name = data[1];
+                const discriminator = data[2];
+                await this.props.searchPunishmentsByUsernameDiscriminator(name, discriminator, page, per_page);
+
+                const {matching_user_ids} = this.props.punishments.data;
+                const requested = [];
+                for (let i = 0; i < matching_user_ids.length; i++) {
+                    const userID = matching_user_ids[i];
+                    if (!this.hasMember(userID) && !requested.includes(userID)) {
+                        requested.push(userID)
+                        this.props.fetchMember(userID);
+                    }
+                }
+
+            } else {
+                searchError= "Invalid discord Name#1234 string!";
+            }
+
+            this._canNavigate = true;
+            this.setState({loadingNewPage : false, searchError});
+            
+        }
+        else if (option === 'user_id')
+        {   
+            let searchError = null;
+            
+            if (InputValidator.isDiscordID(searchValue)) {
+
+                this.props.enableScroll();
+                this._searchTerm = searchValue;
+
+                if (!this.hasMember(searchValue)) {
+                    this.props.fetchMember(searchValue);
+                }
+
+                this._flagSearchByUserId = true;
+                await this.props.searchPunishmentsByUserID(searchValue);
+
+            } else {
+                searchError= "Invalid discord ID provided!";
+            }
+
+            this._canNavigate = true;
+            this.setState({loadingNewPage : false, searchError});
+        }
+
+    }
+
+    getSearchedName(userID) {
+        if (!this.hasMember(userID)) {
+            return userID;
+        }
+        const member = this.getMember(userID);
+        if (member === null) {
+            return userID;
+        }
+        return member.username;
     }
 
     renderPunishmentsListInner() {
@@ -149,13 +321,13 @@ class PunishmentListMain extends React.Component {
                 <div className="punishments-nav-load">
                     {this.state.loadingNewPage ? <Loading text=" "/> : null}
                 </div>
-                <button onClick={this.handleReload} disabled={this.state.loadingNewPage}>
+                <button onClick={this.handleReload} disabled={this.state.loadingNewPage || this._flagSearchByUserId }>
                     <i className="fas fa-repeat-alt"></i>
                 </button>
-                <button onClick={this.handleNavigateLeft} disabled={this.state.loadingNewPage || this.isFirstPage()}>
+                <button onClick={this.handleNavigateLeft} disabled={this.state.loadingNewPage || this._flagSearchByUserId || this.isFirstPage()}>
                     <i className="far fa-chevron-left"></i>
                 </button>
-                <button onClick={this.handleNavigateRight}  disabled={this.state.loadingNewPage || this.isLastPage()}>
+                <button onClick={this.handleNavigateRight}  disabled={this.state.loadingNewPage || this._flagSearchByUserId || this.isLastPage()}>
                     <i className="far fa-chevron-right"></i>
                 </button>
             </div>
@@ -164,35 +336,57 @@ class PunishmentListMain extends React.Component {
 
     renderPunishmentsList() {
 
-        const { per_page, page } = this.props.punishments;
+        const { per_page, page, data } = this.props.punishments;
         let start;
         let end;
+        let footer = null;
+        let noPunishments = false;
 
-        if (this.props.punishments.data && !this.state.loadingNewPage) {
-            start = ((page - 1) * per_page)+1;
-            end = start-1 + this.props.punishments.data.fetched;
+
+        if (data.fetched) {
+            if (data && !this.state.loadingNewPage) {
+                if (data.search_data.user_id || data.search_data.username) {
+                    start = 1;
+                    end = data.fetched;
+                } else {
+                    start = ((page - 1) * per_page)+1;
+                    end = start-1 + data.fetched;
+                }
+                
+            } else {
+                start = ((page - 1) * per_page)+1;
+                end = page * per_page;
+            }
+            footer = (
+                <div className="punishments-list-footer">
+                    Now showing punishments {start} through {end} ({end - start + 1} total)
+                </div>
+            );    
         } else {
-            start = ((page - 1) * per_page)+1;
-            end = page * per_page;
+            noPunishments = true;
+            footer = (
+                <div className="punishments-list-footer">
+                    No punishments found for {this.getSearchedName(this._searchTerm)}...
+                </div>
+            );    
         }
-
-        const footer = (
-            <div className="punishments-list-footer">
-                Now showing punishments {start} through {end} ({end - start + 1} total)
-            </div>
-        );
 
         return (
             <div className="punishments-fulllist" id="punishments-fulllist">
                 {this.renderPunishmentListNav()}
                 <h3 className="block-title">
-                    Most Recent Punishments
+                    {this._flagSearchByUserId ? `${this.getSearchedName(this._searchTerm)}'s Punishments`: 'Most Recent Punishments'}
                     <span className="list-count">
-                        {start} - <span className={"punishments-end" + (this.state.loadingNewPage ? ' unsure' : '')}>{end}</span>
+                        { !noPunishments ?
+                            <React.Fragment>{start} - <span className={"punishments-end" + (this.state.loadingNewPage ? ' unsure' : '')}>{end}</span></React.Fragment>
+                            : 0
+                        }
                     </span>
                 </h3>
 
                 {this.renderPunishmentsListInner()}
+
+                { noPunishments ? <div className="info">No punishments were found :(</div> : null}
 
                 <div className="punishments-fulllist-bottom">
                     {this.renderPunishmentListNav()}
@@ -205,10 +399,10 @@ class PunishmentListMain extends React.Component {
 
     renderDetailBlock() {
 
-    const { per_page, page } = this.props.punishments;
+        const { per_page, page } = this.props.punishments;
 
-        return (
-            <div className="punishment-display-det">
+        const fetchPreferences = (
+            <React.Fragment>
                 <div className="det-block">
                     Page: <span className="det-block-item">{page}</span>
                 </div>
@@ -218,19 +412,29 @@ class PunishmentListMain extends React.Component {
                 <button className="det-edit" onClick={this.handleShowPageEditor}>
                     <i className="far fa-edit"></i>
                 </button>
+            </React.Fragment>
+        );
+
+
+        return (
+            <div className="punishment-display-det">
+                { this._flagSearchByUserId ? <Button text="Return to All Punishments" onClick={this.handleReload} classes="return-to-all"/> : null }
+                { !this._flagSearchByUserId ? fetchPreferences : null }&nbsp;
             </div>
         );
     }
 
-    render() {
-
+    renderRecentPunishments() {
         return (
             <React.Fragment>
                 <div id="punishment-list-main">
                     <div className="punishments-title">
-                        <PunishmentSearch/>
+                        <PunishmentSearch
+                            searchHandler={this.handleSearch}
+                            error={this.state.searchError}
+                        />
                         <h1>
-                            Recent Punishments
+                            {this._flagSearchByUserId ? 'User Punishments': 'Recent Punishments'}
                         </h1>
                     </div>
                     {this.renderDetailBlock()}
@@ -245,16 +449,184 @@ class PunishmentListMain extends React.Component {
             </React.Fragment>
         );
     }
+
+    renderMatchingMember(id) {
+
+        let innerData = null;
+
+        if (!this.hasMember(id)) {
+            // still fetching member...
+            innerData = (
+                <React.Fragment key={id}>
+                    <td className={MEMBER_SEARCH_ID_STR}>
+                        <span className="punishment-userid">{id}</span>
+                    </td>
+                    <td className={MEMBER_SEARCH_MEMBER_STR}>
+                        <Loading text=" "/>
+                    </td>
+                    <td className={MEMBER_SEARCH_BUTTONS}>
+                        <Button text="Get History" onClick={() => this.handleSearch('user_id', id)}/>
+                    </td>
+                </React.Fragment>
+            );
+        } else {
+            const member = this.getMember(id);
+            if (member === null) {
+                // member left the server
+                innerData = (
+                    <React.Fragment key={id}>
+                        <td className={MEMBER_SEARCH_ID_STR}>
+                            <span className="punishment-userid">{id}</span>
+                        </td>
+                        <td className={MEMBER_SEARCH_MEMBER_STR}>
+                            <div className="info">
+                                <i className="fad fa-info-square"></i>
+                                This member is not in the server
+                            </div>
+                        </td>
+                        <td className={MEMBER_SEARCH_BUTTONS}>
+                            <Button text="Get History" onClick={() => this.handleSearch('user_id', id)}/>
+                        </td>
+                    </React.Fragment>
+                );
+
+            } else {
+                // member in server 
+
+                innerData = (
+                    <React.Fragment key={id}>
+                        <td className={MEMBER_SEARCH_ID_STR}>
+                            <span className="punishment-userid">{id}</span>
+                        </td>
+                        <td className={MEMBER_SEARCH_MEMBER_STR}>
+                            <img src={member.effective_avatar} className="inline-avatar"  alt="user avatar"/>
+                            <Username username={member.username} discriminator={member.discriminator}/>
+                        </td>
+                        <td className={MEMBER_SEARCH_BUTTONS}>
+                            <Button text="Get History" onClick={() => this.handleSearch('user_id', id)}/>
+                        </td>
+                    </React.Fragment>
+                );
+            }
+        }
+
+        return (
+            <tr className="matching-member" key={id}>
+                {innerData}
+            </tr>
+        );
+    }
+
+    renderMatchingMemberList() {
+
+        const {matching_user_ids} = this.props.punishments.data;
+
+        let list = null;
+        let bottom = null;
+        let uniqueList = [];
+
+        if (matching_user_ids.length) {
+            // this can contain duplicates
+            matching_user_ids.forEach(item => {
+                if (!uniqueList.includes(item)) uniqueList.push(item);
+            });
+            list = uniqueList.map(userId => this.renderMatchingMember(userId));
+        } else {
+            bottom = (
+                <div className="no-matches">
+                    No matches found! :(
+                </div>
+            );
+        }
+
+        return(
+            <div className="matching-members" id="matching-members">
+                <h3 className="block-title">
+                    <div className="loading-info">
+                        {this.state.loadingNewPage ? <Loading text=" "/> : null}
+                    </div>
+                    Members Matching "{this._searchTerm}"
+                    <span className="list-count">
+                        {uniqueList.length}
+                    </span>
+                </h3>
+                <div className="matching-info">
+                    These are members who at one point were punished while having a name matching "{this._searchTerm}".
+                    They may have since changed their name.
+                </div>
+                <div className="matching-list">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th className={MEMBER_SEARCH_ID_STR}>
+                                    ID
+                                </th>
+                                <th className={MEMBER_SEARCH_MEMBER_STR}>
+                                    Member
+                                </th>
+                                <th className={MEMBER_SEARCH_BUTTONS}>
+
+                                </th>
+                            </tr>
+                            {list}
+                        </tbody>
+                    </table>
+                    {bottom}
+                </div>
+            </div>
+        );
+    }
+
+    renderMatchingMembers() {
+
+        return (
+            <React.Fragment>
+                <div id="punishment-list-main">
+                    <div className="punishments-title">
+                        <PunishmentSearch
+                            searchHandler={this.handleSearch}
+                            error={this.state.searchError}
+                        />
+                        <h1>
+                            Punished Member Search
+                        </h1>
+                    </div>
+                    <div className="member-results-desc">
+                        <Button text="Return to All Punishments" onClick={this.handleReload} classes="return-to-all-members"/>
+                    </div>
+                    {this.renderMatchingMemberList()}
+                </div>
+                <PunishmentPerPageSelector
+                    show={this.state.showEditPerPage}
+                    onCancel={this.handleHidePageEditor}
+                    successfulSubmitCallback={this.handleUpdateNewPerPage}
+                    value={this.props.punishments.per_page}
+                />
+            </React.Fragment>
+        );   
+    }
+
+
+    render() {
+        if (!this.props.punishments.data) return <Loading/>;
+       
+        if (this.props.punishments.data.punishments) {
+            return this.renderRecentPunishments();
+        } else {
+            return this.renderMatchingMembers();
+        }
+    }
 }
 
 const mapStateToProps = (state, ownProps) => {
     return {
         punishments: state.punishments,
         page: state.punishments.page,
-        per_page: state.punishments.per_page
+        per_page: state.punishments.per_page,
+        member_fetch_history: state.member_fetch_history
     };
 };
 
 export default connect(mapStateToProps, {fetchAllPunishments, searchPunishmentsByUserID, 
     searchPunishmentsByUsername, searchPunishmentsByUsernameDiscriminator, 
-    setPunishmentsPage, setPunishmentsPerPage})(PunishmentListMain);
+    setPunishmentsPage, setPunishmentsPerPage, fetchMember})(withRouter(PunishmentListMain));

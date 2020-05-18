@@ -18,13 +18,14 @@ class PunishmentCurrentDetail extends React.Component {
 
     _lastFetchedUser = null;
     _mainContainerElement = null;
-    _fullListElement = null;
+    _topElement = null;
     _windowHeight = null;
     _stickStrollOffset = 0;
+    _selfElement = null;
 
     componentDidMount() {
         this._mainContainerElement = document.getElementById("main-container");
-        this._fullListElement = document.getElementById("punishments-fulllist");
+        this._topElement = document.getElementById("top");
         this._windowHeight = window.innerHeight;
         this._mainContainerElement.addEventListener('scroll', this.handleScroll, { passive: true })
     }
@@ -34,12 +35,20 @@ class PunishmentCurrentDetail extends React.Component {
     }
 
     handleScroll = (event) => {
+        if (!this.props.shouldScroll) return;
+
         const scrollTop = this._mainContainerElement.scrollTop;
         const tenPercentOfHeight = this._windowHeight / 10;
-        const maxScroll = this._fullListElement.offsetTop - tenPercentOfHeight;
+        let maxScroll = (this._topElement.offsetTop + this._topElement.clientHeight * 3) - tenPercentOfHeight;
+    
         if (scrollTop > maxScroll) {
-            this._stickStrollOffset = scrollTop - maxScroll + (tenPercentOfHeight /2);
-            this.setState({scrollStick: true});
+            if (!this._selfElement || (this._selfElement.clientHeight + this._stickStrollOffset) <= this._mainContainerElement.scrollHeight- 200) {
+                this._stickStrollOffset = scrollTop - maxScroll + (tenPercentOfHeight /2);
+                this.setState({scrollStick: true});
+            } else {
+                this._stickStrollOffset = this._mainContainerElement.scrollHeight - this._selfElement.clientHeight - 200;
+                this.setState({scrollStick: true});
+            }
         } else {
             this.setState({scrollStick: false});
         }
@@ -279,7 +288,11 @@ class PunishmentCurrentDetail extends React.Component {
         if (!punishment.visible) {
             wipeData = (
                 <div className="punishment-wipe-info">
-                    {this.renderGenericInfoItem("Wiped By", <div className="punishment-userid">{punishment.visible_modified_iD}</div>)}
+                    {this.renderGenericInfoItem("Wiped By", 
+                    punishment.visible_modified_iD !== 'system'
+                     ? <div className="punishment-userid">{punishment.visible_modified_iD}</div>
+                     : <span className="punishment-issuer-name"><i className="fas fa-robot"></i> System</span>
+                    )}
                 </div>
             );
         }
@@ -330,7 +343,10 @@ class PunishmentCurrentDetail extends React.Component {
 
         return (
             <div className={"punishment-selected" + (this.state && this.state.scrollStick ? " stick" : "")}
-                style={this.state && this.state.scrollStick ? {transform: `translateY(${this._stickStrollOffset}px)`} : undefined}
+                style={this.state && this.state.scrollStick && this.props.shouldScroll ? {transform: `translateY(${this._stickStrollOffset}px)`} : {transform: `translateY(0px)`}}
+                ref={div => {
+                    this._selfElement = div
+                }}
             >   
                 <div className="punishment-selected-user">
                     {this.renderDiscordUserInfo()}

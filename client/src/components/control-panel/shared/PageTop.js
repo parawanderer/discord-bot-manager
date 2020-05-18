@@ -28,7 +28,7 @@ class PageTop extends React.Component {
 
     render() {
         return (
-            <div className="top">
+            <div className="top" id="top">
                 <div className="page-title">
                     {this.getTitle()}
                 </div>

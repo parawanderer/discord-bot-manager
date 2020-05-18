@@ -2574,6 +2574,21 @@ td.immortal-active-state .active-state {
     background: transparent;
     border-bottom: 0;
     width: 90%;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+    border: 2px solid transparent;
+    transition: 0.1s ease;
+}
+
+.punish-search-box.with-error .punish-searcher {
+    border: 2px solid #f16565;
+}
+
+.punish-search-error {
+    color: #e24c4c;
+    font-weight: 600;
+    margin-left: 1em;
+    position: absolute;
 }
 
 .punish-search-box #search-by:focus, .punish-search-box #search-by:hover {
@@ -2656,6 +2671,7 @@ td.immortal-active-state .active-state {
 .punishment-display-det {
     margin: 0 0.5em;
     padding-bottom: 0.5em;
+    margin-right: 0;
 }
 
 .punishments-body .active-state {
@@ -2926,6 +2942,8 @@ div.punishment, .punishment-issuer {
     padding: 20px;
     border-top: 2px solid #eef0f3;
     margin-top: 20px;
+    border-bottom: 2px solid #eef0f3;
+    margin-bottom: 20px;
 }
 
 .punishment-go-back {
@@ -3033,4 +3051,87 @@ div.punishment, .punishment-issuer {
 
 .punishment-det-top {
     margin-top: 2.25em;
+}
+
+.button.wipe-punishment {
+    float: right;
+}
+
+.matching-members {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 20px 0px;
+}
+
+.matching-member img.inline-avatar {
+    display: inline-block;
+    height: 4em;
+    box-sizing: border-box;
+    width: 4em;
+    border-radius: 100%;
+    vertical-align: middle;
+    margin-right: 1em;
+}
+
+.matching-member .username {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.no-matches, .matching-info {
+    text-align: center;
+    padding: 1em 0;
+    font-weight: 600;
+    color: #b9baca;
+}
+
+.button.return-to-all {
+    color: white;
+    float: right;
+    margin-right: 0;
+}
+
+.matching-member .info i {
+    font-size: 18pt;
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+.punishments-fulllist .info {
+    font-weight: 600;
+    color: #b9baca;
+    padding: 1em;
+    text-align: center;
+}
+
+.matching-member .loading {
+    padding: 0;
+}
+
+tr.matching-member td {
+    height: 4em;
+}
+
+.member-results-desc {
+    text-align: right;
+}
+
+#matching-members .loading-info .loading {
+    padding: 0;
+}
+
+#matching-members .loading-info {
+    float: right;
+}
+
+.member-search-id {
+    width: 25%;
+}
+
+.member-search-member {
+    width: 50%;
+}
+.member-search-opt {
+    width: 25%;
 }
