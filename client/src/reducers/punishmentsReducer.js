@@ -1,7 +1,26 @@
-import {FETCH_RECENT_PUNISHMENTS, FETCH_PUNISHMENTS, FETCH_SEARCH_PUNISHMENTS, SET_PUNISHMENTS_PAGE, SET_PUNISHMENTS_PER_PAGE} from '../action/types';
+import { Cookies } from 'react-cookie';
+
+import { FETCH_PUNISHMENTS, FETCH_SEARCH_PUNISHMENTS, SET_PUNISHMENTS_PAGE, SET_PUNISHMENTS_PER_PAGE} from '../action/types';
+
+export const COOKIE_OPTIONS = { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 };
+export const COOKIE_PER_PAGE_NAME = 'per_page';
+export const DEFAULT_PER_PAGE = 30;
+
+const cookies = new Cookies();
+
+let per_page;
+
+// initialise per_page from cookies if it was set
+if (cookies.get(COOKIE_PER_PAGE_NAME)) {
+    per_page = cookies.get(COOKIE_PER_PAGE_NAME);
+    per_page = parseInt(per_page);
+    if (isNaN(per_page) || per_page <= 10 || per_page > 500) per_page = DEFAULT_PER_PAGE;
+} else {
+    per_page = DEFAULT_PER_PAGE;
+}
 
 const defaultState = {
-    per_page: 30,
+    per_page,
     page:1,
     data: null
 };

@@ -8,6 +8,12 @@ class PunishmentPerPageSelector extends React.Component{
         selectedValue : 10
     };
 
+    componentDidUpdate() {
+        if (!this.props.show) {
+            if (this.state.selectedValue !== null) this.setState({selectedValue : null})
+        }
+    }
+
     cancelHandler = () => {
         this.props.onCancel();
     };
@@ -21,6 +27,7 @@ class PunishmentPerPageSelector extends React.Component{
         this.props.successfulSubmitCallback(newValue);
     };
 
+
     handleValueUpdate = (newValue) => {
         let val = parseInt(newValue);
         if (isNaN(val) || val < 10 || val > 500) {
@@ -32,8 +39,9 @@ class PunishmentPerPageSelector extends React.Component{
 
     render() {
 
-        if (!this.props.show) return null;
-
+        if (!this.props.show) {
+            return null;
+        }
 
         return (
             <EditPopup
@@ -49,7 +57,7 @@ class PunishmentPerPageSelector extends React.Component{
                     type="number" 
                     min="10" 
                     max="500" 
-                    value={this.state.selectedValue}
+                    value={this.state.selectedValue || this.props.value}
                     onChange={e => this.handleValueUpdate(e.target.value)} 
                 />
 

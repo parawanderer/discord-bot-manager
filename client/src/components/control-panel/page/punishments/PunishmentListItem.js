@@ -97,6 +97,7 @@ class PunishmentListItem extends React.Component {
         const { punishment } = this.props;
 
         const seconds = Math.ceil((new Date().getTime() - punishment.timestamp)/1000);
+        if (seconds <= -1) return 'just now';
 
         let time = PunishmentSeverityHelper.timeToReadableString(seconds);
 

@@ -160,9 +160,9 @@ class PunishmentCurrentDetail extends React.Component {
 
     renderGenericInfoItem(title, data) {
         return (
-            <div class="sidebar-info-item">
-                <div class="sidebar-info-title">{title}</div>
-                <div class="sidebar-info-data">{data}</div>
+            <div className="sidebar-info-item">
+                <div className="sidebar-info-title">{title}</div>
+                <div className="sidebar-info-data">{data}</div>
             </div>
         );
     }
@@ -296,11 +296,16 @@ class PunishmentCurrentDetail extends React.Component {
 
         return(
             <div className="punishment-selected-detail">
-                <Link to={`/punishments/punishment/${punishment.id}`}>
-                    <button className="view-punishment">
-                        <i className="far fa-angle-right"></i>
-                    </button>
-                </Link>
+                <div className="view-punishment-block">
+                    <div className="view-punishment-text">
+                        View Details
+                    </div>
+                    <Link to={`/punishments/punishment/${punishment.id}`}>
+                        <button className="view-punishment">
+                            <i className="far fa-angle-right"></i>
+                        </button>
+                    </Link>
+                </div>
                 <h3>Punishment #{punishment.id}</h3>
                 <div className="punishment-selected-detail-inner">
                     {this.renderPunishmentType()}

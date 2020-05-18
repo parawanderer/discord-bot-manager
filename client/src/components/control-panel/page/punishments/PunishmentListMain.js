@@ -35,7 +35,7 @@ class PunishmentListMain extends React.Component {
     isLastPage() {
         if (!this.props.punishments.data) return false
 
-        const { per_page, page } = this.props.punishments;
+        const { per_page } = this.props.punishments;
         const pageMax = per_page;
         const pageCurrent = this.props.punishments.data.fetched;
 
@@ -240,6 +240,7 @@ class PunishmentListMain extends React.Component {
                     show={this.state.showEditPerPage}
                     onCancel={this.handleHidePageEditor}
                     successfulSubmitCallback={this.handleUpdateNewPerPage}
+                    value={this.props.punishments.per_page}
                 />
             </React.Fragment>
         );

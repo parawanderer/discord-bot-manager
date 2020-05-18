@@ -26,7 +26,9 @@ const ICON_ASSOCIATIONS = {
     "filter" :  <i className="fad fa-language"></i>
 };
 
-class IconFinder {
+const PATH_PUNISHMENT_DETAIL_REGEX = /^punishments\/punishment\/(.+)$/;
+
+class PathFinder {
 
     static paths = PATH_ASSOCIATIONS;
     static icons = ICON_ASSOCIATIONS;
@@ -40,8 +42,18 @@ class IconFinder {
     static getName = (path) =>  {
         const name = PATH_ASSOCIATIONS[path];
         if (name) return name;
+        if (PATH_PUNISHMENT_DETAIL_REGEX.test(path)) {
+            const data = PATH_PUNISHMENT_DETAIL_REGEX.exec(path);
+            return `Punishment #${data[1]}`;
+        }
         return null;
     };
+
+    static isValidPunishmentID = (id) => {
+        const intId = parseInt(id);
+        if (isNaN(intId) || intId <= 0) return false;
+        return true;
+    }
 }
 
-export default IconFinder;
+export default PathFinder;

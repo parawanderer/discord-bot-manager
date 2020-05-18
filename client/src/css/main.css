@@ -3,6 +3,7 @@ body {
     font-family: 'Baloo Da 2', cursive;
     color: #46484a;
     background-color: #eef0f3;
+    background-color: #e1e5ea;
 }
 
 a {
@@ -1678,7 +1679,7 @@ h2.success-title {
 
 .severity-choose {
     padding-bottom: 20px;
-    border-bottom: 2px solid #eef0f3;
+    /* border-bottom: 2px solid #eef0f3; */
 }
 
 .severity-list-item {
@@ -2039,7 +2040,7 @@ button.table-edit {
 }
 
 .severity-choose {
-    border-bottom: 2px solid #eef0f3;
+    /* border-bottom: 2px solid #eef0f3; */
     padding-bottom: 0;
 }
 
@@ -2787,7 +2788,7 @@ div.punishment, .punishment-issuer {
 }
 
 .view-punishment {
-    float: right;
+    display: inline-block;
     width: 1.25em;
     height: 1.25em;
     font-size: 2em;
@@ -2799,6 +2800,20 @@ div.punishment, .punishment-issuer {
     transition: 0.1s ease;
     color: #9e9db1;
     cursor: pointer;
+    vertical-align: middle;
+}
+
+.view-punishment-text {
+    display: inline-block;
+    color: #9da6b3;
+    font-weight: 500;
+    margin-right: 0.5em;
+    font-size: 13pt;
+    vertical-align: middle;
+}
+
+.view-punishment-block {
+    float: right;
 }
 
 .view-punishment > i {
@@ -2841,4 +2856,181 @@ div.punishment, .punishment-issuer {
 
 .punishments-fulllist-bottom {
     padding-top: 10px;
+}
+
+#not-found {
+    text-align: center;
+    color: #9da6b3;
+    font-weight: 500;
+    margin-top: 6em;
+}
+
+.not-found-icon {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    font-size: 4em;
+    border-radius: 100%;
+    background: #06d1e9;
+    background-image: linear-gradient(to top left, #5f97eb, #00d6e9);
+    color: white;
+    margin-bottom: 0.25em;
+    box-shadow: 0px 3px rgba(0, 0, 0, 0.1);
+}
+
+.not-found-icon > i {
+    vertical-align: initial;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.25em;
+}
+
+.not-found-title {
+    font-size: 2em;
+    color: #6a727d;
+}
+
+.punishment-det-user {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 20px;
+    margin-right: 0;
+}
+
+
+#punishment-detail .left {
+    width: 65%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#punishment-detail {
+    margin: 30px 50px;
+    margin-top: 15px;
+}
+
+#punishment-detail .right {
+    width: 35%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.punishment-det-top h1 {
+    margin: 0;
+    margin-left: 20px;
+}
+
+.punishment-det-user-body .rolelist {
+    padding: 20px;
+    border-top: 2px solid #eef0f3;
+    margin-top: 20px;
+}
+
+.punishment-go-back {
+    display: inline-block;
+}
+
+.punishment-go-back-btn {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    font-size: 1.5em;
+    background: transparent;
+    border: 0;
+    background: #d3d7de;
+    border-radius: 100%;
+    outline: 0;
+    transition: 0.1s ease;
+    color: #9e9db1;
+    cursor: pointer;
+}
+
+.punishment-go-back .text {
+    display: inline-block;
+    color: #9da6b3;
+    font-weight: 500;
+    margin-left: 1em;
+    font-size: 15pt;
+}
+
+.punishment-go-back-btn:hover {
+    background: #c7cbd0;
+    color: #87869c;
+}
+
+.punishment-info {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    margin: 10px;
+}
+
+.main-title {
+    margin: 0;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+.punishment-info-body {
+    padding: 20px 0;
+}
+
+.inline-avatar-container {
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    border-radius: 100%;
+    vertical-align: middle;
+    margin-right: 1em;
+    overflow: hidden;
+}
+
+.punishment-issuer img.inline-avatar {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+.punishment-issuer .username {
+    display: inline-block;
+}
+
+.inline-info {
+    background: #dfe4ea;
+    padding: 2px 5px;
+    font-weight: 500;
+    color: #b5bdc7;
+    display: inline-block;
+    font-size: 10pt;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1em;
+}
+
+.inline-info > i {
+    color: #8d96a2;
+    font-size: 1.5em;
+    vertical-align: middle;
+    margin-right: 0.25em;
+}
+
+.punishment-info .active-state {
+    float: none;
+    vertical-align: middle;
+    top: -2px;
+}
+
+.punishment-main-type .punishment-severity {
+    font-size: 15pt;
+    vertical-align: middle;
+}
+
+.punishment-main-type .punishment-type {
+    vertical-align: middle;
+}
+
+.punishment-det-top {
+    margin-top: 2.25em;
 }

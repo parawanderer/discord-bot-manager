@@ -12,6 +12,7 @@ import immortalsReducer from './immortalsReducer';
 import mcStatusReducer from './mcStatusReducer';
 import punishmentsReducer from './punishmentsReducer';
 import memberFetchHistoryReducer from './memberFetchHistoryReducer';
+import punishmentReducer from './punishmentReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -25,5 +26,6 @@ export default combineReducers({
     immortal: immortalsReducer,
     mc_status : mcStatusReducer,
     punishments: punishmentsReducer,
-    member_fetch_history: memberFetchHistoryReducer
+    member_fetch_history: memberFetchHistoryReducer,
+    punishment_detail: punishmentReducer
 });

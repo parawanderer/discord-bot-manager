@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { Cookies } from 'react-cookie';
+
 import { 
     FETCH_GUILD_INFO, 
     FETCH_RECENT_PUNISHMENTS, 
@@ -35,9 +37,16 @@ import {
     FETCH_SEARCH_PUNISHMENTS,
     SET_PUNISHMENTS_PAGE,
     SET_PUNISHMENTS_PER_PAGE,
-    FETCH_MEMBER_FAILURE
+    FETCH_MEMBER_FAILURE,
+    FETCH_PUNISHMENT,
+    WIPE_PUNISHMENT
 } from './types';
+import { COOKIE_OPTIONS, COOKIE_PER_PAGE_NAME } from '../reducers/punishmentsReducer';
+
 import InputValidator from '../utils/InputValidator';
+
+const cookies = new Cookies();
+
 
 
 export const fetchLoginStatus = () => 
@@ -485,9 +494,58 @@ export const setPunishmentsPage = (newPage) => {
         payload: newPage
     }
 };
+
 export const setPunishmentsPerPage = (newPerPage) => {
+    cookies.set(COOKIE_PER_PAGE_NAME, newPerPage, COOKIE_OPTIONS);
     return {
         type: SET_PUNISHMENTS_PER_PAGE,
         payload: newPerPage
     }
 };
+
+export const fetchPunishmentById = (id) => 
+    async (dispatch, getState) => {
+
+        try {
+            const response = await axios.get(`/api/punish/punishment/${id}`);
+
+            dispatch({
+                type: FETCH_PUNISHMENT,
+                payload: {
+                    id,
+                    data: response.data
+                }
+            });
+        } catch (e) {
+            dispatch({
+                type: FETCH_PUNISHMENT,
+                payload: {
+                    id,
+                    data: null
+                }
+            });
+        }
+    };
+
+export const wipePunishmentById = (id) => 
+    async (dispatch, getState) => {
+        try {
+            const response = await axios.delete(`/api/punish/punishment/${id}`);
+
+            dispatch({
+                type: WIPE_PUNISHMENT,
+                payload: {
+                    id,
+                    data: response.data
+                }
+            });
+        } catch (e) {
+            dispatch({
+                type: WIPE_PUNISHMENT,
+                payload: {
+                    id,
+                    data: null
+                }
+            });
+        }
+    };

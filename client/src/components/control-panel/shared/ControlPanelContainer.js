@@ -15,6 +15,7 @@ import Rules from '../page/rules/Rules';
 import ReactionRoleSystem from '../page/ReactionRoleSystem';
 import Filter from '../page/filter/Filter';
 import Reports from '../page/reports/Reports';
+import PunishmentDetail from '../page/punishments/PunishmentDetail';
 
 
 class ControlPanelContainer extends React.Component {
@@ -40,6 +41,7 @@ class ControlPanelContainer extends React.Component {
                         <Route exact path="/severities" component={PunishmentSystem} />
                         <Route exact path="/react-role" component={ReactionRoleSystem} />
                         <Route exact path="/filter" component={Filter} />
+                        <Route path="/punishments/punishment/:id" component={PunishmentDetail} />
                     </div>
                 </div>
                 </BrowserRouter>
