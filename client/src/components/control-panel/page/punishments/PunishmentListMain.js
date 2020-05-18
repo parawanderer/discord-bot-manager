@@ -239,14 +239,11 @@ class PunishmentListMain extends React.Component {
         this._canNavigate = false;
         this.setState({loadingNewPage : true});
 
-        console.log("stayOnCurrentUserIfById", stayOnCurrentUserIfById);
-
         if (this._flagSearchByUserId && stayOnCurrentUserIfById) {
             await this.handleSearch('user_id', this._flagSearchByUserId);
             
         } else {
             this._flagSearchByUserId = false;
-            console.log("a");
             if (this.props.location.search) {
                 this.props.history.push('/punishments');
             }
@@ -281,7 +278,7 @@ class PunishmentListMain extends React.Component {
             this.props.disableScroll();
 
             this._searchTerm = searchValue;
-            await this.props.searchPunishmentsByUsername(searchValue, page, per_page);
+            await this.props.searchPunishmentsByUsername(searchValue, 1, 100);
 
             const {matching_user_ids} = this.props.punishments.data;
             const requested = [];
@@ -307,7 +304,7 @@ class PunishmentListMain extends React.Component {
                 const data = DISCORD_REGEX.exec(searchValue);
                 const name = data[1];
                 const discriminator = data[2];
-                await this.props.searchPunishmentsByUsernameDiscriminator(name, discriminator, page, per_page);
+                await this.props.searchPunishmentsByUsernameDiscriminator(name, discriminator, 1, 100);
 
                 const {matching_user_ids} = this.props.punishments.data;
                 const requested = [];
@@ -341,7 +338,7 @@ class PunishmentListMain extends React.Component {
                 }
 
                 this._flagSearchByUserId = true;
-                await this.props.searchPunishmentsByUserID(searchValue);
+                await this.props.searchPunishmentsByUserID(searchValue, 1, 100);
 
             } else {
                 searchError= "Invalid discord ID provided!";
