@@ -39,7 +39,10 @@ import {
     SET_PUNISHMENTS_PER_PAGE,
     FETCH_MEMBER_FAILURE,
     FETCH_PUNISHMENT,
-    WIPE_PUNISHMENT
+    WIPE_PUNISHMENT,
+    UNMUTE_USER,
+    UNBAN_USER,
+    UNPUNISH_USER
 } from './types';
 import { COOKIE_OPTIONS, COOKIE_PER_PAGE_NAME } from '../reducers/punishmentsReducer';
 
@@ -548,4 +551,52 @@ export const wipePunishmentById = (id) =>
                 }
             });
         }
+    };
+
+export const unmuteUserById = (id, reason) => 
+    async (dispatch, getState) => {
+
+        const requestData = {
+            action: 'unmute',
+            reason
+        };
+
+        const response = await axios.put(`/api/punish/history/${id}`, requestData);
+
+        dispatch({
+            type: UNMUTE_USER,
+            payload: response.data
+        });
+    };
+
+export const unbanUserById = (id, reason) => 
+    async (dispatch, getState) => {
+
+        const requestData = {
+            action: 'unban',
+            reason
+        };
+
+        const response = await axios.put(`/api/punish/history/${id}`, requestData);
+
+        dispatch({
+            type: UNBAN_USER,
+            payload: response.data
+        });
+    };
+
+export const unpunishUserById = (id, reason) => 
+    async (dispatch, getState) => {
+
+        const requestData = {
+            action: 'unpunish',
+            reason
+        };
+
+        const response = await axios.put(`/api/punish/history/${id}`, requestData);
+
+        dispatch({
+            type: UNPUNISH_USER,
+            payload: response.data
+        });
     };

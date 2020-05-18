@@ -45,11 +45,15 @@ class PunishmentsEndpoint {
     /**
      * Where action is either the string 'unmute', 'unban' or 'unpunish'
      */
-    modifyPunishmentStatusForUser = async (userID, action) => {
+    modifyPunishmentStatusForUser = async (userID, action, reason) => {
         if (!((['unmute','unban','unpunish']).includes(action))) 
             throw new Error("PunishmentsEndpoint: Invalid action supplied to modifyPunishmentStatusForUser. Must be 'unmute', 'unban' or 'unpunish'")
         try { 
-            return (await botAPI.put(`${API_URI_PUNISHMENTS}/history/${userID}`, action)).data;
+            const data = {
+                action,
+                reason
+            }
+            return (await botAPI.put(`${API_URI_PUNISHMENTS}/history/${userID}`, data)).data;
         } catch (e) {
             return HTTPErrorHandler.makeGenericError(e);
         }

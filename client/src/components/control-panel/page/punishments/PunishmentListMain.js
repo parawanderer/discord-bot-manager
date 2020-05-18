@@ -6,7 +6,8 @@ import { withRouter } from 'react-router-dom';
 
 
 import {fetchAllPunishments, searchPunishmentsByUserID, searchPunishmentsByUsername, 
-    searchPunishmentsByUsernameDiscriminator, setPunishmentsPage, setPunishmentsPerPage, fetchMember } from '../../../../action';
+    searchPunishmentsByUsernameDiscriminator, setPunishmentsPage, 
+    setPunishmentsPerPage, fetchMember, unbanUserById, unpunishUserById, unmuteUserById } from '../../../../action';
 
 import PunishmentSearch from './PunishmentSearch';
 import Loading from '../../generic/Loading';
@@ -15,6 +16,9 @@ import PunishmentPerPageSelector from './PunishmentPerPageSelector';
 import Username from '../../generic/Username';
 import InputValidator from '../../../../utils/InputValidator';
 import Button from '../../generic/Button';
+import UnmuteConfirm from './UnmuteConfirm';
+import UnbanConfirm from './UnbanConfirm';
+import UnpunishConfirm from './UnpunishConfirm';
 
 
 const MEMBER_SEARCH_ID_STR = "member-search-id";
@@ -28,7 +32,10 @@ class PunishmentListMain extends React.Component {
     state = {
         loadingNewPage: false,
         showEditPerPage: false,
-        searchError: null
+        searchError: null,
+        showUnmute: false,
+        showUnban: false,
+        showUnpunish: false
     };
 
     _canNavigate = true;
@@ -101,6 +108,30 @@ class PunishmentListMain extends React.Component {
         return pageMax > pageCurrent;
     }
 
+    hasActiveMutes() {
+        const { data } = this.props.punishments
+        if (!data|| !data.punishments) return false;
+
+        for (let i = 0; i < data.punishments.length; i++) {
+            const punishment = data.punishments[i];
+            if (punishment.active_state && punishment.visible 
+                && punishment.raw_type === 1) return true;
+        }
+        return false;
+    }
+
+    hasActiveBans() {
+        const { data } = this.props.punishments
+        if (!data|| !data.punishments) return false;
+
+        for (let i = 0; i < data.punishments.length; i++) {
+            const punishment = data.punishments[i];
+            if (punishment.active_state && punishment.visible 
+                && punishment.raw_type === 2) return true;
+        }
+        return false;
+    }
+
     handleShowPageEditor = () => {
         this.setState({showEditPerPage : true});
     }
@@ -108,6 +139,54 @@ class PunishmentListMain extends React.Component {
     handleHidePageEditor = () => {
         this.setState({showEditPerPage : false});
     }
+
+    handleShowUnmute = () => {
+        this.setState({showUnmute : true});
+    }
+
+    handleHideUnmute = () => {
+        this.setState({showUnmute : false});
+    }
+
+    handleShowUnban = () => {
+        this.setState({showUnban : true});
+    }
+
+    handleHideUnban = () => {
+        this.setState({showUnban : false});
+    }
+
+    handleShowUnpunish = () => {
+        this.setState({showUnpunish : true});
+    }
+
+    handleHideUnpunish = () => {
+        this.setState({showUnpunish : false});
+    }
+
+    handleUnmuteUser = async (reason) => {
+        const id = this.props.punishments.data.search_data.user_id;
+        this._canNavigate = false;
+        await this.props.unmuteUserById(id, reason);
+        this.handleHideUnmute();
+        this._canNavigate = true;
+    };
+
+    handleUnbanUser = async (reason) => {
+        const id = this.props.punishments.data.search_data.user_id;
+        this._canNavigate = false;
+        await this.props.unbanUserById(id, reason);
+        this.handleHideUnban();
+        this._canNavigate = true;
+    };
+
+    handleUnpunishUser = async (reason) => {
+        const id = this.props.punishments.data.search_data.user_id;
+        this._canNavigate = false;
+        await this.props.unpunishUserById(id, reason);
+        this.handleHideUnpunish();
+        this._canNavigate = true;
+    };
 
     handleUpdateNewPerPage = async (newValue) => {
         this.handleHidePageEditor();
@@ -172,7 +251,6 @@ class PunishmentListMain extends React.Component {
         
         const { page, per_page } = this.props.punishments;
         const DISCORD_REGEX = /^(.+)#([0-9]{4})$/;
-        this._flagSearchByUserId = false;
 
         if (!searchValue) {
             this.setState({searchError : "No search term provided!"});
@@ -184,6 +262,7 @@ class PunishmentListMain extends React.Component {
             return; // too short
         }
 
+        this._flagSearchByUserId = false;
         this._canNavigate = false;
         this.setState({loadingNewPage : true});
 
@@ -400,26 +479,45 @@ class PunishmentListMain extends React.Component {
     renderDetailBlock() {
 
         const { per_page, page } = this.props.punishments;
+        
+        let innerData = null;
 
-        const fetchPreferences = (
-            <React.Fragment>
-                <div className="det-block">
-                    Page: <span className="det-block-item">{page}</span>
-                </div>
-                <div className="det-block">
-                    Per Page: <span className="det-block-item">{per_page}</span>
-                </div>
-                <button className="det-edit" onClick={this.handleShowPageEditor}>
-                    <i className="far fa-edit"></i>
-                </button>
-            </React.Fragment>
-        );
+        if (this._flagSearchByUserId) {
+
+            const hasActiveMutes = this.hasActiveMutes();
+            const hasActiveBans = this.hasActiveBans();
+
+
+            innerData = (
+                <React.Fragment>
+                    <Button text="Unmute" classes="user-unpunish unmute" disabled={!hasActiveMutes} onClick={this.handleShowUnmute}/>
+                    <Button text="Unban" classes="user-unpunish unban" disabled={!hasActiveBans} onClick={this.handleShowUnban}/>
+                    <Button text="Unpunish" classes="user-unpunish unpunish" disabled={!(hasActiveMutes || hasActiveBans)} onClick={this.handleShowUnpunish}/>
+
+                    <Button text="Return to All Punishments" onClick={this.handleReload} classes="return-to-all"/>
+                </React.Fragment>
+            );
+        } else {
+
+            innerData = (
+                <React.Fragment>
+                    <div className="det-block">
+                        Page: <span className="det-block-item">{page}</span>
+                    </div>
+                    <div className="det-block">
+                        Per Page: <span className="det-block-item">{per_page}</span>
+                    </div>
+                    <button className="det-edit" onClick={this.handleShowPageEditor}>
+                        <i className="far fa-edit"></i>
+                    </button>
+                </React.Fragment>
+            );
+        }
 
 
         return (
             <div className="punishment-display-det">
-                { this._flagSearchByUserId ? <Button text="Return to All Punishments" onClick={this.handleReload} classes="return-to-all"/> : null }
-                { !this._flagSearchByUserId ? fetchPreferences : null }&nbsp;
+                {innerData}
             </div>
         );
     }
@@ -445,6 +543,24 @@ class PunishmentListMain extends React.Component {
                     onCancel={this.handleHidePageEditor}
                     successfulSubmitCallback={this.handleUpdateNewPerPage}
                     value={this.props.punishments.per_page}
+                />
+                <UnmuteConfirm
+                    show={this.state.showUnmute}
+                    userID={this._searchTerm} 
+                    onCancel={this.handleHideUnmute} 
+                    handleSubmit={this.handleUnmuteUser}
+                />
+                <UnbanConfirm
+                    show={this.state.showUnban}
+                    userID={this._searchTerm} 
+                    onCancel={this.handleHideUnban} 
+                    handleSubmit={this.handleUnbanUser}
+                />
+                <UnpunishConfirm
+                    show={this.state.showUnpunish}
+                    userID={this._searchTerm} 
+                    onCancel={this.handleHideUnpunish} 
+                    handleSubmit={this.handleUnpunishUser}
                 />
             </React.Fragment>
         );
@@ -629,4 +745,5 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(mapStateToProps, {fetchAllPunishments, searchPunishmentsByUserID, 
     searchPunishmentsByUsername, searchPunishmentsByUsernameDiscriminator, 
-    setPunishmentsPage, setPunishmentsPerPage, fetchMember})(withRouter(PunishmentListMain));
+    setPunishmentsPage, setPunishmentsPerPage, fetchMember, unbanUserById, 
+    unpunishUserById, unmuteUserById})(withRouter(PunishmentListMain));

@@ -2534,6 +2534,7 @@ td.immortal-active-state .active-state {
     float: right;
     width: 50%;
     margin-top: 0.75em;
+    position: relative;
 }
 
 #punishments-list h1 {
@@ -3134,4 +3135,26 @@ tr.matching-member td {
 }
 .member-search-opt {
     width: 25%;
+}
+
+.button.user-unpunish {
+    color: white;
+}
+
+.edit-unmute-user-body .text-field, .edit-unban-user-body .text-field, .edit-unpunish-user-body .text-field {
+    display: inline-block;
+    margin-left: 0.5em;
+    width: 65%;
+}
+
+.edit-unmute-user-body .text-field input,
+.edit-unban-user-body .text-field input,
+.edit-unpunish-user-body .text-field input {
+    width: 100%;
+}
+
+.edit-unmute-user-body .text-field .text-field-error,
+.edit-unban-user-body .text-field .text-field-error,
+.edit-unpunish-user-body .text-field .text-field-error {
+    position: absolute;
 }

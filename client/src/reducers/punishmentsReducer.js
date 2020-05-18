@@ -1,6 +1,6 @@
 import { Cookies } from 'react-cookie';
 
-import { FETCH_PUNISHMENTS, FETCH_SEARCH_PUNISHMENTS, SET_PUNISHMENTS_PAGE, SET_PUNISHMENTS_PER_PAGE, WIPE_PUNISHMENT} from '../action/types';
+import { FETCH_PUNISHMENTS, FETCH_SEARCH_PUNISHMENTS, SET_PUNISHMENTS_PAGE, SET_PUNISHMENTS_PER_PAGE, WIPE_PUNISHMENT, UNBAN_USER, UNMUTE_USER, UNPUNISH_USER} from '../action/types';
 
 export const COOKIE_OPTIONS = { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 };
 export const COOKIE_PER_PAGE_NAME = 'per_page';
@@ -52,6 +52,14 @@ const punishmentsReducer = (state = defaultState, action) => {
                     }
                 }
                 return found ? newState : state;
+            }
+        case UNBAN_USER: case UNMUTE_USER: case UNPUNISH_USER:
+            if (!action.payload) {
+                return state;
+            } else {
+                const newState = {...state};
+                newState.data.punishments = action.payload;
+                return newState;
             }
         default:
             return state;

@@ -271,7 +271,7 @@ module.exports = (app) => {
     app.put('/api/punish/history/:id', 
     requireLogin,
     async (req, res) => {
-        const internalResponse = await PunishmentsEndpoint.modifyPunishmentStatusForUser(req.params.id, req.body.action);
+        const internalResponse = await PunishmentsEndpoint.modifyPunishmentStatusForUser(req.params.id, req.body.action, req.body.reason);
 		if (HTTPErrorHandler.isError(internalResponse)) {
 			return res.status(internalResponse.status).send(internalResponse.data);
 		}
