@@ -166,24 +166,27 @@ class PunishmentListMain extends React.Component {
 
     handleUnmuteUser = async (reason) => {
         const id = this.props.punishments.data.search_data.user_id;
+        const {adminUID} = this.props.auth.user;
         this._canNavigate = false;
-        await this.props.unmuteUserById(id, reason);
+        await this.props.unmuteUserById(id, reason, adminUID);
         this.handleHideUnmute();
         this._canNavigate = true;
     };
 
     handleUnbanUser = async (reason) => {
         const id = this.props.punishments.data.search_data.user_id;
+        const {adminUID} = this.props.auth.user;
         this._canNavigate = false;
-        await this.props.unbanUserById(id, reason);
+        await this.props.unbanUserById(id, reason, adminUID);
         this.handleHideUnban();
         this._canNavigate = true;
     };
 
     handleUnpunishUser = async (reason) => {
         const id = this.props.punishments.data.search_data.user_id;
+        const {adminUID} = this.props.auth.user;
         this._canNavigate = false;
-        await this.props.unpunishUserById(id, reason);
+        await this.props.unpunishUserById(id, reason, adminUID);
         this.handleHideUnpunish();
         this._canNavigate = true;
     };
@@ -230,6 +233,8 @@ class PunishmentListMain extends React.Component {
     }
 
     handleReload = async (stayOnCurrentUserIfById = false) => {
+        console.log("reload?")
+        console.log(this._canNavigate)
         if (!this._canNavigate) return;// already in the process of navigating
         this.props.enableScroll();
 
@@ -240,7 +245,9 @@ class PunishmentListMain extends React.Component {
         this.setState({loadingNewPage : true});
 
         if (this._flagSearchByUserId && stayOnCurrentUserIfById) {
-            await this.handleSearch('user_id', this._flagSearchByUserId);
+            console.log("this?");
+            this._canNavigate = true;
+            await this.handleSearch('user_id', this._searchTerm);
             
         } else {
             this._flagSearchByUserId = false;
@@ -255,10 +262,14 @@ class PunishmentListMain extends React.Component {
     }
 
     handleSearch = async (option, searchValue) => {
+        console.log("handleSearch?")
+        console.log(this._canNavigate)
         if (!this._canNavigate) return;// already in the process of navigating
         
         const { page, per_page } = this.props.punishments;
         const DISCORD_REGEX = /^(.+)#([0-9]{4})$/;
+
+        console.log("SearchValue'", searchValue);
 
         if (!searchValue) {
             this.setState({searchError : "No search term provided!"});
@@ -761,7 +772,8 @@ const mapStateToProps = (state, ownProps) => {
         punishments: state.punishments,
         page: state.punishments.page,
         per_page: state.punishments.per_page,
-        member_fetch_history: state.member_fetch_history
+        member_fetch_history: state.member_fetch_history,
+        auth: state.auth
     };
 };
 

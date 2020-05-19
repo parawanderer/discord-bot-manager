@@ -530,10 +530,13 @@ export const fetchPunishmentById = (id) =>
         }
     };
 
-export const wipePunishmentById = (id) => 
+export const wipePunishmentById = (id, byId) => 
     async (dispatch, getState) => {
         try {
-            const response = await axios.delete(`/api/punish/punishment/${id}`);
+            const data = {
+                user_id: byId || null
+            };
+            const response = await axios.delete(`/api/punish/punishment/${id}`, { data });
 
             dispatch({
                 type: WIPE_PUNISHMENT,
@@ -553,12 +556,13 @@ export const wipePunishmentById = (id) =>
         }
     };
 
-export const unmuteUserById = (id, reason) => 
+export const unmuteUserById = (id, reason, byId) => 
     async (dispatch, getState) => {
 
         const requestData = {
             action: 'unmute',
-            reason
+            reason,
+            user_id: byId || null
         };
 
         const response = await axios.put(`/api/punish/history/${id}`, requestData);
@@ -569,12 +573,13 @@ export const unmuteUserById = (id, reason) =>
         });
     };
 
-export const unbanUserById = (id, reason) => 
+export const unbanUserById = (id, reason, byId) => 
     async (dispatch, getState) => {
 
         const requestData = {
             action: 'unban',
-            reason
+            reason,
+            user_id: byId || null
         };
 
         const response = await axios.put(`/api/punish/history/${id}`, requestData);
@@ -585,12 +590,13 @@ export const unbanUserById = (id, reason) =>
         });
     };
 
-export const unpunishUserById = (id, reason) => 
+export const unpunishUserById = (id, reason, byId) => 
     async (dispatch, getState) => {
 
         const requestData = {
             action: 'unpunish',
-            reason
+            reason,
+            user_id: byId || null
         };
 
         const response = await axios.put(`/api/punish/history/${id}`, requestData);

@@ -44,8 +44,6 @@ class UnbanConfirm extends React.Component {
             >
                 Are you sure you want to unban the user {userID}?
                 <br/><br/>
-                Note that this will show the user as being unbanned by "System"!
-                <br/><br/>
                 Unban Reason: 
                 <TextInput valueUpdateCallback={this.handleValueUpdate} placeholder={"Unban Reason..."} error={this.state.error}/>
                 <br/><br/>

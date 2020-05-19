@@ -22,8 +22,6 @@ class PunishmentDetailWipe extends React.Component {
                     removeText={"Wipe"}
                 >
                     Are you sure you want to wipe Punishment #{punishment.id}?
-                    <br/>
-                    The punishment "wiper" will be shown as "System" if this is done.
                 </DeletePopup>
             );
         }

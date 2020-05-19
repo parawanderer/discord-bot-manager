@@ -82,7 +82,8 @@ class PunishmentDetail extends React.Component {
 
     handleWipePunishment = async () => {
         this.handleHideWipeMenu();
-        await this.props.wipePunishmentById(this.getPunishment().id);
+        const {adminUID} = this.props.auth.user;
+        await this.props.wipePunishmentById(this.getPunishment().id, adminUID);
     };
 
     hasMember(id) {
@@ -579,7 +580,8 @@ class PunishmentDetail extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         punishment_detail: state.punishment_detail,
-        member_fetch_history: state.member_fetch_history
+        member_fetch_history: state.member_fetch_history,
+        auth: state.auth
     }
 };
 

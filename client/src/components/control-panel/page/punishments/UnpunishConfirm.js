@@ -44,8 +44,6 @@ class UnpunishConfirm extends React.Component {
             >
                 Are you sure you want to unpunish (both unmute and unban) the user {userID}?
                 <br/><br/>
-                Note that this will show the user as being unpunished by "System"!
-                <br/><br/>
                 Unpunish Reason: 
                 <TextInput valueUpdateCallback={this.handleValueUpdate} placeholder={"Unpunish Reason..."} error={this.state.error}/>
                 <br/><br/>

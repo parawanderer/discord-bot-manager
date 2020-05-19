@@ -44,8 +44,6 @@ class UnmuteConfirm extends React.Component {
             >
                 Are you sure you want to unmute the user {userID}?
                 <br/><br/>
-                Note that this will show the user as being unmuted by "System"!
-                <br/><br/>
                 Unmute Reason: 
                 <TextInput valueUpdateCallback={this.handleValueUpdate} placeholder={"Unmute Reason..."} error={this.state.error}/>
                 <br/><br/>
