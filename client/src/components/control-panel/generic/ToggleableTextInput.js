@@ -34,10 +34,6 @@ class ToggleableTextInput extends React.Component {
         this.data.editedValue = newValue;
     };  
 
-    componentDidUpdate() {
-
-    }
-
 
     validateValueWithCallback = () => {
         if (!this.props.vallidationCallback || !this.props.valueUpdateCallback) return; // just to prevent exceptions
@@ -48,8 +44,11 @@ class ToggleableTextInput extends React.Component {
             
             this.setState({ isEditing : false });
             
-            if (!this.props.propertyKey) return;
-            this.props.valueUpdateCallback(/*property Key */ this.props.propertyKey, /*new property value */ this.data.editedValue);
+            if (!this.props.propertyKey) {
+                this.props.valueUpdateCallback(this.data.editedValue);
+            } else {
+                this.props.valueUpdateCallback(/*property Key */ this.props.propertyKey, /*new property value */ this.data.editedValue);
+            }
         }
         else {
             // there was an error... let's update and show the error
@@ -64,6 +63,7 @@ class ToggleableTextInput extends React.Component {
         // this.props.vallidationCallback
         // this.props.valueUpdateCallback
         // this.props.propertyKey
+        // this.props.textArea 
 
         if (this.state.isEditing) {
             return (
@@ -74,6 +74,7 @@ class ToggleableTextInput extends React.Component {
                     valueUpdateCallback={this.valueUpdate} 
                     placeholder={this.props.placeholder} 
                     error={this.state.error}
+                    textArea={this.props.textArea || false}
                 />
                 <Button text="Save" onClick={this.validateValueWithCallback} /> 
                 <Button text="Cancel" classes="cancel" onClick={this.onClickCancel}/>

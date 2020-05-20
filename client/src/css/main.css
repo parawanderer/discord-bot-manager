@@ -191,6 +191,7 @@ a:hover {
     height: 100vh;
     color: #94979e;
     float: left;
+    overflow: hidden;
 }
 
 .main-container {
@@ -3157,4 +3158,240 @@ tr.matching-member td {
 .edit-unban-user-body .text-field .text-field-error,
 .edit-unpunish-user-body .text-field .text-field-error {
     position: absolute;
+}
+
+.react-role-category {
+    background: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.04);
+    padding: 20px 30px;
+    margin: 30px 15vw;
+}
+
+.react-role-category-top h3 {
+    font-size: 20pt;
+    margin: 0;
+}
+
+button.delete-react-category, button.react-role-expander {
+    float: right;
+    background: transparent;
+    border: 0;
+    font-size: 18pt;
+    color: #b9baca;
+    border-radius: 100%;
+    padding: 4px 8px;
+    cursor: pointer;
+    outline: 0;
+}
+
+button.delete-react-category:hover, button.react-role-expander:hover {
+    background: #d3d7e0;
+    color: #9a9bb1;
+}
+
+.react-role-body {
+    padding: 1em 0;
+    border-bottom: 2px solid #eef0f3;
+    border-top: 2px solid #eef0f3;
+    position: relative;
+}
+
+button.react-role-expander {
+    transform: translateY(-65%);
+}
+
+
+.info-title {
+    font-weight: 600;
+    padding: 0 10px;
+    border-radius: 200px;
+    margin-right: 10px;
+    color: #9e9db1;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.info-data {
+    font-weight: 600;
+    color: #b9baca;
+    display: inline-block;
+    word-break: break-all;
+    /* overflow-wrap: anywhere; */
+}
+
+.react-role-save-container {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 4em;
+}
+
+button.react-role-save {
+    border: 0;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.09);
+    border-radius: 100%;
+    width: 2em;
+    height: 2em;
+    font-size: 2.5em;
+    padding: 0.5em;
+    background: #06d1e9;
+    color: white;
+    transition: 0.1s ease;
+    cursor: pointer;
+    outline:0;
+}
+
+button.react-role-save:hover {
+    background: #31b5ea;
+}
+
+.react-item-emoji {
+    display: inline-block;
+    margin-left: 1em;
+    background: #06d1e9;
+    padding: 0 10px;
+    border-radius: 100px;
+    color: white;
+}
+
+.react-item-emoji.custom {
+    background: #1fe906;
+}
+
+.react-role-description {
+    padding: 1em 0.75em;
+    font-weight: 600;
+    color: #b9baca;
+}
+
+.react-role-list-item {
+    padding: 1em;
+    border-left: 0.5em solid #9e9db1;
+    border-radius: 8px;
+    background: white;
+    border-bottom: 2px solid #eef0f3;
+}
+
+.react-role-list {
+    background-color: #eef0f3;
+}
+
+.react-role-list .info-data {
+    width: 72%;
+    vertical-align: middle;
+}
+
+.react-role-list .info-item {
+    padding: 3px;
+    vertical-align: middle;
+}
+
+.react-role-list .editable-field .text-field {
+    width: auto;
+}
+
+.react-role-list .editable-field .text-field textarea {
+    min-width: 30vw;
+}
+
+.react-role-list .info-item:hover button.edit-button {
+    opacity: 1;
+}
+
+.react-role-list .info-item button.edit-button {opacity: 0;}
+
+.react-role-body .info-data {
+    width: 75%;
+}
+
+.react-role-body .editable-field .text-field textarea {
+    width: 100%;
+    max-width: 100%;
+    min-width: 50%;
+}
+
+.react-role-body .editable-field .text-field {
+    width: 100%;
+    max-width: 100%;
+    min-width: 50%;
+}
+
+.react-role-body .info-data .editable-field .text-field {
+    width: 60%;
+}
+
+.react-role-list-item span.editable-field-current {
+    word-break: break-word;
+    overflow-wrap: normal;
+}
+
+
+.react-role-list-item-menu {
+    float: right;
+}
+
+button.react-role-list-delete, button.react-role-list-move-up, button.react-role-list-move-down {
+    background: transparent;
+    border: 0;
+    font-size: 18pt;
+    color: #b9baca;
+    border-radius: 100%;
+    padding: 4px 8px;
+    cursor: pointer;
+    outline: 0;
+}
+
+button.react-role-list-delete:hover, button.react-role-list-move-up:hover, button.react-role-list-move-down:hover {
+    background: #d3d7e0;
+    color: #9a9bb1;
+}
+
+.react-role-description:hover button.edit-button, .react-role-divisor:hover button.edit-button {
+    opacity: 1;
+}
+
+.react-role-description button.edit-button, .react-role-divisor button.edit-button {
+    opacity: 0;
+}
+
+div#edit_edit-emoji {
+    z-index: 90;
+    top: 20vh;
+}
+
+select#select-emoji {
+    font-size: 16pt;
+    height: 30pt;
+}
+
+.reaction-role-menu {
+    transform: translateY(-100%);
+    position: absolute;
+    right: 0;
+}
+
+.react-role-divisor .info-data .editable-field .text-field {
+    width: 50%;
+}
+
+.emoji-error {
+    color: #ff4343;
+    font-weight: 500;
+    height: 30px;
+}
+
+div#edit_create-role {
+    z-index: 90;
+}
+
+.react-role-top-menu {
+    text-align: right;
+    margin: 2em 18em;
+}
+
+#edit_create-category {
+    top: 20vh;
+}
+.react-role-top-menu button {
+    margin-left: 1em;
 }

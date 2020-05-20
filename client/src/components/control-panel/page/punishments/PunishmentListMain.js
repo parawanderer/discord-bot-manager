@@ -233,8 +233,6 @@ class PunishmentListMain extends React.Component {
     }
 
     handleReload = async (stayOnCurrentUserIfById = false) => {
-        console.log("reload?")
-        console.log(this._canNavigate)
         if (!this._canNavigate) return;// already in the process of navigating
         this.props.enableScroll();
 
@@ -245,7 +243,6 @@ class PunishmentListMain extends React.Component {
         this.setState({loadingNewPage : true});
 
         if (this._flagSearchByUserId && stayOnCurrentUserIfById) {
-            console.log("this?");
             this._canNavigate = true;
             await this.handleSearch('user_id', this._searchTerm);
             
@@ -262,14 +259,10 @@ class PunishmentListMain extends React.Component {
     }
 
     handleSearch = async (option, searchValue) => {
-        console.log("handleSearch?")
-        console.log(this._canNavigate)
         if (!this._canNavigate) return;// already in the process of navigating
         
         const { page, per_page } = this.props.punishments;
         const DISCORD_REGEX = /^(.+)#([0-9]{4})$/;
-
-        console.log("SearchValue'", searchValue);
 
         if (!searchValue) {
             this.setState({searchError : "No search term provided!"});
@@ -287,6 +280,7 @@ class PunishmentListMain extends React.Component {
 
         if (option === 'username') {
             // username search. Pretty simple.
+
             this.props.disableScroll();
 
             if (this.props.location.search) {
@@ -312,6 +306,8 @@ class PunishmentListMain extends React.Component {
         } 
         else if (option === 'with_discriminator')
         {   
+            // handle username#discriminator search
+
             let searchError = null;
 
             if (this.props.location.search) {
@@ -348,6 +344,8 @@ class PunishmentListMain extends React.Component {
         }
         else if (option === 'user_id')
         {   
+            // user id based search 
+            
             let searchError = null;
 
             if (InputValidator.isDiscordID(searchValue)) {
