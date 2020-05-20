@@ -3395,3 +3395,23 @@ div#edit_create-role {
 .react-role-top-menu button {
     margin-left: 1em;
 }
+
+.react-role-top-menu .load-block .loading {
+    padding: 0;
+    position: absolute;
+    right: 0;
+}
+
+.react-role-top-menu .load-block {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+}
+
+button.react-role-save .loading i {
+    color: white;
+}
+
+button.react-role-save .loading {
+    padding: 0;
+}

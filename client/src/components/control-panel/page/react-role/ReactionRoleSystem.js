@@ -15,7 +15,7 @@ class ReactionRoleSystem extends React.Component {
 
     state = {
         showCreateCategory: false,
-        lastRender : -1
+        isLoading: false
     };
 
     componentDidMount() {
@@ -35,7 +35,7 @@ class ReactionRoleSystem extends React.Component {
 
         // deep clone
         this.reactionRoleCopy = JSON.parse(JSON.stringify(config.data.reactionRoleSystem));
-        this.setState({lastRender : new Date().getTime()});
+        this.forceUpdate();
     };
 
     handleShowCreateCategory= () => {
@@ -64,6 +64,7 @@ class ReactionRoleSystem extends React.Component {
     saveChanges = async () => {
         if (!this._canUpdate) return; // already in the process of updating..
         this._canUpdate = false;
+        this.setState({isLoading: true});
 
         const {data} = this.props.config;
         // take a deep copy of the current data config
@@ -77,6 +78,7 @@ class ReactionRoleSystem extends React.Component {
 
         // allow updating again at the end of this
         this._canUpdate = true;
+        this.setState({isLoading: false});
     }
 
 
@@ -92,6 +94,9 @@ class ReactionRoleSystem extends React.Component {
         return (
             <div id="react-role">
                 <div className="react-role-top-menu">
+                    <div className="load-block">
+                        {this.state.isLoading ? <Loading text=" "/> : null}
+                    </div>
                     <Button
                         text="Reset Changes"
                         classes="cancel" 
@@ -107,7 +112,7 @@ class ReactionRoleSystem extends React.Component {
                 {categories}
                 <div className="react-role-save-container">
                     <button className="react-role-save" onClick={this.saveChanges}>
-                        <i className="fal fa-save"></i>
+                        {this.state.isLoading ? <Loading text=" "/> : <i className="fal fa-save"></i>}
                     </button>
                 </div>
                 <CreateCategory
