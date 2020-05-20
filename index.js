@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const {MinecraftHandler} = require('./services/minecraft-api/MinecraftHandler');
 
 if (process.env.NODE_ENV === 'production') require('dotenv').config();
 
@@ -28,6 +29,9 @@ app.use(cookieSession(
 ));
 
 app.use('/api', SessionExpirer.requestHandler);
+
+// initialize this handler
+MinecraftHandler.onStartSetup();
 
 
 // setup routes

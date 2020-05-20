@@ -14,6 +14,13 @@ const WRITE_OPTIONS = {
     flag: 'w'
 };
 
+const CACHE_PATH = 'cache';
+const MC_PATH = 'cache/mc';
+const MC_PATH_HEAD = 'cache/mc/head';
+const MC_PATH_DETAIL = 'cache/mc/detail';
+const MC_PATH_PLAYER = 'cache/mc/player';
+const MC_PATH_SKIN = 'cache/mc/skin';
+
 /*
 TODO: eventually, it may be a better idea to update to using redis 
 for same reasons as mentioned here: https://github.com/crafatar/crafatar
@@ -171,6 +178,37 @@ class MinecraftHandler {
         return image;
     }
 
+    static onStartSetup = () => {
+        MinecraftHandler.createDirectoryStructure();
+    }
+
+    static createDirectoryStructure = () => {
+
+        if (!fs.existsSync(CACHE_PATH)) {
+            fs.mkdirSync(CACHE_PATH);
+        }
+
+        if (!fs.existsSync(MC_PATH)) {
+            fs.mkdirSync(MC_PATH);
+        }
+
+        if (!fs.existsSync(MC_PATH_HEAD)) {
+            fs.mkdirSync(MC_PATH_HEAD);
+        }
+
+        if (!fs.existsSync(MC_PATH_DETAIL)) {
+            fs.mkdirSync(MC_PATH_DETAIL);
+        }
+
+        if (!fs.existsSync(MC_PATH_PLAYER)) {
+            fs.mkdirSync(MC_PATH_PLAYER);
+        }
+
+        if (!fs.existsSync(MC_PATH_SKIN)) {
+            fs.mkdirSync(MC_PATH_SKIN);
+        }
+
+    }
 
     _addToInProcess = (uuid) => {
         this.inProcess.push(uuid);
@@ -185,6 +223,7 @@ class MinecraftHandler {
         if (index === -1) return;
         this.inProcess.splice(index, 1);
     }
+
 
     /**
      * This has multiple points at which it could throw an exception and die. Thus the exception must be catched for it externally.
