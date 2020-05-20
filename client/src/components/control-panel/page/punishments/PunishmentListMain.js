@@ -361,7 +361,7 @@ class PunishmentListMain extends React.Component {
                 }
 
                 this._flagSearchByUserId = true;
-                await this.props.searchPunishmentsByUserID(searchValue, 1, 100);
+                await this.props.searchPunishmentsByUserID(searchValue, 1, 200);
 
             } else {
                 searchError= "Invalid discord ID provided!";
