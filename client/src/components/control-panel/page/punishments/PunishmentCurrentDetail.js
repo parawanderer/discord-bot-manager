@@ -24,14 +24,18 @@ class PunishmentCurrentDetail extends React.Component {
     _selfElement = null;
 
     componentDidMount() {
-        this._mainContainerElement = document.getElementById("main-container");
-        this._topElement = document.getElementById("top");
-        this._windowHeight = window.innerHeight;
-        this._mainContainerElement.addEventListener('scroll', this.handleScroll, { passive: true })
+        if (window.innerWidth > 1023) {
+            this._mainContainerElement = document.getElementById("main-container");
+            this._topElement = document.getElementById("top");
+            this._windowHeight = window.innerHeight;
+            this._mainContainerElement.addEventListener('scroll', this.handleScroll, { passive: true })
+        }
     }
 
     componentWillUnmount() {
-        this._mainContainerElement.removeEventListener('scroll', this.handleScroll)
+        if (window.innerWidth > 1023) {
+            this._mainContainerElement.removeEventListener('scroll', this.handleScroll)
+        }
     }
 
     handleScroll = (event) => {

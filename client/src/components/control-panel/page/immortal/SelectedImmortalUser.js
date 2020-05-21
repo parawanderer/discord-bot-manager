@@ -10,14 +10,18 @@ class SelectedImmortalUser extends React.Component {
     _stickStrollOffset = 0;
 
     componentDidMount() {
-        this._mainContainerElement = document.getElementById("main-container");
-        this._fullListElement = document.getElementById("immortal-list");
-        this._windowHeight = window.innerHeight;
-        this._mainContainerElement.addEventListener('scroll', this.handleScroll, { passive: true })
+        if (window.innerWidth > 1023) {
+            this._mainContainerElement = document.getElementById("main-container");
+            this._fullListElement = document.getElementById("immortal-list");
+            this._windowHeight = window.innerHeight;
+            this._mainContainerElement.addEventListener('scroll', this.handleScroll, { passive: true })
+        }
     }
 
     componentWillUnmount() {
-        this._mainContainerElement.removeEventListener('scroll', this.handleScroll)
+        if (window.innerWidth > 1023) {
+            this._mainContainerElement.removeEventListener('scroll', this.handleScroll)
+        }
     }
 
     handleScroll = (event) => {

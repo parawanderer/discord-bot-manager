@@ -40,6 +40,7 @@ class Reports extends React.Component {
         // send back the entirey config object into our API handler
         await this.props.updateDataConfig(newData);
         // this will update when it is processed.
+        delete this.props.config.reportBlacklist[userID];
 
         // let's quickly check if this user wasn't selected to be displayed in the sidebar? If they were, we will unselect them
         if (this.state.selectedMember && this.state.selectedMember.id === userID) {

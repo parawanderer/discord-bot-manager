@@ -8,7 +8,7 @@ const ActiveState = (props) => {
         return (
             <div className={"active-state active" + (props.short ? ' short' : '')}>
                 <i className="fas fa-check"></i>
-                {props.short ? '' : 'Active'}
+                <span className="active-state-text">{props.short ? '' : 'Active'}</span>
             </div>
         );
     }
@@ -16,7 +16,7 @@ const ActiveState = (props) => {
     return (
         <div className={"active-state inactive" + (props.short ? ' short' : '')}>
             <i className="fas fa-slash"></i>
-            {props.short ? '' : 'Inactive'}
+            <span className="active-state-text">{props.short ? '' : 'Inactive'}</span>
         </div>
     );
 };

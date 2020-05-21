@@ -26,9 +26,27 @@ class PageTop extends React.Component {
         );
     }
 
+    handleMobileNav = () => {
+        const { showMobileNav, showingMobileNav, hideMovileNav } = this.props;
+
+        if (showingMobileNav) {
+            hideMovileNav();
+        } else {
+            showMobileNav();
+        }
+
+    };
+
     render() {
+        
+
         return (
             <div className="top" id="top">
+                <div className="mobile">
+                    <button className="mobile-nav" onClick={this.handleMobileNav}>
+                        <i className="far fa-bars"></i>
+                    </button>
+                </div>
                 <div className="page-title">
                     {this.getTitle()}
                 </div>

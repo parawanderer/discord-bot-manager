@@ -21,16 +21,56 @@ import NotFound from './NotFound';
 
 class ControlPanelContainer extends React.Component {
 
+    _navElement = null;
+
+    state = {
+        showingNavMobile: false
+    };
+
+    componentDidMount() {
+        if (window.innerWidth <= 768) {
+            document.addEventListener('mousedown', this.handleClickOutsideNav);
+        }
+    }
+
+    componentWillUnmount() {
+        if (window.innerWidth <= 768) {
+            document.removeEventListener('mousedown', this.handleClickOutsideNav);
+        }
+    }
+
+    handleClickOutsideNav = (event) => {
+        if (this.state.showingNavMobile && this._navElement && !this._navElement.contains(event.target)) {
+            this.hideMobileNav();
+        }
+    }
+
+    showMobileNav = () => {
+        this.setState({showingNavMobile : true});
+    }
+
+    hideMobileNav = () => {
+        this.setState({showingNavMobile : false});
+    }
+
+
     render() {
         return(
             <div className="control-panel-container">
                 <BrowserRouter>
-                <div className="sidebar">
+                <div 
+                    className={"sidebar" + (this.state.showingNavMobile ? ' mobile-show' : '')}
+                    ref={div => this._navElement = div}
+                >
                     <NavLogo />
                     <Nav />
                 </div>
                 <div className="main-container" id="main-container">
-                    <PageTop />
+                    <PageTop 
+                        showMobileNav={this.showMobileNav} 
+                        hideMovileNav={this.hideMobileNav}
+                        showingMobileNav={this.setState.showingNavMobile}
+                    />
                     <div className="page-content">
                         <Switch>
                             <Route exact path="/" component={Home} />
