@@ -122,7 +122,7 @@ class Immortal extends React.Component {
                     immortal={this.state.selectedForDeletion}
                     show={this.state.showDelete}
                     onCancel={this.hideUnlinkUser}
-                    onDeleteConfirm={this.confirmDeleteSelectedAdmin}
+                    onDeleteConfirm={this.handleDeleteConfirm}
                 />
 
             </React.Fragment>
