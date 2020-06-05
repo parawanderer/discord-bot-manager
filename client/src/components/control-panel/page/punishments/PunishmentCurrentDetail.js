@@ -283,7 +283,7 @@ class PunishmentCurrentDetail extends React.Component {
             removalData = (
                 <div className="punishment-removal-info">
                     {this.renderGenericInfoItem("Removed By", this.renderUnpunisher())}
-                    {this.renderGenericInfoItem("Removed At", PunishmentSeverityHelper.getPunishmentTimestamp(punishment.removed_timestamp))}
+                    {this.renderGenericInfoItem("Removed At", punishment.removed_timestamp !== null ? PunishmentSeverityHelper.getPunishmentTimestamp(punishment.removed_timestamp) : "Unknown")}
                     {this.renderGenericInfoItem("Removed For", punishment.removed_note)}
                 </div>
             );

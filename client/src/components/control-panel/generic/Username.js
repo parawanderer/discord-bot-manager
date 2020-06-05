@@ -8,7 +8,7 @@ const Username = (props) => {
         <div className="username">
             {username}
             <span className="discriminator-split">#</span>
-            <span className="discriminator">{discriminator}</span>
+            <span className="discriminator">{discriminator !== null ? discriminator : "????"}</span>
         </div>
     );
 }

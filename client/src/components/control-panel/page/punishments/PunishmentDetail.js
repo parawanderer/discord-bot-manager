@@ -471,7 +471,7 @@ class PunishmentDetail extends React.Component {
             removalData = (
                 <div className="punishment-info-removal">
                     <h3>Punishment Removed</h3>
-                    {this.renderGenericInfoItem("When", PunishmentSeverityHelper.getPunishmentTimestamp(punishment.removed_timestamp))}
+                    {this.renderGenericInfoItem("When", punishment.removed_timestamp !== null ? PunishmentSeverityHelper.getPunishmentTimestamp(punishment.removed_timestamp) : "Unknown")}
                     {this.renderGenericInfoItem("By", this.renderRemovedBy(punishment))}
                     {this.renderGenericInfoItem("For", punishment.removed_note)}
                 </div>
