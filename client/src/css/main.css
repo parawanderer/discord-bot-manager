@@ -3447,6 +3447,12 @@ button.mobile-nav:hover {
 }
 
 
+.immortal-user-base.no-member {
+    color: #b9baca;
+    font-weight: 600;
+}
+
+
 /** Responsive... */
 
 

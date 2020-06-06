@@ -153,6 +153,72 @@ class SelectedImmortalUser extends React.Component {
     }
 
 
+    renderInnerDetails() {
+        const {immortal} = this.props;
+        const {member} = immortal;
+        
+        if (member) {
+            return (
+                <React.Fragment>
+                    <div className="immortal-user-base">
+                        {this.renderAvatar()}
+                        {this.renderUserName()}
+                    </div>
+                    <div className="immortal-user-body">
+                        {this.renderUserInfoBlock()}
+                        <DiscordRoleBlock memberRoles={member.roles}/>
+
+                        <Button     
+                            classes="button delete-immortal" 
+                            onClick={() => deleteCallback(immortal.discord_id)}
+                            disabled={!immortal.active}
+                            icon={<i className="fas fa-unlink"></i>}
+                            text={"Unlink Immortal"}
+                        />
+
+                        <a href={`https://www.mineplex.com/admin.php?users/${immortal.website_id}/edit`} target="_blank" rel="noopener noreferrer">
+                            <Button     
+                                classes="button edit-website" 
+                                icon={<i className="fas fa-edit"></i>}
+                                text={"Edit Web User"}
+                            />
+                        </a>
+
+                    </div>
+                </React.Fragment>
+            );
+        }
+
+        return (
+            <React.Fragment>
+                <div className="immortal-user-body">
+                    <div className="immortal-user-base no-member">
+                        Member not currently in the server
+                    </div>
+                    {this.renderUserInfoBlock()}
+                    <Button     
+                        classes="button delete-immortal" 
+                        onClick={() => deleteCallback(immortal.discord_id)}
+                        disabled={!immortal.active}
+                        icon={<i className="fas fa-unlink"></i>}
+                        text={"Unlink Immortal"}
+                    />
+
+                    <a href={`https://www.mineplex.com/admin.php?users/${immortal.website_id}/edit`} target="_blank" rel="noopener noreferrer">
+                        <Button     
+                            classes="button edit-website" 
+                            icon={<i className="fas fa-edit"></i>}
+                            text={"Edit Web User"}
+                        />
+                    </a>
+
+                </div>
+            </React.Fragment>
+        );
+
+    }
+
+
     render() {
         // this.props.member
         // this.props.deleteCallback
