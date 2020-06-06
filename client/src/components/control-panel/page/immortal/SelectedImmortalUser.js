@@ -154,7 +154,7 @@ class SelectedImmortalUser extends React.Component {
 
 
     renderInnerDetails() {
-        const {immortal} = this.props;
+        const {immortal, deleteCallback} = this.props;
         const {member} = immortal;
         
         if (member) {
@@ -222,41 +222,15 @@ class SelectedImmortalUser extends React.Component {
     render() {
         // this.props.member
         // this.props.deleteCallback
-        const { immortal, deleteCallback } = this.props;
+        const { immortal } = this.props;
 
         if (!immortal) return null;
-
-        const {member} = immortal;
 
         return (
             <div className={"immortal-user-selected" + (this.state && this.state.scrollStick ? " stick" : "")}
                 style={this.state && this.state.scrollStick ? {transform: `translateY(${this._stickStrollOffset}px)`} : undefined}
             >
-                <div className="immortal-user-base">
-                    {this.renderAvatar()}
-                    {this.renderUserName()}
-                </div>
-                <div className="immortal-user-body">
-                    {this.renderUserInfoBlock()}
-                    <DiscordRoleBlock memberRoles={member.roles}/>
-
-                    <Button     
-                        classes="button delete-immortal" 
-                        onClick={() => deleteCallback(immortal.discord_id)}
-                        disabled={!immortal.active}
-                        icon={<i className="fas fa-unlink"></i>}
-                        text={"Unlink Immortal"}
-                    />
-
-                    <a href={`https://www.mineplex.com/admin.php?users/${immortal.website_id}/edit`} target="_blank" rel="noopener noreferrer">
-                        <Button     
-                            classes="button edit-website" 
-                            icon={<i className="fas fa-edit"></i>}
-                            text={"Edit Web User"}
-                        />
-                    </a>
-
-                </div>
+                {this.renderInnerDetails()}
             </div>
         );
     }
