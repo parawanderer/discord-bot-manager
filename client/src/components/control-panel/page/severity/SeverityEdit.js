@@ -8,7 +8,7 @@ import Button from '../../generic/Button';
 
 class SeverityEdit extends React.Component {
 
-
+    _lastId = null;
     isOpened = false;
 
     data = {
@@ -103,6 +103,8 @@ class SeverityEdit extends React.Component {
 
         }
 
+        
+
     };
 
     getSeverity() {
@@ -193,10 +195,15 @@ class SeverityEdit extends React.Component {
         this.forceUpdate();
 
         if (validationResult) {
-            if (this.props.onSave) this.props.onSave(this.getPassBackValues());
+            if (this.props.onSave) this.props.onSave(this.getPassBackValues(), this.setNotIsOpened);
         }
 
     };
+
+    setNotIsOpened = () => {
+        this.isOpened = false;
+        this.forceUpdate();
+    }
 
 
     validateData = () => {
@@ -258,7 +265,6 @@ class SeverityEdit extends React.Component {
 
 
     renderEditor() {
-        
         return (
             <div className="sev-editor">
                 <div className="editor-block">
@@ -297,6 +303,7 @@ class SeverityEdit extends React.Component {
                             value={this.data.severity.val || 1} 
                             onChange={e => this.handleUpdateValue('severity', e.target.value)}
                             className="severity-editor"
+                            disabled={this.props.sev.severity === 1 && this.props.sev.type_raw === 1}
                         />
                     </div>
                     

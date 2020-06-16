@@ -94,12 +94,13 @@ class PunishmentSystem extends React.Component {
         this.setState({showEdit : false});
     };
 
-    severityEditHandler = async (newData) => {
+    severityEditHandler = async (newData, onEndFunction) => {
 
         await this.props.updateSeverity(newData.id, newData);
 
         this.setState({currentSev : this.getSeverityByID(this.state.currentSev.id)}); // set new data
         this.severityEditHideHandler(); // close editor
+        onEndFunction();
         this.showUpdateSuccess(); // show success popup
     };
 

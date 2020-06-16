@@ -3453,6 +3453,10 @@ button.mobile-nav:hover {
 }
 
 
+input.severity-editor[disabled] {
+    color: #b2b2b3;
+}
+
 /** Responsive... */
 
 

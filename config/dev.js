@@ -5,6 +5,6 @@ module.exports = {
     discordClientID : '692886126045692025',
     discordClientSecret : 'oEQHtOduWna48FEiEYkbiFGlMyaYxec3',
     botAPIKey: 'ESGAihjksehdquiawdWEFREt433daDcadfvad',
-    botAPIDomain: 'https://bot.wanderer.lol/',
+    botAPIDomain: 'https://bot-api.mineplex.com/',
     selfRootDomain: "http://localhost:3000/",
 };
