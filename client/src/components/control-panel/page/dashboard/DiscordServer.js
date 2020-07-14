@@ -4,7 +4,7 @@ const DiscordServer = (props) => {
     
     return (
         <div className="guild-main">
-            <span className="guild-banner-overlay" style={{backgroundImage: (props.guild.banner) ? `url(${props.guild.banner})` : ''}}></span>
+            <span className="guild-banner-overlay" style={{backgroundImage: (props.guild.banner) ? `url(${props.guild.banner}?size=1024)` : ''}}></span>
             <div className="guild-logo">
                 <img src={props.guild.server_icon} alt="guild icon" />
             </div>

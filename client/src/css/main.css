@@ -570,6 +570,7 @@ vertical-align: top;
 .punishment div {
     display: inline-block;
     vertical-align: middle;
+    max-width: 100%;
 }
 
 .punishment-type {
@@ -622,6 +623,9 @@ vertical-align: top;
     font-weight: 600;
     color: #b9baca;
     display: inline !important;
+    max-width: 100%;
+    word-break: break-all;
+    white-space: normal;
 }
 
 .punishment-for-prefix {
@@ -2711,9 +2715,9 @@ td.immortal-active-state .active-state {
     padding: 0;
 }
 
-div.punishment, .punishment-issuer {
+/* div.punishment, .punishment-issuer {
     white-space: nowrap;
-}
+} */
 
 .punishments-end {
     transition: 0.1s ease;
